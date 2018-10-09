@@ -1,0 +1,70 @@
+#loginpage{
+	width: 100%;
+	height: 600px;
+	background: url("../img/login/bg.png") no-repeat;
+	background-size: 100% 100%;
+}
+.content-wrap{
+	padding-top:100px;
+}
+.content-wrap .login-window{
+	width: 400px;
+	height: 240px;
+	margin: auto;
+	border-radius: 20px;
+	box-shadow:10px 10px 20px #0e3d55; 
+	background-color: #ae4944;
+}
+.content-wrap .login-window h4{
+	margin: 0px;
+	margin-left: 30px;
+	height: 40px;
+	border-radius: 20px;
+	line-height: 40px;
+	color: #fff;
+}
+.content-wrap .login-window .window-content{
+	width: 398px;
+	height: 200px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+	margin: 0 auto;
+	background-color: #fff;
+	margin-bottom: 1px;
+	overflow: hidden;
+	text-align: center;
+}
+.content-wrap .login-window .window-content input:nth-child(1){
+	margin-top: 30px;
+	width: 250px;
+	height: 30px;
+	border: 1px solid #787878;
+	background: url("../img/login/user.png") no-repeat 20px 4px;
+	padding-left: 50px;
+	border-radius: 25px;
+	outline: none;
+}
+.content-wrap .login-window .window-content input:nth-child(2){
+	margin-top: 15px;
+	width: 250px;
+	height: 30px;
+	border: 1px solid #787878;
+	background: url("../img/login/password.png") no-repeat 20px 4px;
+	padding-left: 50px;
+	border-radius: 25px;
+	outline: none;
+}
+.content-wrap .login-window .window-content input:nth-child(3){
+	margin-top: 15px;
+	width: 302px;
+	height: 34px;
+	border: 1px solid #787878;
+	background: #118ec8;
+	color: #fff;
+	font-weight: bold;
+	font-size: 16px;
+	letter-spacing: 4px;
+	border-radius: 25px;
+	outline: none;
+	cursor: pointer;
+}

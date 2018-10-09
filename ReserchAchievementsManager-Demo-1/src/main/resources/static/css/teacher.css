@@ -1,0 +1,304 @@
+/*涓诲唴瀹瑰尯*/
+
+.container {
+        max-width: 1170px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    /* background: green; */
+    /*height: 80px;*/
+    position: relative;
+}
+
+.content{
+    padding-top: 60px;
+}
+    .left{
+        float: left;
+        width: 240px;
+        /*background-color: #f8fafc;*/
+       /*background: rgb(200,120,255);*/
+    }
+
+.right-fix{
+    float: right;
+    width: 100%;
+    margin-left: -260px;
+}
+.right{
+    margin-left: 260px;
+    /*background: #33f;*/
+    -webkit-box-shadow: 0px 1px 10px  #d0d6d9;
+    -moz-box-shadow: 0px 1px 10px #d0d6d9;
+    box-shadow: 0px 1px 10px #d0d6d9;
+    padding-left: 60px;
+    padding-right: 30px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/*涓诲唴瀹瑰尯缁撴潫*/
+.left li{
+    height: 60px;
+    line-height: 60px;
+    margin-top: 20px;
+    position: relative;
+}
+.left li:first-child{
+    margin-top: 0;
+}
+.left a{
+    font-size: 18px;
+    color: #000;
+    font-weight: bold;
+    display: block;
+    padding: 0 16px;
+    border-top-left-radius: 4px;
+    height: 60px;
+    transition: all .1s;
+     border-bottom: 1px solid #a89;
+}
+.left i{
+    display: inline-block;
+    width: 26px;
+    height: 16px;
+    /*background: url(../img/list.png) no-repeat;*/
+    position: relative;
+    top:3px;
+}
+span.icon{
+   position: absolute;
+   right: 30px;
+}
+/*.left a:hover{
+    color:  #a9f;
+}*/
+.left a:hover{
+    /*background: #66a;*/
+    color:rgb(65,120,190);
+    border-bottom: 1px solid #a8f;
+}
+.left .active{
+    /*background: #66a;*/
+    color:rgb(65,120,190);
+    border-bottom: 1px solid #008cc8;
+}
+
+/*涓诲唴瀹瑰尯鍙宠竟锛�涓汉淇℃伅*/
+/*.active{
+    display: block;
+}*/
+.common-title{
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: 400;
+    /*margin-top: 12px;*/
+    color: rgb(78,19,85);
+    /*text-shadow: 1px 1px 1px rgb(78,19,185);*/
+    margin-bottom: 30px;
+}
+.edit{
+    padding-left: 18px;
+        color: #93999f;
+    font-weight: 400;
+    font-size: 14px;
+    margin-right: 26px;
+    background: url(../img/edit-icon.png) no-repeat 0 12px;
+    float:right;
+}
+
+a.edit:hover{
+    color: #008cc8;
+}
+.line {
+    height: 1px;
+    background-color: #d0d6d9;
+    margin-top: 12px;
+}
+.info-box{
+    margin-bottom: 12px;
+    /*height:100%*/
+}
+ .info-box label {
+    width: 120px;
+    line-height: 20px;
+    padding: 20px 0;
+    text-align: center;
+    background-color: #f3f5f7;
+    color: #07111b;
+    font-weight: 700;
+}
+.pull-left {
+    float: left;
+}
+.info-box div {
+    width: 508px;
+    margin-left: 8px;
+    line-height: 20px;
+    padding: 20px 0 20px 22px;
+    border-bottom: 1px solid #d9dde1;
+}
+/*涓汉淇℃伅缁撴潫*/
+
+/*涓婁紶鎴愭灉寮�*/
+#loadup{
+    /*background: rgb(222,222,255);*/
+}
+
+.nav{
+    margin-left: 12px;
+}
+.load-item{
+    display: inline-block;
+    
+    border-radius: 3px;   
+    margin-right: 138px;
+    margin-bottom:  40px;
+    /*border:1px solid rgb(60,15,120);*/
+    
+    /*padding: 10px 4px;*/
+
+}
+.load-item img{
+    float: left;
+    width: 50px;
+    height: 50px;
+    /*border:1px solid rgb(160,115,220);*/
+
+    
+}
+.item-info{
+    /*margin-top: 4px;*/
+    float: left;
+    width: 152px;
+    margin-left: 6px;
+    text-align: center;
+    /*background: rgb(200,180,255);*/
+    background: #ccc;
+    padding: 5px 3px;
+    cursor:pointer
+}
+.item-info>div:first-child{
+    /*margin-top: 40px;*/
+    font-size: 18px;
+    /*color: #333;*/
+    /*color: rgb(50,30,180);*/
+}
+.item-info>div:first-child+div{
+    /*margin-top: 40px;*/
+    font-size: 13px;
+    /*color: #333;*/
+    color: rgb(50,30,180);
+}
+.item-info:hover{
+    background: rgb(10,10,30);
+}
+.item-info:hover>div:first-child{
+    color: #5f4;
+}
+
+    /*椤圭洰琛ㄥ崟寮�*/
+    .project h3{
+             font-size: 16px;
+    font-weight: bold;
+    color: #07111b;
+    margin-bottom: 34px;
+    }
+    .form-item{
+        overflow: hidden;
+    }
+    .form-item label{
+        width: 118px;
+        text-align: right;
+        margin-bottom: 0;
+        font-weight: bold;
+        float: left;
+        padding: 7px 5px 0px 5px;
+        font-size: 14px
+   
+    }
+    .moco-control-input {
+        width: 498px;
+        float: left;
+        padding: 0 5px;
+        box-sizing: border-box;
+    }
+    .moco-form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+/*
+        border: 1px solid #d1d5da;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);*/
+    }
+    .errorHint{
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        color: #EF1300;
+    }
+
+    .moco-form-year{
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+    .moco-form-month{
+         display: inline-block;
+        width: 40px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+
+   .moco-control-short{
+        width: 198px;
+    float: left;
+    padding: 0 5px;
+    box-sizing: border-box;
+   }
+   .moco-control-file{
+        display: block;
+        width: 200px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+       
+        border-radius: 2px;
+        box-sizing: border-box;
+   }
+    /*椤圭洰琛ㄥ崟缁撴潫*/
+/*涓婁紶鎴愭灉缁撴潫*/
+

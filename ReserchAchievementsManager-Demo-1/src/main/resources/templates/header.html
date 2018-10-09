@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HEADER</title>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-alert.css">
+<link rel="stylesheet" type="text/css" href="/css/header.css">
+</head>
+<body>
+	<div class="header">
+		<div class="wrap">
+			<div class="img-contain">
+				<a href="/index"> <img src="/img/index/logo.png">
+				</a>
+			</div>
+			<div class="unlogin">
+				<a class="text-link" id="js-signin" href="/auth"> <span
+					class="login"> 登录 </span>
+				</a>
+			</div>
+			<div class="logined">
+				<div class="portrait-wrap">
+					<img class="portrait" src="/img/login/portrait.png" />
+				</div>
+				<div class="user-center">
+					<div class="user-center-wrap">
+						<div class="user-header">
+							<img src="/img/login/portrait.png"> <span id='username'></span>
+						</div>
+						<div class="user-body">
+							<a href="javascript:Header.home()">个人信息</a> <a href="javascript:confirmLogout()">安全退出</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.base64.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/custom-alert.js"></script>
+<script type="text/javascript" src="/js/tokenhelper.js"></script>
+<script type="text/javascript" src="/js/header.js"></script>
+</html>

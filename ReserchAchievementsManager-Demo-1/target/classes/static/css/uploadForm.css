@@ -1,0 +1,153 @@
+
+    /*椤圭洰琛ㄥ崟寮�*/
+
+    .upload{
+        margin-top: 80px;
+    }
+    .re-item{
+        -webkit-box-shadow: 0px 1px 10px #d0d6d9;
+        -moz-box-shadow: 0px 1px 10px #d0d6d9;
+        box-shadow: 0px 1px 10px #d0d6d9;
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-bottom: 30px;
+        padding-right: 20px;
+        position: relative;
+    }
+    .re-item h3{
+             font-size: 16px;
+    font-weight: bold;
+    color: #07111b;
+    margin-bottom: 34px;
+    }
+    a.moco-modal-close {
+        /*font-size: 24px;*/
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: url(../img/close.png) no-repeat;
+        right: 32px;
+        top: 24px;
+        /*color: #93999f;*/
+        display: block;
+    }
+    a.moco-modal-close:hover {
+        /*font-size: 24px;*/
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: url(../img/close-on.png) no-repeat 0px 2px;
+        right: 32px;
+        top: 24px;
+        /*color: #93999f;*/
+        display: block;
+      
+    }
+
+
+    .form-item{
+        overflow: hidden;
+    }
+    .form-item label{
+        width: 118px;
+        text-align: right;
+        margin-bottom: 0;
+        font-weight: bold;
+        float: left;
+        padding: 7px 5px 0px 5px;
+        font-size: 14px
+   
+    }
+    .moco-control-input {
+        width: 498px;
+        float: left;
+        padding: 0 5px;
+        box-sizing: border-box;
+    }
+    .moco-form-control {
+        display: block;
+        width: 100%;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+/*
+        border: 1px solid #d1d5da;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);*/
+    }
+    .errorHint{
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        color: #EF1300;
+    }
+
+    .moco-form-year{
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+    .moco-form-month{
+         display: inline-block;
+        width: 40px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+
+   .moco-control-short{
+        width: 198px;
+    float: left;
+    padding: 0 5px;
+    box-sizing: border-box;
+   }
+   .moco-control-file{
+        display: block;
+        width: 200px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #787d82;
+        background-color: #fff;
+        background-image: none;
+       
+        border-radius: 2px;
+        box-sizing: border-box;
+   } 
+
+    /*椤圭洰琛ㄥ崟缁撴潫*/
+    .reset{
+        margin-left: 18px;
+    }
+
+
+    /*鏁欐潗绫诲紑濮�/
+    .moco-control-input textarea{
+        height: 70px;
+        font-family: 'Microsoft YaHei';
+    }
+    /*鏁欐潗绫荤粨鏉�/
