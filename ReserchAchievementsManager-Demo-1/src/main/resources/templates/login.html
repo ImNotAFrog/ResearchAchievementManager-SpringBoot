@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登陆</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/> 
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+</head>
+<body>
+<div th:replace="header::html" ></div>
+<div id="loginpage">
+	<div class="content-wrap">
+		<div class="login-window">
+			<h4>欢迎登录</h4>
+			<form class="window-content" id='loginForm' name="loginForm">
+				<input id="account" type="text" name="form-username" placeholder="请输入用户名" /> 
+				<input id="password" type="password" name="form-password" placeholder="请输入密码" /> 
+				<input id="submit" type="button" name="Submit" value="登录">
+			</form>
+		</div>
+	</div>
+</div>
+
+<div th:replace="footer::html" ></div>
+</body>
+<script type="text/javascript" src="/js/login.js"></script>
+</html>

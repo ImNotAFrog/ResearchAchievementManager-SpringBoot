@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.ThesisMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.Thesis">
+		<id column="t_id" property="tId" jdbcType="BIGINT" />
+		<result column="t_name" property="tName"
+			jdbcType="VARCHAR" />
+		<result column="journal_name" property="journalName"
+			jdbcType="VARCHAR" />
+		<result column="journal_level" property="journalLevel"
+			jdbcType="VARCHAR" />
+		<result column="journal_id" property="journalId"
+			jdbcType="VARCHAR" />
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />
+		<result column="publish_date"
+			property="publishDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="upload_date"
+			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+			<result column="score" property="score"
+			jdbcType="FLOAT" />
+			<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />			
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		t_id,t_name,journal_name,journal_level,journal_id,attachment,uploader,publish_date,upload_date,score,max_score,department,sub_department
+	</sql>
+	<select id="getUserProfileByAccount" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from user_profile
+		where account = #{account}
+	</select>
+	<insert id="createThesis"
+		parameterType="edu.swjtuhc.model.Thesis">
+		INSERT INTO 
+		thesis
+		(<include refid="Base_Column_List"></include>)
+		values
+		(#{tId},#{tName},#{journalName},#{journalLevel},#{journalId},#{attachment},#{uploader},#{publishDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+	</insert>
+	<update id="updateUserProfile" parameterType="edu.swjtuhc.model.UserProfile">
+		UPDATE
+		user_profile
+		SET
+		account = #{account},name = #{name},position=#{position},title=#{title},position_level=#{positionLevel},department=#{department},sub_department=#{subDepartment}
+		WHERE
+		account = #{account}
+	</update>
+
+</mapper> 

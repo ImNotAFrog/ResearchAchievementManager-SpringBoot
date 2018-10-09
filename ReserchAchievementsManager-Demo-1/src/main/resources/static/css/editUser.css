@@ -1,0 +1,52 @@
+.userinfo-edit{
+	position: relative;
+	/*background-color: #fafafa;*/
+	background-color: rgb(254,254,242);
+    border: 1px solid #f2f2f2;
+    min-height: 118px;
+    padding: 55px 0px 60px 40px;
+}
+
+.mr_left_bg {
+    position: absolute;
+    background: url(../img/left.png) no-repeat;
+    width: 12px;
+    height: 34px;
+    top: 76px;
+    left: -1px;
+    background-position: 0 0;
+}
+
+.mr_right_bg {
+    position: absolute;
+    background: url(../img/right.png) no-repeat;
+    width: 12px;
+    height: 34px;
+    top: 76px;
+    right: -2px;
+    background-position: -40px 0;
+}
+
+.save{
+	padding: 12px 18px;
+    font-size: 16px;
+    vertical-align: middle;
+
+    border:0;
+    background-color: #00b38a;
+    margin-right: 5px;
+    color: #fff;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+.cancel{
+	padding: 12px 18px;
+    font-size: 16px;
+    vertical-align: middle;
+    color: #00b88d;
+}
+.submit{
+	padding-top: 35px;
+	padding-left: 95px;
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>科研成果管理系统</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="/css/editUser.css">
+
+</head>
+<body>
+	<div th:replace="header::html"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3 userinfo-edit">
+				<label>用户基本信息编辑表：</label> <i class="mr_left_bg"></i> <i
+					class="mr_right_bg"></i>
+				<form action="<%=projectPath%>/services/UserServlet"
+					class="form-horizontal" onsumbmit="return checkform()">
+					<div class="form-group">
+						<label for="account" class="col-md-2 control-label">用户:</label>
+						<div class="col-md-6">
+							<input class="form-control" id="account" name="account"
+								readonly="readonly" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="name" class="col-md-2 control-label">姓名:</label>
+						<div class="col-md-6">
+							<input id="name" name="name" class="form-control" type="text"
+								autocomplete="off" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="position" class="col-md-2 control-label">职务:</label>
+						<div class="col-md-6">
+							<select name="position" id="position" class="form-control">
+								<option value="校长">校长</option>
+								<option value="政治委员">政治委员</option>
+								<option value="副校长">副校长</option>
+								<option value="副政治委员">副政治委员</option>
+								<option value="部长">部长</option>
+								<option value="副部长">副部长</option>
+								<option value="处长">处长</option>
+								<option value="副处长">副处长</option>
+								<option value="主任">主任</option>
+								<option value="副主任">副主任</option>
+								<option value="教员">教员</option>
+								<option value="大队长">大队长</option>
+								<option value="副大队长">副大队长</option>
+								<option value="教导员">教导员</option>
+								<option value="副教导员">副教导员</option>
+								<option value="中队长">中队长</option>
+								<option value="副中队长">副中队长</option>
+								<option value="参谋">参谋</option>
+								<option value="干事">干事</option>
+								<option value="排长">排长</option>
+								<option value="助理员">助理员</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="title" class="col-md-2 control-label">职称:</label>
+						<div class="col-md-6">
+							<select name="title" id="title" class="form-control">
+								<option value="教授">教授</option>
+								<option value="副教授">副教授</option>
+								<option value="讲师">讲师</option>
+								<option value="助教">助教</option>
+								<option value="技术员">技术员</option>
+								<option value="助理工程师">助理工程师</option>
+								<option value="工程师">工程师</option>
+								<option value="高级工程师">高级工程师</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="title" class="col-md-2 control-label">职级:</label>
+						<div class="col-md-6">
+							<select name="positionLevel" id="positionLevel" class='form-control'>
+								<option value='军长'>军长</option>
+								<option value='副军长'>副军长</option>
+								<option value='师长'>师长</option>
+								<option value='副师长'>副师长</option>
+								<option value='团长'>团长</option>
+								<option value='副团长'>副团长</option>
+								<option value='营长'>营长</option>
+								<option value='副营长'>副营长</option>
+								<option value='连长'>连长</option>
+								<option value='副连长'>副连长</option>
+								<option value='排长'>排长</option>
+								<option value='学员'>学员</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department" class="col-md-2 control-label">所属部门:</label>
+						<div class="col-md-6">
+							<select name="department" id="department" class="form-control"
+								onChange="refreshSubDepartmentSelect()">
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="subDepartment" class="col-md-2 control-label">所属科室:</label>
+						<div class="col-md-6">
+							<select name="subDepartment" id="subDepartment"
+								class="form-control">
+							</select>
+						</div>
+					</div>
+
+
+					<!-- <button type="submit" class="btn btn-primary submit">Submit</button> -->
+					<div class="submit">
+						<input type="button" onclick='save()' name="Submit" class="save" value="保存">
+						<a href="javascript:Header.home()" class="cancel">取消</a>
+					</div>
+					<span id="error" style="color: red"></span>
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/js/editUser.js"></script>
+</html>

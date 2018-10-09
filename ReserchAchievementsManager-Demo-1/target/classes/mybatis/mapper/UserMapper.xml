@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.SysUser">
+		<id column="u_id" property="id" jdbcType="BIGINT" />
+		<result column="account" property="account"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="last_password_reset_date"
+			property="lastPasswordResetDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="roles" property="roles" typeHandler="edu.swjtuhc.handler.StringListHandler" javaType="java.util.List"
+			jdbcType="VARCHAR" />	
+	</resultMap>
+	<sql id="Base_Column_List">
+		u_id,account,password,roles,last_password_reset_date
+	</sql>
+	<select id="getUserByAccount" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from sys_user 
+		where account = #{account}
+	</select>
+
+	<select id="getUserList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from sys_user
+	</select>
+	<insert id="insertUser"
+		parameterType="edu.swjtuhc.model.SysUser">
+		INSERT INTO 
+		sys_user
+		(u_id,account,password,last_password_reset_date,roles)
+		values
+		(#{id},#{account},#{password},#{lastPasswordResetDate},#{roles,jdbcType=VARCHAR,typeHandler=edu.swjtuhc.handler.StringListHandler})
+	</insert>
+		<update id="changePassword" parameterType="java.lang.String">
+		UPDATE
+		sys_user
+		SET
+		password = #{password}
+		WHERE
+		account = #{account}
+	</update>
+
+</mapper> 

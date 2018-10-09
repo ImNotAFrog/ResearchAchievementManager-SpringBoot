@@ -1,0 +1,329 @@
+/*
+* @Author: MaiBenBen
+* @Date:   2018-01-27 23:11:01
+* @Last Modified by:   MaiBenBen
+* @Last Modified time: 2018-02-06 17:27:03
+*/
+/* 婢舵挳鍎� */
+.header{
+	width: 100%;
+	height: 124px;
+	background: url("../img/index/head.png");
+	position: relative;
+}
+.header .wrap{
+	width:80%;
+	margin:auto;
+}
+.header .img-contain{
+	display: inline-block;
+	margin-top: 15px;
+	width: 683px;
+}
+/*閺堫亞娅ヨぐ鏇熸*/
+.header .unlogin{
+	display: block;
+	float: right;
+	margin-top: 60px;
+}
+.header .unlogin .login{
+	padding: 0 16px;
+//	border-right: 1px solid #fff;
+	color:#fff;	
+}
+.header .unlogin .register{
+	padding: 0 16px;
+	color:#fff;
+} 
+.header .unlogin .login:hover,.header .unlogin .register:hover{
+	color: #000;
+	font-weight: bold;
+}
+/*閻ц缍嶉崥*/
+.header .logined{
+	float: right;
+	margin-top: 30px;
+}
+.header .portrait-wrap{
+	width: 65px;
+	height: 65px;
+	border: 1px solid #fff;
+	border-radius: 50px;
+	float: right;
+}
+.header .portrait-wrap .portrait{
+	width: 100%;
+	height: 100%;
+}
+.header .user-center{
+	display: none;
+	top: 124px;
+	z-index: 5;
+	width: 200px;
+	height: 250px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	box-shadow: 0px 0px 20px #9f9f9f;
+	background: #ae4944;
+	position: fixed;
+}
+.header .user-center .user-header{
+	height: 100px;
+	line-height: 100px;
+	overflow: hidden;
+}
+.header .user-center .user-header img{
+	margin-top: 8px;
+	margin-left: 6px;
+	width: 84px;
+	height: 84px;
+}
+.header .user-center .user-header span{
+	float: right;
+	margin-right: 50px;
+}
+.header .user-center .user-body a{
+	display: block;
+	margin: 12px 0px;
+	padding-left: 60px; 
+}
+.header .user-center .user-body a:nth-child(1){
+	background: url("../img/login/user.png") no-repeat 20px 0px;
+}
+.header .user-center .user-body a:nth-child(2){
+	background: url("../img/login/study.png") no-repeat 20px 2px;
+}
+.header .user-center .user-body a:nth-child(3){
+	background: url("../img/login/update.png") no-repeat 20px 2px;
+}
+.header .user-center .user-body button{
+	width: 80px;
+	height: 30px;
+	padding: 0px;
+	border: 0px;
+	border-radius: 6px;
+	background: #0794d5;
+	font-size: 16px;
+	color: #fff;
+	float: right;
+	margin-right: 20px;
+	cursor: pointer;
+}
+/* 鐎佃壈鍩� */
+nav{
+	width: 100%;
+	height: 50px;
+	background-color: #fff;
+	z-index: 2;
+}
+nav .wrap{
+	height: 43px; 
+}
+nav .nav-wrap{
+	display: inline-block;
+	width: 480px;	
+	overflow: hidden;
+}
+nav .wrap .nav-wrap li{
+	float: left;
+	width: 118px;
+	text-align: center;
+	font-size: 16px;
+	color: #000;
+	font-weight: bold;
+}
+nav .wrap .nav-wrap li a{
+	display: inline-block;
+	width: 118px;
+	padding: 10px 0;
+}
+nav .wrap .nav-wrap a:hover{
+	color: #ae4944;
+	border-bottom: 2px solid #ae4944;
+}
+.live{
+	color: #ae4944;
+	border-bottom: 2px solid #ae4944;
+}
+nav .wrap .research-wrap{
+	display: inline-block;
+	width: 594px;
+	height: 43px;
+	overflow: hidden;
+}
+nav .wrap .research-wrap .research{
+	display: inline-block;
+	width: 252px;
+	height: 30px;
+	border: 1px solid #000;
+	border-radius: 25px;
+	text-align: right;
+	margin-left: 340px;
+	margin-top: 5px;
+	padding: 2px 0;
+}
+nav .wrap .research-wrap .research input{
+	width: 180px;
+	height: 25px;
+	padding: 0;
+	border: 0;
+	outline: none;
+}
+nav .wrap .research-wrap .research img{
+	margin-right: 20px;
+}
+/* 鏉烆喗鎸遍崶锟�*/
+#index{
+	display: block;
+	z-index: 2;
+}
+.slider{
+	width: 100%;
+	height: 600px;
+	position: relative;
+	
+}
+.slider #show{
+	width: 100%;
+	height: 100%;
+}
+.slider .select-slider{
+	width: 400px;
+	position: absolute;
+	bottom:5%;
+	left: 46%; 
+	text-align: center;
+	overflow: hidden;
+}
+.slider .select-slider li{
+	float: left;
+	padding: 0 6px;
+}
+#prev{
+	position: absolute;
+	top: 50%;
+	left: 0;
+	cursor: pointer;
+}
+#next{
+	position: absolute;
+	top: 50%;
+	right: 0;
+	cursor: pointer;
+}
+/* 閸愬懎顔愰柈銊ュ瀻 */
+.news{
+	overflow: hidden;
+}
+.news .news-header{
+	width: 1075px;
+	height: 36px;
+	font-size: 18px;
+	border-left: 5px solid #ae4944;
+	margin-top: 20px;
+}
+.news .news-header .news-header-wrap{
+	margin-left: 23px;
+	padding: 6px 0;
+	border-bottom: 1px solid #ae4944;
+	font-weight: bold;
+	overflow: hidden;
+}
+.news .news-header .news-header-wrap a{
+	float: right;
+}
+.news .news-left-side{
+	width: 660px;
+	float: left;
+}
+.news .news-left-side .show-block{
+	overflow: hidden;
+}
+.news .news-left-side li{
+	float: left;
+	width: 160px;
+	padding: 5px 28px;
+	margin-top: 5px;
+}
+.news .news-left-side li p{
+	font-size: 16px;
+}
+.news .news-right-side{
+	width: 80%;
+	padding-left: 10px;
+	float:left;
+}
+.news .news-right-side li{
+	height: 18px;
+	padding: 16px 0;
+	border-bottom: 1px dashed #c9c9c9;
+}
+.news .news-right-side li span{
+	margin-left: 10px;
+}
+.announcement{
+	overflow: hidden;
+}
+.announcement .announcement-header{
+	width: 1075px;
+	height: 36px;
+	font-size: 18px;
+	border-left: 5px solid #ae4944;
+	margin-top: 40px;
+}
+.announcement .announcement-header .announcement-header-wrap{
+	margin-left: 23px;
+	padding: 6px 0;
+	border-bottom: 1px solid #ae4944;
+	font-weight: bold;
+	overflow: hidden;
+}
+.announcement .announcement-header .announcement-header-wrap a{
+	float: right;
+}
+.announcement .announcement-left-side{
+	float: left;
+	width: 536px;
+	margin-top: 10px;
+	margin-bottom: 300px;
+}
+.announcement .announcement-left-side li{
+	padding: 5px 40px;
+	border-bottom: 1px dashed #c8c8c8;
+}
+.announcement .announcement-right-side{
+	float: left;
+	width: 536px;
+	margin-top: 10px;
+}
+.announcement .announcement-right-side li{
+	padding: 5px 40px;
+	border-bottom: 1px dashed #c8c8c8;
+}
+.news .news-header a:hover,.news li a:hover,.announcement .announcement-header a:hover,.announcement li a:hover{
+	color: #ae4944;
+}
+/* 閻ц缍� */
+
+/*閺備即妞堢挧鍕唵妞�*/
+#newspage{
+	display: none;
+}
+.news-content-wrap{
+	margin-top: 20px;
+}
+.news-content-wrap .newsInfo{
+	width: 250px;
+	height: 543px;
+	border-radius: 12px;
+}
+.news-content-wrap .newsInfo h4{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	background: #b2544e;
+}
+
+/* 鎼存洟鍎� */
