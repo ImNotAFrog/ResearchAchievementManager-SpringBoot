@@ -136,10 +136,13 @@
 		 var demoListView = $('#fileList')
   ,uploadListIns = upload.render({
     elem: '#select'
-    ,url: 'http://www.demo.com/admin/file/upFile'
+    ,url: 'http://www.demo.com/admin/file/upFile'    
     ,accept: 'file'
     ,multiple: true
     ,auto: false
+		,data:{
+				id:'test'
+		}  //上传的额外数据
     ,bindAction: '#stratAction'
     ,choose: function(obj){   
       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
