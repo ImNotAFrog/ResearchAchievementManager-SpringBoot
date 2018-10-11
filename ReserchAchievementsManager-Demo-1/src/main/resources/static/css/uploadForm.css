@@ -1,5 +1,5 @@
 
-    /*椤圭洰琛ㄥ崟寮�*/
+    /*妞ゅ湱娲扮悰銊ュ礋瀵拷顬�*/
 
     .upload{
         margin-top: 80px;
@@ -139,15 +139,20 @@
         box-sizing: border-box;
    } 
 
-    /*椤圭洰琛ㄥ崟缁撴潫*/
+    /*妞ゅ湱娲扮悰銊ュ礋缂佹挻娼�*/
     .reset{
         margin-left: 18px;
     }
+    
+     .tableImg div{
+        width: 40px;
+        height: 40px;
+   }
 
 
-    /*鏁欐潗绫诲紑濮�/
+    /*閺佹瑦娼楃猾璇茬磻婵拷/
     .moco-control-input textarea{
         height: 70px;
         font-family: 'Microsoft YaHei';
     }
-    /*鏁欐潗绫荤粨鏉�/
+    /*閺佹瑦娼楃猾鑽ょ波閺夛拷/
