@@ -143,7 +143,7 @@
 		,data:{
 				id:'test'
 		}  //上传的额外数据
-	,headers:{Authorization:'Bearer '+token}
+	//,headers:{Authorization:'Bearer '+token}
     ,bindAction: '#stratAction'
     ,choose: function(obj){   
       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
@@ -163,7 +163,7 @@
           ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
           ,'<td>等待上传</td>'
           ,'<td>'
-            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide" type="button">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs demo-reload" type="button">开始上传</button>'
             ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete" type="button">删除</button>'
           ,'</td>'
         ,'</tr>'].join(''));
@@ -185,6 +185,10 @@
     }
     ,done: function(res, index, upload){
       if(res.code == 0){ //上传成功
+				var tr = demoListView.find('tr#upload-'+ index)
+      ,tds = tr.children();
+				var tr = demoListView.find('tr#upload-'+ index)
+				tds.eq(4).find('.demo-reload').addClass('layui-hide'); //隐藏单个上传
         var tr = demoListView.find('tr#upload-'+ index)
         ,tds = tr.children();
         tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
@@ -197,7 +201,7 @@
       var tr = demoListView.find('tr#upload-'+ index)
       ,tds = tr.children();
       tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
-      tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
+			tds.eq(4).find('.demo-reload').val('重新上传'); //显示重传
     }
   });
 
