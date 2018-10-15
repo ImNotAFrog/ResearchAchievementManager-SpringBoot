@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
 <link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
 <link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 
 </head>
 <body>
@@ -75,60 +76,31 @@
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>
-						<div class="form-item" id='fileList'>
+						<div class="form-item" id=''>
 							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
-							<iframe id="id_iframe" name="nm_iframe" style="display: none;"></iframe>
-							<div class="row fileupload-buttonbar col-md-8">
-								<div class="span7">
-									<!-- The fileinput-button span is used to style the file input field as button -->
-									<span class="btn btn-success fileinput-button">
-										<i class="icon-plus icon-white"></i>
-										<span>添加附件...</span>
-										<input type="file" name="files[]" multiple>
-									</span>
-									<button type="submit" class="btn btn-primary start">
-										<i class="icon-upload icon-white" onclick="return uploadFile()"></i>
-										<span>上传所有</span>
-									</button>
-									<button type="reset" class="btn btn-warning cancel">
-										<i class="icon-ban-circle icon-white"></i>
-										<span>取消上传</span>
-									</button>
+							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
+								<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
+							  <div class="layui-upload">
+								<div class="layui-upload-list">
+								  <table class="layui-table">
+									<thead>
+										<tr><th>缩略图</th>
+										<th>名字</th>
+									  <th>大小</th>
+									  <th>状态</th>
+									  <th>操作</th>
+									</tr></thead>
+									<tbody id="fileList"></tbody>
+								  </table>
 								</div>
-								<!-- The global progress information -->
-								<div class="span5 fileupload-progress fade">
-									<!-- The global progress bar -->
-									<div class="progress progress-success progress-striped active"
-										role="progressbar" aria-valuemin="0" aria-valuemax="100">
-										<div class="bar" style="width: 0%;"></div>
-									</div>
-									<!-- The extended global progress information -->
-									<div class="progress-extended">&nbsp;</div>
-								</div>
-							</div>
-							<!-- The loading indicator is shown during file processing -->
-							<div class="fileupload-loading col-md-10 col-md-offset-1"></div>
-							<br>
-							<!-- The table listing the files available for upload/download -->
-							<table id="attachUrls" role="presentation"
-								class="table table-striped" style="width: 80%">
-								<thead>
-									<tr>
-										<td></td>
-										<td><label>附件名</label></td>
-										<td><label>文件大小</label></td>
-										<td></td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody id="fileBody" class="files"></tbody>
-							</table>
+							  </div> 
+						
 						</div>
 
+						
 						<div class="col-md-offset-2">
 							<button id="btnSubmit" type="submit"
-								class="btn btn-primary submit" style="opacity: 0.75"
-								onclick="return confirmSubmit()">提交</button>
+								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
 							<button class="btn btn-default btn-warning" type="reset">重置</button>
 							<button type="button" class="btn btn-default"
 								onclick="Header.home()">返回</button>
@@ -138,73 +110,108 @@
 			</div>
 		</div>
 	</div>
+
 	<div th:replace="footer::html"></div>
 </body>
-<script type="text/javascript" src="/js/fileupload/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="/js/fileupload/jquery.fileupload.js"></script>
-<script type="text/javascript" src="/js/fileupload/jquery.fileupload-ui.js"></script>
-<script type="text/javascript" src="/js/fileupload/jquery.fileupload-fp.js"></script>
-<script type="text/javascript" src="/js/fileupload/jquery.iframe-transport.js"></script>
-<script type="text/javascript" src="/js/fileupload/tmpl.min.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
 
-<script type="text/javascript" src="/js/fileupload/locale.js"></script>
-<script type="text/javascript" src="/js/thesisUpload.js"></script>
-<script id="template-upload" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-	<tr class="template-upload fade">
-	<td class="preview"><span class="fade"></span></td>
-	<td class="name"><span>{%=file.name%}</span></td>
-	<td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-	{% if (file.error) { %}
-		<td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
-	{% } else if (o.files.valid && !i) { %}
-		<td>
-			<div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
-		</td>
-		<td class="start">{% if (!o.options.autoUpload) { %}
-			<button class="btn btn-primary" onclick="return uploadFile()">
-				<i class="icon-upload icon-white"></i>
-				<span>开始上传</span>
-			</button>
-		{% } %}</td>
-	{% } else { %}
-	{% } %}
-	<td class="cancel">
-	{% if (!i) { %}
-		<button class="btn btn-warning">
-		<i class="icon-ban-circle icon-white"></i>
-		<span>取消</span>
-		</button>
-	{% } %}</td>
-	</tr>
-{% } %}
-</script>
-<!-- The template to display files available for download -->
-<script id="template-download" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
-<tr class="template-download fade">
-	{% if (file.error) { %}
-	<td></td>
-	<td class="name"><span>{%=file.name%}</span></td>
-	<td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-	<td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
-	{% } else { %}
-	<td class="preview">{% if (file.thumbnail_url) { %}
-		<a href="{%=file.url%}" title="{%=file.name%}"  onclick="window.open({%=file.url%});" target="_blank"><img src="{%=file.thumbnail_url%}"></a>
-		{% } %}</td>
-	<td class="name">
-		<a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}">{%=file.name%}</a>
-	</td>
-	<td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-	<td colspan="2"></td>
-	{% } %}
-	<td class="delete">
-		<button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-			<i class="icon-trash icon-white"></i>
-			<span>删除附件</span>
-		</button>
-	</td>
-</tr>
-{% } %}
+<script>
+	layui.use(['layer', 'element','laydate','upload'], function(){
+	var layer = layui.layer;
+	var element = layui.element;
+	var laydate = layui.laydate;
+	var upload = layui.upload;
+		
+		 //日期时间选择器
+		 laydate.render({
+			elem: '#publishDate'
+			,type: 'datetime'
+		});
+
+
+
+
+
+		 //多文件列表示例
+		 var demoListView = $('#fileList')
+  ,uploadListIns = upload.render({
+    elem: '#select'
+    ,url: '/attachment/upload'    
+    ,accept: 'file'
+    ,multiple: true
+    ,auto: false
+		,data:{
+				id:'test'
+		}  //上传的额外数据
+	,headers:{Authorization:'Bearer '+token}
+    ,bindAction: '#stratAction'
+    ,choose: function(obj){   
+      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+      //读取本地文件
+      obj.preview(function(index, file, result){
+			//	
+				var showem="";
+			if(file.type=="image/jpeg"){
+				showem='<div class="tableImg"><div style="background:url('+result+');background-repeat:no-repeat;background-size:cover"></div></div>'
+			}else{
+				showem='<i class="layui-icon layui-icon-file" style="font-size: 30px; color: #1E9FFF;"></i>';
+			}
+
+        var tr = $(['<tr id="upload-'+ index +'">'
+          ,'<td>'+ showem +'</td>'
+					,'<td>'+ file.name +'</td>'
+          ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+          ,'<td>等待上传</td>'
+          ,'<td>'
+            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide" type="button">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete" type="button">删除</button>'
+          ,'</td>'
+        ,'</tr>'].join(''));
+        
+        //单个重传
+        tr.find('.demo-reload').on('click', function(){
+          obj.upload(index, file);
+        });
+        
+        //删除
+        tr.find('.demo-delete').on('click', function(){
+          delete files[index]; //删除对应的文件
+          tr.remove();
+          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+        });
+        
+        demoListView.append(tr);
+      });
+    }
+    ,done: function(res, index, upload){
+      if(res.code == 0){ //上传成功
+        var tr = demoListView.find('tr#upload-'+ index)
+        ,tds = tr.children();
+        tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
+        tds.eq(4).html('<a href="'+res.path+'"target="_blank">查看</a>'); //清空操作
+        return delete this.files[index]; //删除文件队列已经上传成功的文件
+      }
+      this.error(index, upload);
+    }
+    ,error: function(index, upload){
+      var tr = demoListView.find('tr#upload-'+ index)
+      ,tds = tr.children();
+      tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
+      tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
+    }
+  });
+
+
+	$('#fileupload').submit(function (e) { 
+		var data=	$('#fileupload').serialize();
+		console.log(data)
+		return false;
+		
+	});
+
+
+
+
+	});
 </script>
 </html>

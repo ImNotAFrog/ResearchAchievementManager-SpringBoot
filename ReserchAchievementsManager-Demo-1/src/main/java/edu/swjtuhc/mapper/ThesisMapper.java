@@ -6,5 +6,8 @@ import edu.swjtuhc.model.Thesis;
 
 @Mapper
 public interface ThesisMapper {
-	Integer createThesis(Thesis thesis);
+	Long createThesis(Thesis thesis);
+	Thesis getThesisById(Long tId);
+	Integer updateThesis(Thesis thesis);
+	Integer deleteThesisById(Long tId);
 }

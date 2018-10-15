@@ -49,7 +49,12 @@ public class IdWorker {
     private final long workerId;
     // 数据标识id部分
     private final long datacenterId;
+    
+    private static IdWorker idWorker=null;
  
+    static {
+    	IdWorker.getInstance();
+    }
     public IdWorker(){
         this.datacenterId = getDatacenterId(maxDatacenterId);
         this.workerId = getMaxWorkerId(datacenterId, maxWorkerId);
@@ -75,6 +80,12 @@ public class IdWorker {
      *
      * @return
      */
+    public static IdWorker getInstance() {
+    	if(idWorker==null) {
+    		idWorker=new IdWorker();
+    	}
+    	return idWorker;
+    }
     public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
