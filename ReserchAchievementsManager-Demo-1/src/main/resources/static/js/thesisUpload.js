@@ -12,8 +12,8 @@ layui.use(['layer', 'element','laydate','upload'], function(){
 
 //判断文件类型
 		function getIcon(filename) {
-			console.log(filename.substring(filename.lastIndexOf('.') + 1, filename.length));
-			var result = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
+            var result = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
+            result=result.toLowerCase();
 			if (result == "jpg" || result == "png" || result == "gif" || result == "jpg") {
 				result = 'img.png';
 			} else if (result == "pdf") {
@@ -90,9 +90,22 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                     var tr = demoListView.find('tr#upload-' + index)
                         , tds = tr.children();
                     tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
-                    //tds.eq(4).html('<a href="'+res.path+'"target="_blank">下载</a>'); 
-                    tds.eq(4).html('<button type="button" onclick=getFile("' + res.name + '") class="layui-btn layui-btn-xs layui-btn-danger">查看</button>');
+                    console.log(res.name)
+                    tds.eq(4).html('<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-danger filename">下载</button>');
+                   
+                    //重新声明函数 因为doc节点发生变化
+                    (function($) {
+                        $(".filename").click(function (e) { 
+                           var filename=$(this).attr('filename');
+                           getFile(filename);
+                        });
+                    })(jQuery);
+                   
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    
+
+
+
                 }
                 this.error(index, upload);
             }
@@ -111,7 +124,8 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         /**下载文件
          * filename 文件名字
          *  */ 
-    window.getFile = function (filename) {
+        
+     function getFile(filename) {
         var url = "/attachment/get?filename=" + filename;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);        // 也可以使用POST方式，根据接口
