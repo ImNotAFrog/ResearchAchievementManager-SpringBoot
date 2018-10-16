@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import edu.swjtuhc.mapper.ThesisMapper;
 import edu.swjtuhc.model.Thesis;
+import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.utils.IdWorker;
 
@@ -34,8 +35,11 @@ public class ThesisServiceImpl implements ThesisService{
 	}
 
 	@Override
-	public Integer updateThesis(Thesis thesis) {
+	public Integer updateThesis(Thesis thesis,UserProfile user) {
 		// TODO Auto-generated method stub
+		thesis.setDepartment(user.getDepartment());
+		thesis.setSubDepartment(user.getSubDepartment());
+		thesis.setUploader(user.getAccount());
 		thesis.setUploadDate(new Date());
 		return thesisMapper.updateThesis(thesis);
 	}

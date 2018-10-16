@@ -39,7 +39,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import edu.swjtuhc.model.Thesis;
+import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ThesisService;
+import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.FileUploadUtil;
 import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONArray;
@@ -59,6 +61,9 @@ public class AttachmentController {
 
 	@Autowired
 	private ThesisService thesisService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -75,6 +80,12 @@ public class AttachmentController {
 		MultipartFile uploadFile = params.getFile("file");
 		String id = params.getParameter("id");
 		try {
+			UserProfile user = userService.getUserProfileByAccount(account);
+			if(user==null) {
+				result.put("state", "fail");
+				result.put("msg", "用户权限错误");
+				return result.toString();
+			}
 			Long attachmentId = Long.parseLong(id);
 			String type = params.getParameter("type");
 			switch (type) {
@@ -83,8 +94,7 @@ public class AttachmentController {
 				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
 				if(result.getString("state").equals("success")) {
 					t.setAttachment(result.getString("path"));
-					t.setUploadDate(new Date());
-					thesisService.updateThesis(t);
+					thesisService.updateThesis(t,user);
 				}
 				break;
 			case "textbook":

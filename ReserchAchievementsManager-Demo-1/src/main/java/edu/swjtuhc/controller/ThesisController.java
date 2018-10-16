@@ -1,5 +1,7 @@
 package edu.swjtuhc.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.swjtuhc.model.SysUser;
 import edu.swjtuhc.model.Thesis;
+import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ThesisService;
+import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONObject;
 
@@ -29,6 +33,9 @@ public class ThesisController {
 
 	@Autowired
 	private ThesisService thesisService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -55,10 +62,12 @@ public class ThesisController {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = thesis.getUploader();
 		JSONObject result = new JSONObject();
-		if (token != null && account != null) {
+		UserProfile user = userService.getUserProfileByAccount(account);
+		if (token != null && account != null&&user!=null) {
 			// System.err.println(jwtTokenUtil.getUsernameFromToken(token));
 			if (jwtTokenUtil.getUsernameFromToken(token).equals(account)) {
-				Integer state = thesisService.updateThesis(thesis);
+				
+				Integer state = thesisService.updateThesis(thesis,user);
 				if(state==1) {
 					result.put("state", "success");
 					result.put("msg", "更新成功");
