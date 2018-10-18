@@ -84,7 +84,7 @@
 								<div class="layui-upload-list">
 								  <table class="layui-table">
 									<thead>
-										<tr><th>缩略图</th>
+										<tr><th>类型</th>
 										<th>名字</th>
 									  <th>大小</th>
 									  <th>状态</th>
@@ -114,104 +114,5 @@
 	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
-
-<script>
-	layui.use(['layer', 'element','laydate','upload'], function(){
-	var layer = layui.layer;
-	var element = layui.element;
-	var laydate = layui.laydate;
-	var upload = layui.upload;
-		
-		 //日期时间选择器
-		 laydate.render({
-			elem: '#publishDate'
-			,type: 'datetime'
-		});
-
-
-
-
-
-		 //多文件列表示例
-		 var demoListView = $('#fileList')
-  ,uploadListIns = upload.render({
-    elem: '#select'
-    ,url: '/attachment/upload'    
-    ,accept: 'file'
-    ,multiple: true
-    ,auto: false
-		,data:{
-				id:'test'
-		}  //上传的额外数据
-	,headers:{Authorization:'Bearer '+token}
-    ,bindAction: '#stratAction'
-    ,choose: function(obj){   
-      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-      //读取本地文件
-      obj.preview(function(index, file, result){
-			//	
-				var showem="";
-			if(file.type=="image/jpeg"){
-				showem='<div class="tableImg"><div style="background:url('+result+');background-repeat:no-repeat;background-size:cover"></div></div>'
-			}else{
-				showem='<i class="layui-icon layui-icon-file" style="font-size: 30px; color: #1E9FFF;"></i>';
-			}
-
-        var tr = $(['<tr id="upload-'+ index +'">'
-          ,'<td>'+ showem +'</td>'
-					,'<td>'+ file.name +'</td>'
-          ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-          ,'<td>等待上传</td>'
-          ,'<td>'
-            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide" type="button">重传</button>'
-            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete" type="button">删除</button>'
-          ,'</td>'
-        ,'</tr>'].join(''));
-        
-        //单个重传
-        tr.find('.demo-reload').on('click', function(){
-          obj.upload(index, file);
-        });
-        
-        //删除
-        tr.find('.demo-delete').on('click', function(){
-          delete files[index]; //删除对应的文件
-          tr.remove();
-          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-        });
-        
-        demoListView.append(tr);
-      });
-    }
-    ,done: function(res, index, upload){
-      if(res.code == 0){ //上传成功
-        var tr = demoListView.find('tr#upload-'+ index)
-        ,tds = tr.children();
-        tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
-        tds.eq(4).html('<a href="'+res.path+'"target="_blank">查看</a>'); //清空操作
-        return delete this.files[index]; //删除文件队列已经上传成功的文件
-      }
-      this.error(index, upload);
-    }
-    ,error: function(index, upload){
-      var tr = demoListView.find('tr#upload-'+ index)
-      ,tds = tr.children();
-      tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
-      tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
-    }
-  });
-
-
-	$('#fileupload').submit(function (e) { 
-		var data=	$('#fileupload').serialize();
-		console.log(data)
-		return false;
-		
-	});
-
-
-
-
-	});
-</script>
+<script src="/js/thesisUpload.js"></script>
 </html>

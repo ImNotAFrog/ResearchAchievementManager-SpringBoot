@@ -1,9 +1,6 @@
 package edu.swjtuhc.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,5 +43,30 @@ public class ViewController {
 	@RequestMapping(value="/thesis/upload.do",method=RequestMethod.GET)
 	public String thesisUpload() {
 		return "/thesis/upload";
+	}
+	
+	@RequestMapping(value="/patent/upload.do",method=RequestMethod.GET)
+	public String patentUpload() {
+		return "/patent/upload";
+	}
+	
+	@RequestMapping(value="/textbook/upload.do",method=RequestMethod.GET)
+	public String textbookUpload() {
+		return "/textbook/upload";
+	}
+	
+	@RequestMapping(value="/project/upload.do",method=RequestMethod.GET)
+	public String projectUpload() {
+		return "/project/upload";
+	}
+	
+	@RequestMapping(value="/reformProject/upload.do",method=RequestMethod.GET)
+	public String reformProjectUpload() {
+		return "/reformProject/upload";
+	}
+	
+	@RequestMapping(value="/law/upload.do",method=RequestMethod.GET)
+	public String lawUpload() {
+		return "/law/upload";
 	}
 }

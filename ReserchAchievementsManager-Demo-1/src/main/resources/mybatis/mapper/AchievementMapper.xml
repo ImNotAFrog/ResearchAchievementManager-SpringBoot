@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.AchievementMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.Achievement">
+		<id column="a_id" property="aId" jdbcType="BIGINT" />
+		<result column="name" property="Name" jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="upload_date" property="uploadDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		a_id,name,type,uploader,state,upload_date,department,sub_department
+	</sql>
+	<insert id="createAchievement"
+		parameterType="edu.swjtuhc.model.Achievement">
+		INSERT INTO
+		achievement
+		(
+		<include refid="Base_Column_List"></include>
+		)
+		values
+		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
+	</insert>
+	<select id="getAchievementListByAccount" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from achievement
+		where uploader = #{account}
+	</select>
+	
+	<select id="getAchievementListBySubDepartment" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from achievement
+		where sub_department = #{subDepartment}
+	</select>
+	
+	<select id="getAchievementList"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from achievement
+	</select>
+	
+	<select id="getAchievementById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from achievement
+		where a_id = #{aId}
+	</select>
+
+	<update id="updateAchievement"
+		parameterType="edu.swjtuhc.model.Achievement">
+		UPDATE
+		achievement
+		SET
+		name = #{name},type= #{type},uploader= #{uploader},state= #{state},upload_date= #{uploadDate},department= #{department},sub_department= #{subDepartment}
+		WHERE
+		a_id = #{aId}
+	</update>
+
+	<delete id="deleteAchievement" parameterType="java.lang.Long">
+		DELETE FROM
+		achievement
+		WHERE
+		a_id=#{aId}
+	</delete>
+
+</mapper> 

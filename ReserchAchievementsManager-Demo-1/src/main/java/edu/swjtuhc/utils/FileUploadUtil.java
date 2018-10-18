@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +46,7 @@ public class FileUploadUtil {
     	String fileName = null;
 		if (uploadFile != null) {
 			try {
-				fileName = uploadFile.getOriginalFilename();
+				fileName = new Date().getTime()+"-" + uploadFile.getOriginalFilename();
 
 				String dirPath = attachmentPath + account + "/";
 				String filePath = attachmentPath + account + "/" + fileName;

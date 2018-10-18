@@ -1,20 +1,16 @@
 package edu.swjtuhc.controller;
 
-import java.util.Date;
-
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.swjtuhc.model.SysUser;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ThesisService;
@@ -40,16 +36,31 @@ public class ThesisController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
-	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
+	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String createThesis(HttpServletRequest request) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
 		if (token != null && account != null) {
-			Long tId = thesisService.createThesis(account);
-			result.put("state", "success");
-			result.put("tId", tId);
+			
+			Long tId = -1L;
+			try {
+				tId = thesisService.createThesis(account);
+				if(tId!=0) {
+					result.put("state", "success");
+					result.put("tId", tId);
+				}else {
+					result.put("state", "fail");
+					result.put("msg", "论文状态出错");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				result.put("state", "fail");
+				result.put("msg", "论文状态出错");
+			}
+			
 		} else {			
 			result.put("state","fail");
 			result.put("msg","用户错误");
@@ -66,8 +77,14 @@ public class ThesisController {
 		if (token != null && account != null&&user!=null) {
 			// System.err.println(jwtTokenUtil.getUsernameFromToken(token));
 			if (jwtTokenUtil.getUsernameFromToken(token).equals(account)) {
-				
-				Integer state = thesisService.updateThesis(thesis,user);
+
+				Integer state = null;
+				try {
+					state = thesisService.updateThesis(thesis,user);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(state==1) {
 					result.put("state", "success");
 					result.put("msg", "更新成功");
@@ -94,7 +111,13 @@ public class ThesisController {
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
 		if(t!=null&&t.getUploader().equals(account)) {
-			Integer i = thesisService.deleteThesis(t.gettId());
+			Integer i=0;
+			try {
+				i = thesisService.deleteThesis(t.gettId());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (i==1) {
 				result.put("state", "success");
 				result.put("msg", "删除成功");
@@ -106,7 +129,67 @@ public class ThesisController {
 			result.put("state", "fail");
 			result.put("msg", "论文ID或用户权限错误");
 		}
-		return result.toString();
+		return result.toString();		
+	}
+	
+	@RequestMapping(value="/getById",method=RequestMethod.POST)
+	public String getById(HttpServletRequest request, @RequestBody Thesis thesis) {
+		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
+		Thesis t = thesisService.getThesisById(thesis.gettId());
+		String account = jwtTokenUtil.getUsernameFromToken(token);
+		JSONObject result = new JSONObject();
+		if(t==null) {
+			result.put("state", "fail");
+			result.put("msg", "论文成果不存在");
+		}
+		else if(t.getUploader().equals(account)) {
+			result.put("state", "success");
+			result.put("thesis", JSONObject.fromObject(t).toString());
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "用户权限错误");
+		}
 		
+		return result.toString();
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02')")
+	@RequestMapping(value="/adminGetById",method=RequestMethod.POST)
+	public String adminGetById(HttpServletRequest request, @RequestBody Thesis thesis) {
+		Thesis t = thesisService.getThesisById(thesis.gettId());
+		JSONObject result = new JSONObject();
+		if(t!=null) {
+			result.put("state", "success");
+			result.put("thesis", JSONObject.fromObject(t).toString());
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "论文成果不存在");
+		}
+		
+		return result.toString();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
+	@RequestMapping(value = "/adminModify", method = RequestMethod.POST)
+	public String modifyThesis(HttpServletRequest request, @RequestBody Thesis thesis) {
+		
+		
+		JSONObject result = new JSONObject();
+		Integer i=0;
+		try {
+			i = thesisService.modifyThesis(thesis);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "修改成功");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "修改失败");
+		}
+		
+		return result.toString();
 	}
 }

@@ -17,64 +17,69 @@ var getDepartmentList=function(){
     contentType : "application/json", 
     headers:{Authorization:'Bearer '+token},
     url : "/user/getDepartmentList", 
-    success : function(result){ 
-    		departmentList=result
-	    	getUserProfileByAccount(account,token)
+    success : function(data){ 
+    		var result = JSON.parse(data)
+	    	if(result.state=="success"){
+	    		departmentList=result.dep
+	    		console.log(departmentList)
+		    	getUserProfileByAccount(account,token)
+	    	}
+    		
 	    } 
 	}); 
 }
 function getUserProfileByAccount(account,token){
-	data={
-		'account':account
-	}
 	$.ajax({
 		url:'/user/getUserProfileByAccount',
-		type:'POST',
-		data:JSON.stringify(data),
+		type:'GET',
 		contentType : 'application/json',
 		headers:{Authorization:'Bearer '+token},
-		success:function(result){
-			console.log(result)
-			$('#name').html(result.name)
-			if(result.position!=null){
-				$('#position').html(result.position)
-				$('#positionBlock').show();
-			}else{
-				$('#positionBlock').hide();
-			}
-			if(result.title!=null){
-				$('#title').html(result.title)
-				$('#titleBlock').show();
-			}else{
-				$('#titleBlock').hide();
-			}
-			if(result.positionLevel!=null){
-				$('#positionLevel').html(result.positionLevel)
-				$('#positionLevelBlock').show();
-			}else{
-				$('#positionLevelBlock').hide();
-			}
-			if(result.department!=null){
-				for (var i = 0; i < departmentList.length; i++) {
-					if(departmentList[i].index==result.department){
-						$('#department').html(departmentList[i].name)
-						department=departmentList[i]
-					}
+		success:function(data){
+			var resData=JSON.parse(data)
+			if(resData.state="success"){
+				var result = resData.profile
+				$('#name').html(result.name)
+				if(result.position!=null){
+					$('#position').html(result.position)
+					$('#positionBlock').show();
+				}else{
+					$('#positionBlock').hide();
 				}
-				$('#departmentBlock').show();
-			}else{
-				$('#departmentBlock').hide();
-			}
-			if(result.subDepartment!=null){				
-				for (var i = 0; i < department.subDeps.length; i++) {
-					if(department.subDeps[i].index==result.subDepartment){
-						$('#subDepartment').html(department.subDeps[i].name)
-					}
+				if(result.title!=null){
+					$('#title').html(result.title)
+					$('#titleBlock').show();
+				}else{
+					$('#titleBlock').hide();
 				}
-				$('#subDepartmentBlock').show();
-			}else{
-				$('#subDepartmentBlock').hide();
+				if(result.positionLevel!=null){
+					$('#positionLevel').html(result.positionLevel)
+					$('#positionLevelBlock').show();
+				}else{
+					$('#positionLevelBlock').hide();
+				}
+				if(result.department!=null){
+					for (var i = 0; i < departmentList.length; i++) {
+						if(departmentList[i].index==result.department){
+							$('#department').html(departmentList[i].name)
+							department=departmentList[i]
+						}
+					}
+					$('#departmentBlock').show();
+				}else{
+					$('#departmentBlock').hide();
+				}
+				if(result.subDepartment!=null){				
+					for (var i = 0; i < department.subDeps.length; i++) {
+						if(department.subDeps[i].index==result.subDepartment){
+							$('#subDepartment').html(department.subDeps[i].name)
+						}
+					}
+					$('#subDepartmentBlock').show();
+				}else{
+					$('#subDepartmentBlock').hide();
+				}
 			}
+			
 		},
 		error:function(result){
 			return result
