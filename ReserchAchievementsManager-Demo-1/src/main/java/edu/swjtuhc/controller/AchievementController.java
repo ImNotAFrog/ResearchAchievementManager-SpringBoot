@@ -44,25 +44,38 @@ public class AchievementController {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
-		List<Achievement> list = achievementService.getAchievementListByAccount(account);
-		JSONArray jList = JSONArray.fromObject(list);
-		result.put("state", "success");
-		result.put("achievement", jList);
-		return result.toString();
+		
+		try {
+			List<Achievement> list = achievementService.getAchievementListByAccount(account);
+			JSONArray jList = JSONArray.fromObject(list);
+			result.put("state", "success");
+			result.put("achievement", jList);
+			return result.toString();
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", e);
+			return result.toString();
+		}
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/getAll", method = RequestMethod.GET)
 	public String getAll(HttpServletRequest request){
-		JSONObject result = new JSONObject();
-		List<Achievement> list = achievementService.getAchievementList();
-		JSONArray jList = JSONArray.fromObject(list);
-		result.put("state", "success");
-		result.put("achievement", jList);
-		return result.toString();
+		JSONObject result = new JSONObject();		
+		try {
+			List<Achievement> list = achievementService.getAchievementList();
+			JSONArray jList = JSONArray.fromObject(list);
+			result.put("state", "success");
+			result.put("achievement", jList);
+			return result.toString();
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", e);
+			return result.toString();
+		}
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN_02')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
 	@RequestMapping(value="/getListBySubDepartment", method = RequestMethod.GET)
 	public String getListBySubDepartment(HttpServletRequest request){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
@@ -75,10 +88,17 @@ public class AchievementController {
 			result.put("msg", "用户未设置科室");
 			return result.toString();
 		}
-		List<Achievement> list = achievementService.getAchievementListBySubDepartment(subDepartment);
-		JSONArray jList = JSONArray.fromObject(list);
-		result.put("state", "success");
-		result.put("achievement", jList);
-		return result.toString();
+		try {
+			List<Achievement> list = achievementService.getAchievementListBySubDepartment(subDepartment);
+			JSONArray jList = JSONArray.fromObject(list);
+			result.put("state", "success");
+			result.put("achievement", jList);
+			return result.toString();
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", e);
+			return result.toString();
+		}
+		
 	}
 }
