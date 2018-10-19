@@ -33,26 +33,25 @@ var save=function(){
 	}	
 }
 var getUserProfileByAccount=function(account,token){
-	data={
-			'account':account
-		}
 		$.ajax({
 			url:'/user/getUserProfileByAccount',
-			type:'POST',
-			data:JSON.stringify(data),
+			type:'GET',
 			contentType : 'application/json',
 			headers:{Authorization:'Bearer '+token},
-			success:function(result){
-				console.log(result)
-				$('#account').val(result.account)
-				$('#name').val(result.name)
-				$('#position').val(result.position)
-				$('#title').val(result.title)
-				$('#positionLevel').val(result.positionLevel)
-				$('#department').val(result.department)
-				console.log(result.subDepartment)				
-				refreshSubDepartmentSelect()
-				$('#subDepartment').val(result.subDepartment)
+			success:function(data){
+				var resData=JSON.parse(data)
+				if(resData.state=="success"){
+					var result = resData.profile
+					$('#account').val(result.account)
+					$('#name').val(result.name)
+					$('#position').val(result.position)
+					$('#title').val(result.title)
+					$('#positionLevel').val(result.positionLevel)
+					$('#department').val(result.department)			
+					refreshSubDepartmentSelect()
+					$('#subDepartment').val(result.subDepartment)
+				}
+				
 			},
 			error:function(result){
 			
@@ -66,10 +65,14 @@ var getDepartmentList=function(){
     contentType : "application/json", 
     headers:{Authorization:'Bearer '+token},
     url : "/user/getDepartmentList", 
-    success : function(result){ 
-	    	Department=result
-	    	refreshDepartmentSelect()
-	    	getUserProfileByAccount(account,token)
+    success : function(data){ 
+    		var result = JSON.parse(data)
+	    	if(result.state="success"){
+	    		Department=result.dep
+		    	refreshDepartmentSelect()
+		    	getUserProfileByAccount(account,token)
+	    	}
+	    	
 	    } 
 	}); 
 }

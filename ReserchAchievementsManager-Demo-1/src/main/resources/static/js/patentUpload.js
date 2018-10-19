@@ -7,7 +7,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
     var flist=[];
     //日期时间选择器
     laydate.render({
-    elem: '#publishDate'
+    elem: '#patentDate'
         ,type: 'date'
     });
 
@@ -129,21 +129,6 @@ layui.use(['layer', 'element','laydate','upload'], function(){
          $(a).remove();
     }
 
-
-    ajax_request({
-        url: "/thesis/create", 
-        success: function (res) {
-            res=JSON.parse(res);
-            if (res.state == "success") {
-                uploadListIns.config.data.id =res.tId;
-                tId=res.tId;
-            } else {
-                layer.msg('获取成果ID失败');
-            }
-        }
-    })
-
-    
 	
 
          //获取成果ID

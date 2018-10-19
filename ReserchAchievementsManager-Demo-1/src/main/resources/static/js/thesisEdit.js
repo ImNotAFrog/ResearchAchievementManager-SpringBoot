@@ -131,11 +131,12 @@ layui.use(['layer', 'element','laydate','upload'], function(){
 
 
     ajax_request({
-        url: "/thesis/create", 
+        url: "/thesis/getById", 
         success: function (res) {
             res=JSON.parse(res);
+            console.log(res);
             if (res.state == "success") {
-                uploadListIns.config.data.id =res.tId;
+             
                 tId=res.tId;
             } else {
                 layer.msg('获取成果ID失败');

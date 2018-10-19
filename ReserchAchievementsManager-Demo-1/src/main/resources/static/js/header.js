@@ -225,3 +225,39 @@ jQuery(function($) {
 	};
 	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 });
+
+//通过ID获取元素值
+function getValById(idName){
+	return $('#'+idName).val();
+}
+
+
+
+/**
+     *重绘的ajax请求
+     *
+     * @param {*} opt
+     */
+    function ajax_request(opt){
+        opt=opt || {};
+        opt.data=opt.data || null;
+        opt.url=opt.url || '';
+        opt.type=opt.type ||'GET';
+        opt.success=opt.success || function(){}
+        opt.error=opt.error || function(){}
+        data=JSON.stringify(opt.data);
+        $.ajax({
+            type: opt.type,
+            url: opt.url,
+            data: opt.data,
+            headers: { Authorization: 'Bearer ' + token },
+            contentType : 'application/json',
+            success: function (res) {
+                opt.success(res)
+            },
+            error: function (res) {
+                opt.error(res);
+            }
+        });
+
+    }

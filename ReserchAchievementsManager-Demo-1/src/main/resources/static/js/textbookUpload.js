@@ -129,39 +129,24 @@ layui.use(['layer', 'element','laydate','upload'], function(){
          $(a).remove();
     }
 
-
-    ajax_request({
-        url: "/thesis/create", 
-        success: function (res) {
-            res=JSON.parse(res);
-            if (res.state == "success") {
-                uploadListIns.config.data.id =res.tId;
-                tId=res.tId;
-            } else {
-                layer.msg('获取成果ID失败');
-            }
-        }
-    })
-
-    
 	
 
          //获取成果ID
-		/* 	$.ajax({
-				type: "GET",
-				url: "/thesis/create", 
-				headers: { Authorization: 'Bearer ' + token },
-                contentType : 'application/json',
-				success: function (res) {
-                    res=JSON.parse(res);
-					if (res.state == "success") {
-                        uploadListIns.config.data.id =res.tId;
-                        tId=res.tId;
-					} else {
-						layer.msg('获取成果ID失败');
-					}
-				}
-			}); */
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "/thesis/create", 
+			// 	headers: { Authorization: 'Bearer ' + token },
+            //     contentType : 'application/json',
+			// 	success: function (res) {
+            //         res=JSON.parse(res);
+			// 		if (res.state == "success") {
+            //             uploadListIns.config.data.id =res.tId;
+            //             tId=res.tId;
+			// 		} else {
+			// 			layer.msg('获取成果ID失败');
+			// 		}
+			// 	}
+			// });
 
 
         $('#fileupload').submit(function (e) { 

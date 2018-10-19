@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>科研成果管理系统</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
+<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
+<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+
+</head>
+<body>
+	<div th:replace="header::html"></div>
+	<div class="container upload">
+		<div class="row">
+			<div class="col-md-9 col-md-offset-2">
+
+				<!--论文-->
+				<div class="re-item">
+
+					<h3>论文信息</h3>
+					<a href="javascript:Header.home()" class="moco-modal-close"></a>
+					<form id="fileupload" method="post" target="nm_iframe"
+						onchange="confirmFlag=0;">
+						<div class="form-item">
+							<label for="thesisName">论文名称:</label>
+							<div class="moco-control-input">
+								<input type="text" name="tName" id="tName" autocomplete="off"
+									class="moco-form-control" placeholder="未命名...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label>刊物级别:</label>
+							<div class="moco-control-input">
+								<select class="moco-form-control rlf-select" name="journalLevel"
+									hidefocus="true" id="journalLevel"
+									data-validate="require-select">
+									<option value="1">1.《Science》、《Nature》及其子刊《Cell》</option>
+									<option value="2">2.SCI收录</option>
+									<option value="3">3.EI（JA）、SSCI、A&HCI收录</option>
+									<option value="4">4.EI（CA）、CPCI</option>
+									<option value="5">5.核心刊物正刊(含北大核心期刊、CSCD、CSSCI、RCCSE)</option>
+									<option value="6">6.《武警学院学报》、《消防技术与产品信息》、全国性或行业性学会论文集（一等奖）、国际会议论文集</option>
+									<option value="7">7.专业期刊（正刊）、全国性或行业性学会论文集（二等奖）、《消防科学与技术》增刊、《武警学院学报》增刊、《消防技术与产品信息》增刊</option>
+									<option value="8">8.一般期刊、其它增刊、其它论文集、校刊</option>
+								</select>
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="journalName">发表刊物:</label>
+							<div class="moco-control-input">
+								<input type="text" name="journalName" id="journalName"
+									autocomplete="off" class="moco-form-control"
+									placeholder="请输入发表刊物...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="journalNum">刊号:</label>
+							<div class="moco-control-input">
+								<input type="text" name="journalNum" id="journalNum"
+									autocomplete="off" class="moco-form-control"
+									placeholder="请输入刊物编号...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="publishDate" class="moco-control-label">发表日期:</label>
+							<div class="moco-control-input">
+								<input type="text" name="publishDate" id="publishDate"
+									autocomplete="off" class="moco-form-control">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" id=''>
+							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
+							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
+								<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
+							  <div class="layui-upload">
+								<div class="layui-upload-list">
+								  <table class="layui-table">
+									<thead>
+										<tr><th>类型</th>
+										<th>名字</th>
+									  <th>大小</th>
+									  <th>状态</th>
+									  <th>操作</th>
+									</tr></thead>
+									<tbody id="fileList"></tbody>
+								  </table>
+								</div>
+							  </div> 
+						
+						</div>
+
+						
+						<div class="col-md-offset-2">
+							<button id="btnSubmit" type="submit"
+								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
+							<button class="btn btn-default btn-warning" type="reset">重置</button>
+							<button type="button" class="btn btn-default"
+								onclick="Header.home()">返回</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script src="/js/thesisEdit.js"></script>
+</html>
