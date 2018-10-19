@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.Thesis;
+
 public class ModelUtil {
 	public static Object updateModelByModel(Object origin, Object newModel) {
 		if(!origin.getClass().equals(newModel.getClass())) {
@@ -31,9 +34,15 @@ public class ModelUtil {
 		return origin;
 	}
 	public static String appendPath(String path1,String path2) {
+		if(path1==null) {
+			return path2;
+		}
 		return path1+"|"+path2;
 	}
 	public static String deletePath(String path1,String path2) {
+		if(path1==null) {
+			return null;
+		}
 		String[] paths = path1.split("\\|");
 		if(paths.length==0) {
 			return path1;
@@ -48,8 +57,10 @@ public class ModelUtil {
 		
 		return String.join("|", list);
 	}
-//	public static void main(String[] args) {
-//		String s = deletePath("null|1539739477819-5.jpg|asdfef", "1539739477819-5.jpg");
-//		System.out.println(s);
-//	}
+	public static void main(String[] args) {
+		Thesis t = new Thesis();
+		t.setAttachment("1539739477819-5.jpg|asdfaer.jpg|12345.mp4");
+		String s = deletePath(t.getAttachment(), "12345.mp4");
+		System.out.println(s);
+	}
 }
