@@ -4,6 +4,15 @@ layui.use(['layer',], function () {
 var departmentList
 var department
 
+// var active=GetQueryString('active');
+// if(active!=null){
+// 	console.log();
+// 	setTimeout(() => {
+// 		$('#'+active).click();	
+// 	}, 1000);
+// }
+// console.log(active)
+
 $(function () {
 	if (token == null) {
 		window.location.href = '/index'
@@ -138,7 +147,7 @@ window.operateEvents = {
 		console.log('查看')
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		console.log('编辑')
+		location.href="/thesis/edit.do?tId="+row.aId;
 	},
 	'click .RoleOfC': function (e, value, row, index) {
 
@@ -241,7 +250,9 @@ $('#wating').bootstrapTable({
 			title: '成果名称'
 		}, {
 			field: 'aId',
-			title: '成果编号'
+			title: '成果编号',
+			sortable:true,
+			order:'asc'
 		}, {
 			field: 'type',
 			title: '类型',
