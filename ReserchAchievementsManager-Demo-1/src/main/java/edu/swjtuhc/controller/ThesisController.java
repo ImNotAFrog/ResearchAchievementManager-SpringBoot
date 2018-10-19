@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.swjtuhc.mapper.AchievementMapper;
+import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
+import edu.swjtuhc.service.AchievementService;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.JwtTokenUtil;
@@ -32,6 +35,9 @@ public class ThesisController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AchievementService achievementService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -192,4 +198,5 @@ public class ThesisController {
 		
 		return result.toString();
 	}
+	
 }

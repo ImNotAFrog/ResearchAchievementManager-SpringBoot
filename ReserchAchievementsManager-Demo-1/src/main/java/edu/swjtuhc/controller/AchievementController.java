@@ -1,5 +1,6 @@
 package edu.swjtuhc.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.AchievementService;
 import edu.swjtuhc.service.UserService;
@@ -100,5 +102,171 @@ public class AchievementController {
 			return result.toString();
 		}
 		
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN_02')")
+	@RequestMapping(value = "/preCheck", method = RequestMethod.POST)
+	public String preCheck(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.precheck(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "初审成功");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "初审失败，请检查成果状态");
+		}
+		
+		return result.toString();
+	}
+	@PreAuthorize("hasRole('ROLE_TEACHER')")
+	@RequestMapping(value = "/submit", method = RequestMethod.POST)
+	public String submit(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.submit(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "提交成功");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "提交失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
+	@RequestMapping(value = "/approve", method = RequestMethod.POST)
+	public String approve(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.approve(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "已通过");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "通过失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
+	@RequestMapping(value = "/reject", method = RequestMethod.POST)
+	public String reject(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.reject(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "已驳回");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "驳回失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
+	@RequestMapping(value = "/approvedWithdraw", method = RequestMethod.POST)
+	public String approvedWithdraw(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.approvedWithdraw(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "成果已撤回");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "撤回失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	@PreAuthorize("hasRole('ROLE_ADMIN_02')")
+	@RequestMapping(value = "/preCheckedWithdraw", method = RequestMethod.POST)
+	public String preCheckedWithdraw(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.preCheckedWithdraw(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "成果已撤回");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "撤回失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_TEACHER')")
+	@RequestMapping(value = "/submitedWithdraw", method = RequestMethod.POST)
+	public String submitedWithdraw(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		Long aId=-1L;
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", "成果Id格式错误");
+			return result.toString();
+		}
+		Integer i=0;
+		i = achievementService.submitedWithdraw(aId);
+		if(i==1) {
+			result.put("state", "success");
+			result.put("msg", "成果已撤回");
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "撤回失败，请检查成果状态");
+		}		
+		return result.toString();
 	}
 }

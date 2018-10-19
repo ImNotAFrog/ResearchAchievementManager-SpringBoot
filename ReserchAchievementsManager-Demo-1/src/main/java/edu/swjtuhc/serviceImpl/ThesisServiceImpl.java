@@ -44,6 +44,7 @@ public class ThesisServiceImpl implements ThesisService{
 		achievement.setUploadDate(thesis.getUploadDate());
 		achievement.setState(0);
 		achievement.setType("thesis");
+		achievement.setState(1);
 		int i =createThesis(thesis,achievement);
 		if(i==1) {
 			return thesis.gettId();
@@ -66,15 +67,15 @@ public class ThesisServiceImpl implements ThesisService{
 		if(t==null) {
 			return 0;
 		}
+		Achievement achievement= achievementMapper.getAchievementById(t.gettId());
+		if(achievement==null||achievement.getState()>1) {
+			return 0;
+		}
 		t = (Thesis) ModelUtil.updateModelByModel(t, thesis);
 		t.setDepartment(user.getDepartment());
 		t.setSubDepartment(user.getSubDepartment());
 		t.setUploader(user.getAccount());
 		t.setUploadDate(new Date());
-		Achievement achievement= achievementMapper.getAchievementById(t.gettId());
-		if(achievement==null) {
-			return 0;
-		}
 		achievement.setDepartment(t.getDepartment());
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
@@ -108,6 +109,10 @@ public class ThesisServiceImpl implements ThesisService{
 		int i = updateThesis(t, achievement);
 		return i;
 	}
+	
+	
+
+
 
 	@Transactional
 	private int createThesis(Thesis thesis, Achievement achievement){

@@ -69,4 +69,33 @@ public class ViewController {
 	public String lawUpload() {
 		return "/law/upload";
 	}
+	@RequestMapping(value="/thesis/edit.do",method=RequestMethod.GET)
+	public String thesisEdit() {
+		return "/thesis/edit";
+	}
+	
+	@RequestMapping(value="/patent/edit.do",method=RequestMethod.GET)
+	public String patentEdit() {
+		return "/patent/edit";
+	}
+	
+	@RequestMapping(value="/textbook/edit.do",method=RequestMethod.GET)
+	public String textbookEdit() {
+		return "/textbook/edit";
+	}
+	
+	@RequestMapping(value="/project/edit.do",method=RequestMethod.GET)
+	public String projectEdit() {
+		return "/project/edit";
+	}
+	
+	@RequestMapping(value="/reformProject/edit.do",method=RequestMethod.GET)
+	public String reformProjectEdit() {
+		return "/reformProject/edit";
+	}
+	
+	@RequestMapping(value="/law/edit.do",method=RequestMethod.GET)
+	public String lawEdit() {
+		return "/law/edit";
+	}
 }

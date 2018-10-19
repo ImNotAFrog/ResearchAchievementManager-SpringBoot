@@ -6,7 +6,7 @@
 	<resultMap id="BaseResultMap"
 		type="edu.swjtuhc.model.Achievement">
 		<id column="a_id" property="aId" jdbcType="BIGINT" />
-		<result column="name" property="Name" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="uploader" property="uploader"
 			jdbcType="VARCHAR" />
 		<result column="type" property="type" jdbcType="VARCHAR" />
