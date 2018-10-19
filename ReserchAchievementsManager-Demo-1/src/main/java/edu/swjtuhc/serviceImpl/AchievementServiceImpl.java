@@ -119,4 +119,11 @@ public class AchievementServiceImpl implements AchievementService {
 		return i;
 	}
 
+	@Override
+	public List<Achievement> getAchievementByName(String name) {
+		// TODO Auto-generated method stub
+		return achievementMapper.getAchievementByName(name);
+		
+	}
+
 }

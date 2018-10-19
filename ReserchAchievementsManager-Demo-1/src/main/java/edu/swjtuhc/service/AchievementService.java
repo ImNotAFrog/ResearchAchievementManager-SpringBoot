@@ -9,6 +9,7 @@ public interface AchievementService {
 	List<Achievement> getAchievementListByAccount(String account);
 	List<Achievement> getAchievementList();
 	List<Achievement> getAchievementListBySubDepartment(String subDepartment);
+	List<Achievement> getAchievementByName(String name);
 	Integer submit(Long aId);
 	Integer precheck(Long aId);
 	Integer approve(Long aId);

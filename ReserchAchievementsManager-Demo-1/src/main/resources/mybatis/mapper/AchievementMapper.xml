@@ -40,6 +40,13 @@
 		where uploader = #{account}
 	</select>
 	
+	<select id="getAchievementByName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from achievement
+		where name = #{name}
+	</select>
 	<select id="getAchievementListBySubDepartment" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select

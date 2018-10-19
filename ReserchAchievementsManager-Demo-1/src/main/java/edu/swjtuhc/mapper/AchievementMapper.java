@@ -13,6 +13,7 @@ public interface AchievementMapper {
 	List<Achievement> getAchievementListByAccount(String account);
 	List<Achievement> getAchievementList();
 	List<Achievement> getAchievementListBySubDepartment(String subDepartment);
+	List<Achievement> getAchievementByName(String name);
 	Achievement getAchievementById(Long aId);
 	Integer deleteAchievement(Long aId);
 }

@@ -104,6 +104,31 @@ public class AchievementController {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
+	@RequestMapping(value="/getListByName", method = RequestMethod.POST)
+	public String getListByName(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
+		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
+		JSONObject result = new JSONObject();
+		String name=(String) reqMap.get("name");
+		if(name==null){
+			result.put("state", "fail");
+			result.put("msg", "参数错误");
+			return result.toString();
+		}
+		try {
+			List<Achievement> list = achievementService.getAchievementByName(name);
+			JSONArray jList = JSONArray.fromObject(list);
+			result.put("state", "success");
+			result.put("achievement", jList);
+			return result.toString();
+		} catch (Exception e) {
+			result.put("state", "fail");
+			result.put("msg", e);
+			return result.toString();
+		}
+		
+	}
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN_02')")
 	@RequestMapping(value = "/preCheck", method = RequestMethod.POST)
 	public String preCheck(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
