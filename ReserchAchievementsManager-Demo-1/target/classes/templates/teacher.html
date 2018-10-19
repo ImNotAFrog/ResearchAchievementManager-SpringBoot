@@ -6,6 +6,8 @@
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
 <link rel="stylesheet" type="text/css" href="/css/teacher.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-table.css">
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 </head>
 <body>
 	<div th:replace="header::html"></div>
@@ -13,12 +15,12 @@
 		<div class="container clearfix">
 			<div class="left">
 				<ul>
-					<li><a class="active" href="#"> <span>个人信息</span> <span
+					<li><a class="active" id="userInfo" href="#"> <span>个人信息</span> <span
 							class="icon">&gt;</span>
 					</a></li>
-					<li><a href="#"> <span>我的科研成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="myCg"> <span>我的科研成果</span> <span class="icon">&gt;</span>
 					</a></li>
-					<li><a href="#"> <span>上传成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="uploadCg"> <span>上传成果</span> <span class="icon">&gt;</span>
 					</a></li>
 					<!--<li>
 						<a href="#">
@@ -80,7 +82,7 @@
 						<div class="examing">
 							<table id="wating"
 								class="table table-striped table-bordered table-hover"
-								data-toggle="table" data-pagination="true" data-height="516"
+								 data-pagination="true" data-sort-name="aId" data-sort-order="desc" data-height="516"
 								data-search="true">
 								<thead>
 									<tr>
@@ -106,7 +108,7 @@
 							<ul>
 								<li class="load-item  clearfix"><img src="img/project.png">
 									<div class="item-info"
-										onclick="goToUpload('/eduProject/upload.do');">
+										onclick="goToUpload('/project/upload.do');">
 										<div>课题项目类</div>
 										<div>Poject</div>
 									</div></li>
@@ -130,12 +132,12 @@
 									</div>
 								<li class="load-item  clearfix"><img src="/img/reformProject.png">
 									<div class="item-info"
-										onclick="goToUpload('/eduReformProject/upload.do')">
+										onclick="goToUpload('/reformProject/upload.do')">
 										<div>教学改革项目类</div>
 										<div>Edu-Reform Project</div>
 									</div></li>
 								<li class="load-item  clearfix"><img src="/img/law.png">
-									<div class="item-info" onclick="goToUpload('/laws/upload.do')">
+									<div class="item-info" onclick="goToUpload('/law/upload.do')">
 										<div>法律、法规类</div>
 										<div>Laws</div>
 									</div></li>
@@ -151,6 +153,9 @@
 
 	<div th:replace="footer::html"></div>
 </body>
-
+<script type="text/javascript" src="/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/teacher.js"></script>
+
 </html>

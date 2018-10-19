@@ -100,8 +100,13 @@ public class AttachmentController {
 					result.put("msg", "论文不存在");
 				}
 				else if(result.getString("state").equals("success")) {					
-					t.setAttachment(ModelUtil.appendPath(t.getAttachment(), result.getString("name")));
-					thesisService.updateThesis(t,user);
+					t.setAttachment(result.getString("name"));
+					int i = thesisService.appendAttachment(t);
+					if(i!=1) {
+						result=new JSONObject();
+						result.put("state", "fail");
+						result.put("msg", "附件上传失败");
+					}
 				}
 				break;
 			case "textbook":

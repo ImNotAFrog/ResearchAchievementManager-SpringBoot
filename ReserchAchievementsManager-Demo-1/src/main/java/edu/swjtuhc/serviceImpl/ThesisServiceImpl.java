@@ -11,6 +11,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.swjtuhc.mapper.AchievementMapper;
@@ -67,6 +69,9 @@ public class ThesisServiceImpl implements ThesisService{
 		if(t==null) {
 			return 0;
 		}
+		if(thesis.getAttachment()==null) {
+			t.setAttachment(null);
+		}
 		Achievement achievement= achievementMapper.getAchievementById(t.gettId());
 		if(achievement==null||achievement.getState()>1) {
 			return 0;
@@ -96,7 +101,12 @@ public class ThesisServiceImpl implements ThesisService{
 	public Integer modifyThesis(Thesis thesis) throws IOException {
 		// TODO Auto-generated method stub
 		Thesis t = getThesisById(thesis.gettId());
-	
+		if(t==null) {
+			return 0;
+		}
+		if(thesis.getAttachment()==null) {
+			t.setAttachment(null);
+		}
 		t = (Thesis) ModelUtil.updateModelByModel(t, thesis);
 		t.setUploadDate(new Date());
 		
@@ -110,11 +120,15 @@ public class ThesisServiceImpl implements ThesisService{
 		return i;
 	}
 	
-	
+	@Override
+	public Integer appendAttachment(Thesis thesis) {
+		// TODO Auto-generated method stub
+		return appendAttachment(thesis.gettId(), thesis.getAttachment());
+	}
 
 
 
-	@Transactional
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	private int createThesis(Thesis thesis, Achievement achievement){
 		int i=0;
 		if(thesisMapper.createThesis(thesis)==1) {
@@ -125,7 +139,7 @@ public class ThesisServiceImpl implements ThesisService{
 		
 		return i;		
 	}
-	@Transactional
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	private int updateThesis(Thesis thesis, Achievement achievement) {
 		int i=0;
 		if(thesisMapper.updateThesis(thesis)==1) {
@@ -136,7 +150,7 @@ public class ThesisServiceImpl implements ThesisService{
 		return i;	
 	}
 	
-	@Transactional
+	@Transactional(isolation=Isolation.SERIALIZABLE)
 	private int deleteThesis(Long tId, Long aId) {
 		int i=0;
 		if(thesisMapper.deleteThesisById(tId)==1) {
@@ -146,5 +160,17 @@ public class ThesisServiceImpl implements ThesisService{
 		}		
 		return i;	
 	}
+
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
+	private synchronized int appendAttachment(Long tId, String attachment) {
+		Thesis t = thesisMapper.getThesisById(tId);
+		t.setAttachment(ModelUtil.appendPath(t.getAttachment(), attachment));
+		int i=0;
+		if(thesisMapper.updateThesis(t)==1) {
+			i=1;
+		}		
+		return i;	
+	}
+
 	
 }

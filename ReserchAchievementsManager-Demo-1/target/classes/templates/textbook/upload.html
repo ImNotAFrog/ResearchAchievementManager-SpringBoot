@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教材、著作成果上传</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
+<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
+<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+
+</head>
+<body>
+	<div th:replace="header::html"></div>
+	<div class="container upload">
+		<div class="row">
+			<div class="col-md-9 col-md-offset-2">
+				<!--教材著作表-->
+				<div class="re-item">
+						<h3>教材、著作信息</h3>
+						<div class="form-item">
+							<label for="textbookName">名称:</label>
+							<div class="moco-control-input">
+									<input type="text" name="textbookName" id="textbookName" autocomplete="off" class="moco-form-control"  placeholder="请输入教材名称...">
+									<div class="rlf-tip-wrap errorHint color-red"></div>
+								</div>
+						</div>
+						<div class="form-item">
+							<label for="subject">主体与级别:</label>
+							<div class="moco-control-input">
+									<select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" data-validate="require-select" onfocus="this.defaultIndex=this.selectedIndex;">
+									<option value="1">1.公安消防部队高等专科学校正式出版</option>
+									<option value="2">2.公安消防部队高等专科学校内部印刷</option>
+									<option value="3">3.外单位正式出版</option>                               
+								</select>
+									<div class="rlf-tip-wrap errorHint color-red"></div>
+								</div>
+						</div>
+						<div class="form-item">
+							<label for="" class="moco-control-label">作者参与情况：</label>
+							<div class="moco-control-input">
+									<select class="moco-form-control rlf-select" name="authorSituation" hidefocus="true" id="authorSituation" data-validate="require-select"  onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+									<option value="1">1.主编</option>
+									<option value="2">2.副主编</option>
+									<option value="3">3.参编</option>                               
+								</select>
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="" class="moco-control-label">出版社：</label>
+							<div class="moco-control-input">
+								<input type="text" name="publishingHouse" id="publishingHouse" autocomplete="off" class="moco-form-control"  placeholder="请输入出版社名称...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="" class="moco-control-label">ISBN：</label>
+							<div class="moco-control-input">
+								<input type="text" name="ISBN" id="ISBN" autocomplete="off" class="moco-form-control"  placeholder="请输入书号..." >
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>	
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="publishDate"  class="moco-control-label">验收日期:</label>
+							<div class="moco-control-input">
+								<input type="text" name="publishDate" id="publishDate"
+									autocomplete="off" class="moco-form-control">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" id=''>
+							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
+							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
+								<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
+							  <div class="layui-upload">
+								<div class="layui-upload-list">
+								  <table class="layui-table">
+									<thead>
+										<tr><th>类型</th>
+										<th>名字</th>
+									  <th>大小</th>
+									  <th>状态</th>
+									  <th>操作</th>
+									</tr></thead>
+									<tbody id="fileList"></tbody>
+								  </table>
+								</div>
+							  </div> 
+						
+						</div>
+
+						
+						<div class="col-md-offset-2">
+							<button id="btnSubmit" type="submit"
+								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
+							<button class="btn btn-default btn-warning" type="reset">重置</button>
+							<button type="button" class="btn btn-default"
+								onclick="Header.home()">返回</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script src="/js/textbookUpload.js"></script>
+</html>

@@ -4,11 +4,12 @@ layui.use(['layer', 'element','laydate','upload'], function(){
 	var laydate = layui.laydate;
     var upload = layui.upload;
     var tId=null;
+    var flist=[];
     //日期时间选择器
     laydate.render({
     elem: '#publishDate'
-    ,type: 'datetime'
-});
+        ,type: 'date'
+    });
 
 //判断文件类型
 		function getIcon(filename) {
@@ -83,6 +84,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
             }
             , done: function (res, index, upload) {
                 if (res.state == "success") { //上传成功
+                    flist.push(res.path)
                     var tr = demoListView.find('tr#upload-' + index)
                         , tds = tr.children();
                     var tr = demoListView.find('tr#upload-' + index)
@@ -90,7 +92,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                     var tr = demoListView.find('tr#upload-' + index)
                         , tds = tr.children();
                     tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
-                    console.log(res.name)
+                    //console.log(res.name)
                     tds.eq(4).html('<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-danger filename">下载</button>');
                    
                     //重新声明函数 因为doc节点发生变化
@@ -100,12 +102,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                            getFile(filename);
                         });
                     })(jQuery);
-                   
-                    return delete this.files[index]; //删除文件队列已经上传成功的文件
-                    
-
-
-
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件    
                 }
                 this.error(index, upload);
             }
@@ -126,70 +123,68 @@ layui.use(['layer', 'element','laydate','upload'], function(){
          *  */ 
         
      function getFile(filename) {
-        var url = "/attachment/get?filename=" + filename;
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);        // 也可以使用POST方式，根据接口
-        xhr.setRequestHeader("Authorization", 'Bearer ' + token);
-        xhr.responseType = "blob";    // 返回类型blob
-        // 定义请求完成的处理函数，请求前也可以增加加载框/禁用下载按钮逻辑
-        xhr.onload = function () {
-            // 请求完成
-            if (this.status === 200) {
-                // 返回200
-                var blob = this.response;
-                var reader = new FileReader();
-                reader.readAsDataURL(blob);    // 转换为base64，可以直接放入a标签href
-                reader.onload = function (e) {
-                    // 转换完成，创建一个a标签用于下载
-                    var a = document.createElement('a');
-                    a.download = filename;
-                    a.href = e.target.result.data;
-                    $("body").append(a);    // 修复firefox中无法触发click
-                    a.click();
-                    $(a).remove();
-                }
-            } else {
-                alert("下载错误");
-            }
-        };
-        // 发送ajax请求
-        xhr.send();
+         var a = document.createElement('a');
+         a.href ="/attachment/get/file?filename="+filename+"&account="+account;
+         a.click();
+         $(a).remove();
     }
 
+
+    
+//获取成果ID
+    ajax_request({
+        url: "/thesis/create", 
+        success: function (res) {
+            res=JSON.parse(res);
+            if (res.state == "success") {
+                uploadListIns.config.data.id =res.tId;
+                tId=res.tId;
+            } else {
+                layer.msg('获取成果ID失败');
+            }
+        }
+    })
+
+    
 	
 
-         //获取成果ID
-			$.ajax({
-				type: "get",
-				url: "/thesis/create",
-				data: "",
-				headers: { Authorization: 'Bearer ' + token },
-				dataType: "json",
-				success: function (res) {
-					if (res.state == "success") {
-                        uploadListIns.config.data.id =res.tId;
-                        tId=res.tId;
-                        
-					} else {
-						layer.msg('获取成果ID失败');
-					}
-				}
-			});
 
 
-        $('#fileupload').submit(function (e) { 
-            var data=	$('#fileupload').serialize();
-            var filePath="123"; //模拟文件列表
-            data+="&tID="+tId+"&uploader="+account+"&attachment="+"filePath";
-            console.log(data)
+        $('#fileupload').submit(function (e) {
+        $("#btnSubmit").attr({"disabled":"true"}); 
+          var dataList={
+                tName:getValById('tName'),
+                journalLevel:getValById('journalLevel'),
+                journalName:getValById('journalName'),
+                journalNum:getValById('journalNum'),
+                publishDate:getValById('publishDate'),
+                uploader:account,
+                tId:tId
+            }
+            if(tId==null){
+                layer.alert("获取论文ID失败",{icon:5},function(){
+                    layer.closeAll();
+                })
+            }
             $.ajax({
-                type: "post",
+                type: "POST",
                 url: "/thesis/upload",
                 headers: { Authorization: 'Bearer ' + token },
-                data: data,
-                dataType: "json",
+                data: JSON.stringify(dataList),
+                contentType : 'application/json',
                 success: function (res) {
-                    
+                    res=JSON.parse(res);
+                    if(res.state=="success"){
+                        layer.alert(res.msg,{icon:1},function(){
+                            layer.closeAll();
+                            window.location.href = "/teacher.do";
+                        });
+                    }else{
+                        layer.alert(res.msg,{icon:5},function(){
+                            layer.closeAll();
+                            $("#btnSubmit").attr({"disabled":"false"});
+                        });
+                    }
                 }
             });
             return false;

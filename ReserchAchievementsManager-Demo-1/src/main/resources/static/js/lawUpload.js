@@ -1,15 +1,9 @@
-layui.use(['layer', 'element','laydate','upload'], function(){
+layui.use(['layer', 'element','upload'], function(){
 	var layer = layui.layer;
 	var element = layui.element;
-	var laydate = layui.laydate;
     var upload = layui.upload;
     var tId=null;
     var flist=[];
-    //日期时间选择器
-    laydate.render({
-    elem: '#publishDate'
-        ,type: 'date'
-    });
 
 //判断文件类型
 		function getIcon(filename) {
@@ -129,29 +123,27 @@ layui.use(['layer', 'element','laydate','upload'], function(){
          $(a).remove();
     }
 
-
-    
-//获取成果ID
-    ajax_request({
-        url: "/thesis/create", 
-        success: function (res) {
-            res=JSON.parse(res);
-            if (res.state == "success") {
-                uploadListIns.config.data.id =res.tId;
-                tId=res.tId;
-            } else {
-                layer.msg('获取成果ID失败');
-            }
-        }
-    })
-
-    
 	
 
+         //获取成果ID
+		/* 	$.ajax({
+				type: "GET",
+				url: "/thesis/create", 
+				headers: { Authorization: 'Bearer ' + token },
+                contentType : 'application/json',
+				success: function (res) {
+                    res=JSON.parse(res);
+					if (res.state == "success") {
+                        uploadListIns.config.data.id =res.tId;
+                        tId=res.tId;
+					} else {
+						layer.msg('获取成果ID失败');
+					}
+				}
+			}); */
 
 
-        $('#fileupload').submit(function (e) {
-        $("#btnSubmit").attr({"disabled":"true"}); 
+        $('#fileupload').submit(function (e) { 
           var dataList={
                 tName:getValById('tName'),
                 journalLevel:getValById('journalLevel'),
@@ -182,7 +174,6 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                     }else{
                         layer.alert(res.msg,{icon:5},function(){
                             layer.closeAll();
-                            $("#btnSubmit").attr({"disabled":"false"});
                         });
                     }
                 }

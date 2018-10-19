@@ -54,13 +54,15 @@ public class ModelUtil {
 				break;
 			}
 		}	
-		
+		if(list.size()==0) {
+			return null;
+		}
 		return String.join("|", list);
 	}
 	public static void main(String[] args) {
 		Thesis t = new Thesis();
-		t.setAttachment("1539739477819-5.jpg|asdfaer.jpg|12345.mp4");
-		String s = deletePath(t.getAttachment(), "12345.mp4");
+		t.setAttachment("1539739477819-5.jpg");
+		String s = deletePath(t.getAttachment(), "1539739477819-5.jpg");
 		System.out.println(s);
 	}
 }
