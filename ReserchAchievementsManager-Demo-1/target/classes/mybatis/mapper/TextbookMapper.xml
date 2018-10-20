@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.TextbookMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.Textbook">
+		<id column="tb_id" property="tbId" jdbcType="BIGINT" />
+		<result column="tb_name" property="tbName"
+			jdbcType="VARCHAR" />
+		<result column="involvement" property="involvement"
+			jdbcType="INTEGER" />
+		<result column="level" property="level"
+			jdbcType="INTEGER" />
+		<result column="publisher" property="publisher"
+			jdbcType="VARCHAR" />
+		<result column="ISBN" property="ISBN"
+			jdbcType="VARCHAR" />
+		<result column="publish_date"
+			property="publishDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />	
+		<result column="upload_date"
+			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="score" property="score"
+			jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />			
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		tb_id,tb_name,involvement,level,publisher,ISBN,publish_date,attachment,uploader,upload_date,score,max_score,department,sub_department
+	</sql>
+	<select id="getTextbookById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from textbook
+		where tb_id = #{tbId}
+	</select>
+	<insert id="createTextbook"
+		parameterType="edu.swjtuhc.model.Textbook">
+		INSERT INTO 
+		textbook
+		(<include refid="Base_Column_List"></include>)
+		values
+		(#{tbId},#{tbName},#{involvement},#{level},#{publisher},#{ISBN},#{publish_date},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+	</insert>
+	<update id="updateTextbook" parameterType="edu.swjtuhc.model.Textbook">
+		UPDATE
+		textbook
+		SET
+		tb_name = #{tbName},involvement = #{involvement},level=#{level},publisher=#{publisher},ISBN=#{ISBN},publish_date=#{publishDate},attachment=#{attachment},uploader=#{uploader},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		WHERE
+		tb_id = #{tbId}
+	</update>
+	
+	<delete id="deleteTextbookById" parameterType="java.lang.Long">
+		DELETE FROM
+		textbook
+		WHERE
+		tb_id=#{tbId}
+		
+	</delete>
+
+</mapper> 

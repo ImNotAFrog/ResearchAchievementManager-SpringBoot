@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.ReformProjectMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.ReformProject">
+		<id column="r_p_id" property="rPId" jdbcType="BIGINT" />
+		<result column="r_p_name" property="rPName"
+			jdbcType="VARCHAR" />
+		<result column="involvement" property="involvement"
+			jdbcType="INTEGER" />
+		<result column="status" property="status"
+			jdbcType="INTEGER" />
+		<result column="project_date"
+			property="projectDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />	
+		<result column="upload_date"
+			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="score" property="score"
+			jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />			
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		r_p_id,r_p_name,involvement,status,attachment,uploader,project_date,upload_date,score,max_score,department,sub_department
+	</sql>
+	<select id="getReformProjectById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from reform_project
+		where r_p_id = #{rPId}
+	</select>
+	<insert id="createReformProject"
+		parameterType="edu.swjtuhc.model.ReformProject">
+		INSERT INTO 
+		reform_project
+		(<include refid="Base_Column_List"></include>)
+		values
+		(#{rPId},#{rPName},#{involvement},#{status},#{attachment},#{uploader},#{projectDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+	</insert>
+	<update id="updateReformProject" parameterType="edu.swjtuhc.model.ReformProject">
+		UPDATE
+		reform_project
+		SET
+		r_p_name = #{rPName},involvement = #{involvement},status=#{status},attachment=#{attachment},uploader=#{uploader},project_date=#{projectDate},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		WHERE
+		r_p_id = #{rPId}
+	</update>
+	
+	<delete id="deleteReformProjectById" parameterType="java.lang.Long">
+		DELETE FROM
+		reform_project
+		WHERE
+		r_p_id=#{rPId}
+		
+	</delete>
+
+</mapper> 

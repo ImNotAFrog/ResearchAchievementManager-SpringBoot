@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.ProjectMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.Project">
+		<id column="p_id" property="pId" jdbcType="BIGINT" />
+		<result column="p_name" property="pName"
+			jdbcType="VARCHAR" />
+		<result column="involvement" property="involvement"
+			jdbcType="INTEGER" />
+		<result column="level" property="level"
+			jdbcType="INTEGER" />
+		<result column="subject" property="subject"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status"
+			jdbcType="INTEGER" />
+		<result column="project_date"
+			property="projectDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />	
+		<result column="upload_date"
+			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="score" property="score"
+			jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />			
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		p_id,p_name,involvement,level,subject,status,attachment,uploader,project_date,upload_date,score,max_score,department,sub_department
+	</sql>
+	<select id="getProjectById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from project
+		where p_id = #{pId}
+	</select>
+	<insert id="createProject"
+		parameterType="edu.swjtuhc.model.Project">
+		INSERT INTO 
+		project
+		(<include refid="Base_Column_List"></include>)
+		values
+		(#{pId},#{pName},#{involvement},#{level},#{subject},#{status},#{attachment},#{uploader},#{projectDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+	</insert>
+	<update id="updateProject" parameterType="edu.swjtuhc.model.Project">
+		UPDATE
+		project
+		SET
+		p_name = #{pName},involvement = #{involvement},level=#{level},subject=#{subject},status=#{status},attachment=#{attachment},uploader=#{uploader},project_date=#{projectDate},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		WHERE
+		p_id = #{pId}
+	</update>
+	
+	<delete id="deleteProjectById" parameterType="java.lang.Long">
+		DELETE FROM
+		project
+		WHERE
+		p_id=#{pId}
+		
+	</delete>
+
+</mapper> 

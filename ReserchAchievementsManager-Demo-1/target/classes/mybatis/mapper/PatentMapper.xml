@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.PatentMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.Patent">
+		<id column="pa_id" property="paId" jdbcType="BIGINT" />
+		<result column="pa_name" property="paName"
+			jdbcType="VARCHAR" />
+		<result column="type" property="type"
+			jdbcType="INTEGER" />
+		<result column="author_rank" property="authorRank"
+			jdbcType="INTEGER" />
+		<result column="pa_num" property="paNum"
+			jdbcType="VARCHAR" />
+		<result column="pa_owner" property="paOwner"
+			jdbcType="VARCHAR" />
+		<result column="publish_date"
+			property="publishDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />	
+		<result column="upload_date"
+			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+			<result column="score" property="score"
+			jdbcType="FLOAT" />
+			<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />			
+		<result column="department" property="department"
+			jdbcType="VARCHAR" />
+		<result column="sub_department" property="subDepartment"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		pa_id,pa_name,type,author_rank,pa_num,pa_owner,publish_date,attachment,uploader,upload_date,score,max_score,department,sub_department
+	</sql>
+	<select id="getPatentById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from patent
+		where pa_id = #{paId}
+	</select>
+	<insert id="createPatent"
+		parameterType="edu.swjtuhc.model.Patent">
+		INSERT INTO 
+		patent
+		(<include refid="Base_Column_List"></include>)
+		values
+		(#{paId},#{paName},#{type},#{authorRank},#{paNum},#{paOwner},#{publishDate},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+	</insert>
+	<update id="updatePatent" parameterType="edu.swjtuhc.model.Patent">
+		UPDATE
+		patent
+		SET
+		pa_name = #{paName},type = #{type},author_rank=#{authorRank},pa_num=#{paNum},pa_owner=#{paOwner},publish_date=#{publishDate},attachment=#{attachment},uploader=#{uploader},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		WHERE
+		pa_id = #{paId}
+	</update>
+	
+	<delete id="deletePatentById" parameterType="java.lang.Long">
+		DELETE FROM
+		patent
+		WHERE
+		pa_id=#{paId}
+		
+	</delete>
+
+</mapper> 
