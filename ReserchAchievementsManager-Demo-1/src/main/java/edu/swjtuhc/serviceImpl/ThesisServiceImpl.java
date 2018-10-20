@@ -82,6 +82,7 @@ public class ThesisServiceImpl implements ThesisService{
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setName(t.gettName());
+		achievement.setState(1);
 		int i = updateThesis(t, achievement);
 		
 		return i;
