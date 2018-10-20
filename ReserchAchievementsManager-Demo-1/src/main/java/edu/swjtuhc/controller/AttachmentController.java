@@ -199,8 +199,6 @@ public class AttachmentController {
 			switch (type) {
 			case "thesis":
 				Thesis t =thesisService.getThesisById(aId);
-				System.out.println(t.getUploader());
-				System.out.println(account);
 				if(t.getUploader()==null||!t.getUploader().equals(account)) {
 					result.put("state", "fail");
 					result.put("msg", "论文或用户权限错误");
@@ -211,14 +209,14 @@ public class AttachmentController {
 	            if (file.delete()) {
 	            	try {
 	            		t.setAttachment(ModelUtil.deletePath(t.getAttachment(), filename));
-						if(thesisService.modifyThesis(t)==1) {
+						if(thesisService.removeAttachment(t)==1) {
 			            	result.put("state", "success");
 							result.put("msg", "删除成功");
 						}else{
 							result.put("state", "success");
 							result.put("msg", "数据库更新失败或文件不存在");
 						};
-					} catch (IOException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						result.put("state", "success");
 						result.put("msg", "数据库更新失败");
