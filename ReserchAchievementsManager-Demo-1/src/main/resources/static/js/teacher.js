@@ -143,14 +143,10 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		console.log(row);
-		console.log('查看')
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId;
-	},
-	'click .RoleOfC': function (e, value, row, index) {
-
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -164,33 +160,7 @@ function operateFormatter(value, row, index) {
 }
 
 
-
-// 检查状态
-function checkState(value) {
-	switch (value) {
-		case -1:
-			return '驳回';
-			break;
-		case 1:
-			return '未提交';
-			break;
-		case 2:
-			return '待初审';
-			break;
-		case 3:
-			return '待复审';
-			break;
-		case 4:
-			return '已通过';
-			break;
-		default:
-			return '参数错误'
-			break;
-	}
-}
-
-
-// 检查成果名称
+// 查询成果名称
 function checkType(value) {
 	value = value.toLowerCase();
 	switch (value) {

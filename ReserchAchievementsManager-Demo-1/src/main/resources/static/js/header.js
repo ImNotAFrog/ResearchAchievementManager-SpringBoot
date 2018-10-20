@@ -231,6 +231,15 @@ function getValById(idName) {
 	return $('#' + idName).val();
 }
 
+//验证数据是否为正整数
+function checkIsInt(value) {
+	if (!(/(^[1-9]\d*$)/.test(value))) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 
 //获取地址栏的参数值
 function GetQueryString(name) {
@@ -248,12 +257,7 @@ function timestampToTime(timestamp) {
 }
 
 
-
-/**
-     *重绘的ajax请求
-     *
-     * @param {*} opt
-     */
+//重绘的ajax请求
 function ajax_request(opt) {
 	opt = opt || {};
 	opt.data = opt.data || null;
@@ -309,18 +313,42 @@ function getFile(filename) {
 }
 
 //将表单序列化成对象
-$.fn.serializeObject = function() {  
-	var o = {};  
-	var a = this.serializeArray();  
-	$.each(a, function() {  
-		if (o[this.name]) {  
-			if (!o[this.name].push) {  
-				o[this.name] = [ o[this.name] ];  
-			}  
-			o[this.name].push(this.value || '');  
-		} else {  
-			o[this.name] = this.value || '';  
-		}  
-	});  
-	return o;  
+$.fn.serializeObject = function () {
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function () {
+		if (o[this.name]) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
 } 
+
+// 检查成果状态
+function checkState(value) {
+	switch (value) {
+		case -1:
+			return '驳回';
+			break;
+		case 1:
+			return '未提交';
+			break;
+		case 2:
+			return '待初审';
+			break;
+		case 3:
+			return '待复审';
+			break;
+		case 4:
+			return '已通过';
+			break;
+		default:
+			return '参数错误'
+			break;
+	}
+}
