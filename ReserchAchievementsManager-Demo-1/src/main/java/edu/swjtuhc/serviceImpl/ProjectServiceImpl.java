@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.utils.IdWorker;
 import edu.swjtuhc.utils.ModelUtil;
 
+@Service
 public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
