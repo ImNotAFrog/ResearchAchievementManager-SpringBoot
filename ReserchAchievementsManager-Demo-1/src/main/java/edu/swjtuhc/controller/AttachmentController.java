@@ -208,7 +208,7 @@ public class AttachmentController {
 				File file = new File(filepath);
 	            if (file.delete()) {
 	            	try {
-	            		t.setAttachment(ModelUtil.deletePath(t.getAttachment(), filename));
+	            		t.setAttachment(filename);
 						if(thesisService.removeAttachment(t)==1) {
 			            	result.put("state", "success");
 							result.put("msg", "删除成功");
