@@ -12,4 +12,5 @@ public interface ThesisService {
 	Integer deleteThesis(Long tId) throws IOException;
 	Integer modifyThesis(Thesis thesis) throws IOException;
 	Integer appendAttachment(Thesis thesis);
+	Integer removeAttachment(Thesis thesis);
 }

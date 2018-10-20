@@ -11,7 +11,7 @@
 		<result column="journal_name" property="journalName"
 			jdbcType="VARCHAR" />
 		<result column="journal_level" property="journalLevel"
-			jdbcType="VARCHAR" />
+			jdbcType="INTEGER" />
 		<result column="journal_id" property="journalId"
 			jdbcType="VARCHAR" />
 		<result column="attachment" property="attachment"

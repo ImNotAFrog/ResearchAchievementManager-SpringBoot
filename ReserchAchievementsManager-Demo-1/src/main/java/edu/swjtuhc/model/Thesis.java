@@ -6,7 +6,7 @@ public class Thesis {
 	private Long tId;
 	private String tName;
 	private String journalName;
-	private String journalLevel;
+	private Integer journalLevel;
 	private String journalId;
 	private String attachment;
 	private String uploader;
@@ -36,12 +36,6 @@ public class Thesis {
 	}
 	public void setJournalName(String journalName) {
 		this.journalName = journalName;
-	}
-	public String getJournalLevel() {
-		return journalLevel;
-	}
-	public void setJournalLevel(String journalLevel) {
-		this.journalLevel = journalLevel;
 	}
 	public String getJournalId() {
 		return journalId;
@@ -96,6 +90,12 @@ public class Thesis {
 	}
 	public void setMaxScore(Float maxScore) {
 		this.maxScore = maxScore;
+	}
+	public Integer getJournalLevel() {
+		return journalLevel;
+	}
+	public void setJournalLevel(Integer journalLevel) {
+		this.journalLevel = journalLevel;
 	}
 	
 }

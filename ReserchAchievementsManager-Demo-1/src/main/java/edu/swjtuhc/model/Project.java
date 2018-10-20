@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class Project {
 	private Long pId;
-	private String involvement;
+	private Integer involvement;
 	private String pName;
-	private String level;
+	private Integer level;
 	private String subject;
-	private String status;
+	private Integer status;
+	private Date projectDate;
 	private String attachment;
 	private String uploader;
 	private Date uploadDate;
@@ -25,10 +26,10 @@ public class Project {
 	public void setpId(Long pId) {
 		this.pId = pId;
 	}
-	public String getInvolvement() {
+	public Integer getInvolvement() {
 		return involvement;
 	}
-	public void setInvolvement(String involvement) {
+	public void setInvolvement(Integer involvement) {
 		this.involvement = involvement;
 	}
 	public String getpName() {
@@ -37,23 +38,11 @@ public class Project {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	public String getLevel() {
-		return level;
-	}
-	public void setLevel(String level) {
-		this.level = level;
-	}
 	public String getSubject() {
 		return subject;
 	}
 	public void setSubject(String subject) {
 		this.subject = subject;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public String getAttachment() {
 		return attachment;
@@ -96,6 +85,24 @@ public class Project {
 	}
 	public void setSubDepartment(String subDepartment) {
 		this.subDepartment = subDepartment;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public Date getProjectDate() {
+		return projectDate;
+	}
+	public void setProjectDate(Date projectDate) {
+		this.projectDate = projectDate;
+	}
+	public Integer getLevel() {
+		return level;
+	}
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 	
 	

@@ -69,9 +69,6 @@ public class ThesisServiceImpl implements ThesisService{
 		if(t==null) {
 			return 0;
 		}
-		if(thesis.getAttachment()==null) {
-			t.setAttachment(null);
-		}
 		Achievement achievement= achievementMapper.getAchievementById(t.gettId());
 		if(achievement==null||achievement.getState()>1) {
 			return 0;
@@ -104,9 +101,6 @@ public class ThesisServiceImpl implements ThesisService{
 		if(t==null) {
 			return 0;
 		}
-		if(thesis.getAttachment()==null) {
-			t.setAttachment(null);
-		}
 		t = (Thesis) ModelUtil.updateModelByModel(t, thesis);
 		t.setUploadDate(new Date());
 		
@@ -126,7 +120,11 @@ public class ThesisServiceImpl implements ThesisService{
 		return appendAttachment(thesis.gettId(), thesis.getAttachment());
 	}
 
-
+	@Override
+	public Integer removeAttachment(Thesis thesis) {
+		// TODO Auto-generated method stub
+		return removeAttachment(thesis.gettId(), thesis.getAttachment());
+	}
 
 	@Transactional(isolation=Isolation.SERIALIZABLE)
 	private int createThesis(Thesis thesis, Achievement achievement){
@@ -171,6 +169,18 @@ public class ThesisServiceImpl implements ThesisService{
 		}		
 		return i;	
 	}
+
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
+	private synchronized int removeAttachment(Long tId, String attachment) {
+		Thesis t = thesisMapper.getThesisById(tId);
+		t.setAttachment(ModelUtil.deletePath(t.getAttachment(), attachment));
+		int i=0;
+		if(thesisMapper.updateThesis(t)==1) {
+			i=1;
+		}		
+		return i;	
+	}
+
 
 	
 }

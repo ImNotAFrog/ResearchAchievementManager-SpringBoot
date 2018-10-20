@@ -31,6 +31,16 @@ public class ViewController {
 		return "teacher";
 	}
 	
+	@RequestMapping(value="/admin1.do",method=RequestMethod.GET)
+	public String admin1() {
+		return "admin1";
+	}
+	
+	@RequestMapping(value="/admin2.do",method=RequestMethod.GET)
+	public String admin2() {
+		return "admin2";
+	}
+	
 	@RequestMapping(value="/editUser.do",method=RequestMethod.GET)
 	public String editUser() {
 		return "editUser";
