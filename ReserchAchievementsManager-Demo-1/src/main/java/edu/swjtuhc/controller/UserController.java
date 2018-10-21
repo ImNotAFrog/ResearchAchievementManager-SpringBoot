@@ -70,14 +70,18 @@ public class UserController {
     	JSONObject result= new JSONObject();    	   	
         try {
         	UserProfile p = userService.getUserProfileByAccount(account);
+        	if(p==null) {
+        		result.put("state", "fail");
+            	result.put("msg", "用户个人信息不存在，请联系管理员"); 
+                return result.toString();
+        	}
         	result.put("state", "success");
         	result.put("profile", p); 
-        	result.put("account", p.getAccount());
             return result.toString();
 		} catch (Exception e) {
 			result.put("state", "fail");
-        	result.put("account", account);
         	result.put("msg", e);
+        	e.printStackTrace();
             return result.toString();
 		}
     }
