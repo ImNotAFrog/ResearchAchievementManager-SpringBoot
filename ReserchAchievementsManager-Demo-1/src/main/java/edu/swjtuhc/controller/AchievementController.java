@@ -73,6 +73,7 @@ public class AchievementController {
 		} catch (Exception e) {
 			result.put("state", "fail");
 			result.put("msg", e);
+			e.printStackTrace();
 			return result.toString();
 		}
 	}

@@ -6,6 +6,7 @@ public class Achievement {
 	private Long aId;
 	private String name;
 	private String type;
+	private String uploaderName;
 	private String uploader;
 	private Integer state;
 	private Date uploadDate;
@@ -61,6 +62,12 @@ public class Achievement {
 	}
 	public void setSubDepartment(String subDepartment) {
 		this.subDepartment = subDepartment;
+	}
+	public String getUploaderName() {
+		return uploaderName;
+	}
+	public void setUploaderName(String uploaderName) {
+		this.uploaderName = uploaderName;
 	}
 	
 }
