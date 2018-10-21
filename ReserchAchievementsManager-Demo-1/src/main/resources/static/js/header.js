@@ -10,10 +10,10 @@ class Header {
 		var role = TokenHelper.getRoleFromToken(token)
 		switch (role) {
 			case 'ROLE_ADMIN_01':
-				window.location.href = "/admin01.do"
+				window.location.href = "/admin1.do"
 				break;
 			case 'ROLE_ADMIN_02':
-				window.location.href = "/admin02.do"
+				window.location.href = "/admin2.do"
 				break;
 			case 'ROLE_TEACHER':
 				window.location.href = "/teacher.do"
@@ -266,7 +266,7 @@ function ajax_request(opt) {
 	opt.success = opt.success || function () { }
 	opt.error = opt.error || function () { }
 	data = JSON.stringify(opt.data);
-	console.log(data)
+	//console.log(data)
 	$.ajax({
 		type: opt.type,
 		url: opt.url,
@@ -305,9 +305,9 @@ function getIcon(filename) {
 	return result;
 }
 //下载文件
-function getFile(filename) {
+function getFile(filename,uploader) {
 	var a = document.createElement('a');
-	a.href = "/attachment/get/file?filename=" + filename + "&account=" + account;
+	a.href = "/attachment/get/file?filename=" + filename + "&account=" + uploader;
 	a.click();
 	$(a).remove();
 }
@@ -352,3 +352,30 @@ function checkState(value) {
 			break;
 	}
 }
+
+
+// 查询成果中文名称
+function checkType(value) {
+	value = value.toLowerCase();
+	switch (value) {
+		case "thesis":
+			return '论文类';
+			break;
+		case "poject":
+			return '课题项目类';
+			break;
+		case "textbook":
+			return '论著、教材类';
+			break;
+		case "patent":
+			return '专利';
+			break;
+		case "edu-reform project":
+			return '教学改革项目类';
+			break;
+		default:
+			return '法律、法规类';
+			break;
+	}
+}
+

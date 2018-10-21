@@ -14,128 +14,179 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     var tId = GetQueryString('tId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
-    console.log(action)
-    //删除已上传文件
-    $('.delthesis').click(function (e) { 
-        $(".delthesis").attr({"disabled":"true"});
-        layer.confirm('确定要此论文吗？', {
-            btn: ['确定', '点错了'] //按钮
-        }, function () {
-              layer.load();
-                ajax_request({
-                    type: 'POST',
-                    url: '/thesis/delete',
-                    data: {
-                        tId:tId
-                    },
-                    success: function (res) {
-                        res=JSON.parse(res);
-                    if (res.state == "success") {
-                        layer.alert(res.msg, { icon: 1 }, function () {
-                            layer.closeAll();
-                            window.location.href = "/teacher.do?active=myCg";
-                        });
-                    } else {
-                        layer.alert(res.msg, { icon: 5 }, function () {
-                            layer.closeAll();
-                        });
-                        $("#btnSubmit").attr({"disabled":"false"});
-                    }
-                    }
+
+    
+    //检查用户级别  
+    function checkAuth(){
+        if(role=="ROLE_ADMIN_01"){
+            return 1;
+        }else if(role=="ROLE_ADMIN_02"){
+            return 2;
+        }else{
+            layer.alert('非法访问',{icon:5},function(){
+                 layer.closeAll();
+                 location.href='/index.do';
             })
-        }, function () {
+        }
+    }
+
+    //初级管理员添加上报成果事件
+    function preCheck(){
+        $('.preCheck').click(function (e) { 
+            layer.load();
+            ajax_request({
+                type: 'POST',
+                url: '/achievement/preCheck',
+                data: {
+                    aId:parseInt(tId)
+                },
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.state == 'success') {
+                      layer.alert('上报成果成果',{icon:1},function(){
+                        location.href="/admin2.do?active=sh";
+                      })
+                    } else {
+                        layer.alert('上报成果失败',{icon:5},function(){
+                            layer.closeAll();
+                          })
+                       
+                    }
+                }
+            })
         });
+    }
 
-    });
-
-    /*  成果state是1的时候，可以编辑，state是2或3的时候可以查看，可以撤回，不能编辑，state是3的时候，state是4的时候只能查看
-
-                服务器端开发-黄老师 2018/10/20 17:32:26
-                附件是一直可以下载的
-                
-                服务器端开发-黄老师 2018/10/20 17:32:43
-                state是-1的时候也是可以编辑 */
-                ///不能编辑的函数
-               // console.log(GetQueryString('state'));
-                  /*  switch (state) {
-                    case 1:
-                      //可以编辑、送审
-                        break;
-                    case 4:
-                        
-                    default:
-                     // 2、3可撤回 不能编辑、不能送审 只有查看
-                        break;
-                } */
-                console.log(checkState(state))
-                $('#state').val(checkState(state));
-                if((state==1 ||state==-1) && action==null){
-                    if(state!=-1){
-                        $('.submit').removeClass('hidden');
-                        $('.submit').click(function (e) { 
-                            layer.load();
-                            ajax_request({
-                                type: 'POST',
-                                url: '/achievement/submit',
-                                data: {
-                                    aId:parseInt(tId)
-                                },
-                                success: function (res) {
-                                    res = JSON.parse(res);
-                                    if (res.state == 'success') {
-                                    layer.alert('送审成功',{icon:1},function(){
-                                        location.href='/teacher.do?active=Cg';
-                                    })
-                                    } else {
-                                        layer.alert('送审失败',{icon:5},function(){
-                                            layer.closeAll();
-                                        })
-                                    
-                                    }
-                                }
-                            })
-                        });
-                    }
-                }else if((state==2 ||state==3) && action==null){
-                    $('.submitedWithdraw').removeClass('hidden');
-                    $('form input').attr('readonly','readonly');
-                    $('.disable-eidt').hide();
-                    $('.submitedWithdraw').click(function (e) { 
-                        layer.load();
-                        ajax_request({
-                            type: 'POST',
-                            url: '/achievement/submitedWithdraw',
-                            data: {
-                                aId:parseInt(tId)
-                            },
-                            success: function (res) {
-                                res = JSON.parse(res);
-                                if (res.state == 'success') {
-                                  layer.alert('撤回成果成功',{icon:1},function(){
-                                    location.href='/thesis/edit.do?tId='+tId+"&state=1";
-                                  })
-                                } else {
-                                    layer.alert('撤回成果失败',{icon:5},function(){
-                                        layer.closeAll();
-                                      })
-                                   
-                                }
-                            }
+    //初级管理员添加驳回事件
+    function reject(){
+        $('.reject').click(function (e) { 
+            layer.load();
+            ajax_request({
+                type: 'POST',
+                url: '/achievement/reject',
+                data: {
+                    aId:parseInt(tId)
+                },
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.state == 'success') {
+                    layer.alert('驳回成果成功',{icon:1},function(){
+                        location.href="/admin2.do?active=sh";
+                    })
+                    } else {
+                        layer.alert('驳回成果失败',{icon:5},function(){
+                            layer.closeAll();
                         })
-                    });
-
-                }else{
-                    if(action=="see"){
-                        console.log('查看模式')
-                        $('form input').attr('readonly','readonly');
-                        $('.see').hide();
-                    }else{
-                        layer.alert('参数不合法',{icon:5},function () { 
-                            location.href='/teacher.do?active=Cg';
-                         })
+                    
                     }
+                },
+                error:function(){
+                    layer.closeAll();
+                    layer.msg('请求失败');
                    
                 }
+            })
+        });
+    }
+
+    //初级管理员撤回成果事件
+    function preCheckedWithdraw(){
+        $('.Withdraw').click(function (e) { 
+            console.log('初级撤回');
+            layer.load();
+            ajax_request({
+                type: 'POST',
+                url: '/achievement/preCheckedWithdraw',
+                data: {
+                    aId:parseInt(tId)
+                },
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.state == 'success') {
+                    layer.alert('撤回成果成功',{icon:1},function(){
+                        location.href="/admin2.do";
+                    })
+                    } else {
+                        layer.alert('撤回成果失败',{icon:5},function(){
+                            layer.closeAll();
+                        })
+                    
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                    layer.msg('请求失败');
+                   
+                }
+            })
+        });
+    }
+
+     //高级管理员撤回成果事件
+     function approvedWithdraw(){
+        $('.Withdraw').click(function (e) { 
+            layer.load();
+            ajax_request({
+                type: 'POST',
+                url: '/achievement/approvedWithdraw',
+                data: {
+                    aId:parseInt(tId)
+                },
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.state == 'success') {
+                    layer.alert('撤回成果成功',{icon:1},function(){
+                        location.href="/admin2.do";
+                    })
+                    } else {
+                        layer.alert('撤回成果失败',{icon:5},function(){
+                            layer.closeAll();
+                        })
+                    
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                    layer.msg('请求失败');
+                   
+                }
+            })
+        });
+    }
+        $('#state').val(checkState(state));
+        if(action=="see"){
+            //console.log('查看模式')
+            $('.see').hide();
+            $('form input').attr('readonly','readonly');
+            //判断撤回成果
+            if(state==3 && checkAuth()==2){
+                //初级管理员撤回成果事件
+                $(".Withdraw").removeClass('hidden');
+                preCheckedWithdraw();
+            }else if(state==4 && checkAuth()==1){
+                //高级管理员撤回已通过成果事件
+                $(".Withdraw").removeClass('hidden');
+                approvedWithdraw();
+            }
+        }else if((state==1 ||state==-1) && action==null){
+            if(state!=-1){
+                $('.submit').removeClass('hidden');
+            }
+        }else if(state==2){
+            if(checkAuth()==2){
+                $('.reject').removeClass('hidden');  //显示驳回按钮
+                reject();
+                $('form input').attr('readonly','readonly'); //只读
+                $('.preCheck').removeClass('hidden');  //显示上报按钮
+                preCheck();
+            }
+        }else{
+                layer.alert('参数不合法',{icon:5},function () { 
+                    location.href='/teacher.do?active=Cg';
+                })
+        }
+
+        
 
 
     //多文件列表示例
@@ -205,7 +256,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     (function ($) {
                         $(".filename").click(function (e) {
                             var filename = $(this).attr('filename');
-                            getFile(filenamee,account);
+                            getFile(filename,account);
                         });
                     })(jQuery);
 
@@ -260,7 +311,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 //取回论文信息
     ajax_request({
         type: 'POST',
-        url: '/thesis/getById',
+        url: '/thesis/adminGetById',
         data: {
             tId: tId
         },
@@ -276,7 +327,16 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
                 }
                 $('#tId').val(res.thesis.tId);
+                getTm(res.thesis.tName);//获取同名结果
                 var fileUploaded=$('#fileUploaded');
+
+                //此处与下面有重复代码 但不能删--
+                if((state==2 ||state==3) && checkAuth()==2){
+                    $('.disable-eidt').hide();
+                    console.log(123)
+                }
+                //--此处与下面有重复代码 但不能删
+
                 if(res.thesis.attachment){
                     var fileData=res.thesis.attachment+"";
                     fileData=fileData.split("|");
@@ -304,21 +364,20 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     fileUploaded.append(tr);
                 });
 
-                if(state==2 ||state==3){
+                if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
+                    console.log(123)
                 }
                 if(action!=null){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
-                //给filename类添加事件
-                
+                //下载文件
+                $(".filename").click(function (e) {
+                    var filename = $(this).attr('filename');
+                    getFile(filename,res.thesis.uploader);
+                });
                 (function ($) {
-                    //下载文件
-                    $(".filename").click(function (e) {
-                        var filename = $(this).attr('filename');
-                        getFile(filename,getFile);
-                    });
                     //删除文件  
                     $(".delfile").click(function (e) {
                         var filename = $(this).attr('filename');
@@ -352,11 +411,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     });
 
                 })(jQuery);
-               
-                
-              
-                
-
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
@@ -366,6 +420,38 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         }
     })
 
+    
+    //获取同名成果列表
+    function getTm(name){
+        ajax_request({
+            type: 'POST',
+            url: '/achievement/getListByName',
+            data: {
+                name: name
+            },
+            success: function (res) {
+                res = JSON.parse(res);
+                if (res.state == 'success') {
+                    var tm=$('#tm');
+                    $.each(res.achievement, function (index, item) { 
+                        if(item==""){
+                          return true;
+                        }
+                        tr='<tr class="fileRow">'+
+                            '<td>'+item.name+'</td>'+
+                           ' <td>'+checkType(item.type)+'</td>'+
+                           ' <td>'+item.uploaderName+'</td>'+
+                           ' <td>'+'未设置'+'</td>'+
+                           '<td>'+
+                           '<button type="button"  class="layui-btn layui-btn-warm layui-btn-xs filename">详情</button>'+
+                            '</td>'+
+                           '</tr>';
+                        tm.append(tr);
+                    });
+                }
+            }
+        })
+    }
 
 
     $('#fileupload').submit(function (e) {

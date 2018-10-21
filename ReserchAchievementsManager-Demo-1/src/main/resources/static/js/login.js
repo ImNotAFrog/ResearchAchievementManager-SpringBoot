@@ -22,10 +22,10 @@ $(function() {
 					console.log(role)
 					switch(role){
 						case 'ROLE_ADMIN_01':
-							window.location.href = "/admin01.do"
+							window.location.href = "/admin1.do"
 							break;
 						case 'ROLE_ADMIN_02':
-							window.location.href = "/admin02.do"
+							window.location.href = "/admin2.do"
 							break;
 						case 'ROLE_TEACHER':
 							window.location.href = "/teacher.do"

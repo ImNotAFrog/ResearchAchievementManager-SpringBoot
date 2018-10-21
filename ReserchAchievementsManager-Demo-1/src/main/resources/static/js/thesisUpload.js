@@ -100,7 +100,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                         (function($) {
                             $(".filename").click(function (e) { 
                             var filename=$(this).attr('filename');
-                            getFile(filename);
+                            getFile(filename,account);
                             });
 
                             //删除文件  
@@ -153,19 +153,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         });
 
 
-        /**下载文件
-         * filename 文件名字
-         *  */ 
-        
-     function getFile(filename) {
-         var a = document.createElement('a');
-         a.href ="/attachment/get/file?filename="+filename+"&account="+account;
-         a.click();
-         $(a).remove();
-    }
 
-
-    
 //获取成果ID
     ajax_request({
         url: "/thesis/create", 

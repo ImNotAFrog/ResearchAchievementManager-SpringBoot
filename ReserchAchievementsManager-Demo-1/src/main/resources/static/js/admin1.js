@@ -17,7 +17,7 @@ $(function () {
 	if (token == null) {
 		window.location.href = '/index'
 	}
-	if (role != 'ROLE_TEACHER') {
+	if (role != 'ROLE_ADMIN_01') {
 		window.location.href = '/index'
 	}
 	$('#account').html(account)
@@ -49,7 +49,7 @@ function getUserProfileByAccount(account, token) {
 		headers: { Authorization: 'Bearer ' + token },
 		success: function (data) {
 			var resData = JSON.parse(data)
-			if (resData.state = "success") {
+			if (resData.state == "success") {
 				var result = resData.profile
 				$('#name').html(result.name)
 				if (result.position != null) {
@@ -91,6 +91,11 @@ function getUserProfileByAccount(account, token) {
 				} else {
 					$('#subDepartmentBlock').hide();
 				}
+			}else{
+				layer.alert('获取个人信息失败',{icon:5},function(){
+					layer.closeAll();
+					//location.href="/index"
+				})
 			}
 
 		},
@@ -146,12 +151,6 @@ window.operateEvents = {
 		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		if(row.state==4){
-			layer.alert('通过的成果只能查看',{icon:5},function(){
-				 layer.closeAll();
-			})
-			return false;
-		}
 		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
 	}
 }
@@ -166,10 +165,36 @@ function operateFormatter(value, row, index) {
 }
 
 
+// 查询成果名称
+function checkType(value) {
+	value = value.toLowerCase();
+	switch (value) {
+		case "thesis":
+			return '论文类';
+			break;
+		case "poject":
+			return '课题项目类';
+			break;
+		case "textbook":
+			return '论著、教材类';
+			break;
+		case "patent":
+			return '专利';
+			break;
+		case "edu-reform project":
+			return '教学改革项目类';
+			break;
+		default:
+			return '法律、法规类';
+			break;
+	}
+}
+
+
 $(function () {
 	$.ajax({
 		type: "GET",
-		url: "/achievement/getListByAccount",
+		url: "/achievement/getAll",
 		contentType: 'application/json',
 		headers: { Authorization: 'Bearer ' + token },
 		success: function (res) {

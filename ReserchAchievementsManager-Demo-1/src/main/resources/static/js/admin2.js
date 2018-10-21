@@ -17,7 +17,7 @@ $(function () {
 	if (token == null) {
 		window.location.href = '/index'
 	}
-	if (role != 'ROLE_TEACHER') {
+	if (role != 'ROLE_ADMIN_02') {
 		window.location.href = '/index'
 	}
 	$('#account').html(account)
@@ -49,7 +49,7 @@ function getUserProfileByAccount(account, token) {
 		headers: { Authorization: 'Bearer ' + token },
 		success: function (data) {
 			var resData = JSON.parse(data)
-			if (resData.state = "success") {
+			if (resData.state == "success") {
 				var result = resData.profile
 				$('#name').html(result.name)
 				if (result.position != null) {
@@ -91,6 +91,11 @@ function getUserProfileByAccount(account, token) {
 				} else {
 					$('#subDepartmentBlock').hide();
 				}
+			}else{
+				layer.alert('获取个人信息失败',{icon:5},function(){
+					layer.closeAll();
+					//location.href="/index"
+				})
 			}
 
 		},
@@ -143,16 +148,11 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		if(row.state==4){
-			layer.alert('通过的成果只能查看',{icon:5},function(){
-				 layer.closeAll();
-			})
-			return false;
-		}
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
+		console.log(row.type);
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -160,36 +160,80 @@ window.operateEvents = {
 
 function operateFormatter(value, row, index) {
 	return [
-		'<button type="button" class="RoleOfA btn btn-primary  btn-sm" style="margin-right:15px;">查看</button>',
-		'<button type="button" class="RoleOfB btn btn-success  btn-sm" style="margin-right:15px;">编辑</button>',
+		'<button type="button" class="RoleOfA btn btn-primary  btn-sm _see" style="margin-right:15px;">查看</button>',
+		'<button type="button" class="RoleOfB btn btn-success  btn-sm _edit" style="margin-right:15px;">审核</button>',
 	].join('');
 }
 
 
+// 查询成果名称
+function checkType(value) {
+	value = value.toLowerCase();
+	switch (value) {
+		case "thesis":
+			return '论文类';
+			break;
+		case "poject":
+			return '课题项目类';
+			break;
+		case "textbook":
+			return '论著、教材类';
+			break;
+		case "patent":
+			return '专利';
+			break;
+		case "edu-reform project":
+			return '教学改革项目类';
+			break;
+		default:
+			return '法律、法规类';
+			break;
+	}
+}
+
+//筛选符合状态的成果
+function stateSiftArray(arr,state){
+	return arr.filter(item=>{
+		if(item.state==state){
+			return item
+		}
+	})
+}
+
+//管理员获取相应部门成果列表
 $(function () {
 	$.ajax({
 		type: "GET",
-		url: "/achievement/getListByAccount",
+		url: "/achievement/getListBySubDepartment",
 		contentType: 'application/json',
 		headers: { Authorization: 'Bearer ' + token },
 		success: function (res) {
 			res = JSON.parse(res);
 			console.log(res.achievement);
 			if (res.state == "success") {
-				$('#wating').bootstrapTable('load', res.achievement);
+				var dataList=res.achievement;
+				$('#wating').bootstrapTable('load',stateSiftArray(dataList,4));
+				//待初审的表
+				$('#wating1').bootstrapTable('load',stateSiftArray(dataList,2));
+				//已上报的表
+				$('#wating3').bootstrapTable('load',stateSiftArray(dataList,3));
+				//未通过的表
+				$('#wating4').bootstrapTable('load',stateSiftArray(dataList,-1));
 			} else {
 				layer.alert("获取成果列表失败", { icon: 5 }, function () {
+					location.href="/index.do"
 					layer.closeAll();
 				});
 			}
 		},
 		error: function (pa) {
-			layer.msg(132132)
+			layer.alert("请求数据失败", { icon: 5 }, function () {
+				location.href="/index.do"
+				layer.closeAll();
+			});
 		}
 	});
 })
-
-
 
 
 
@@ -199,20 +243,20 @@ $('#wating').bootstrapTable({
 			field: 'name',
 			title: '成果名称'
 		}, {
-			field: 'aId',
-			title: '成果编号',
-			sortable:true,
-			order:'asc'
-		}, {
 			field: 'type',
 			title: '类型',
 			formatter: function (value, row, index) {
 				return checkType(value)
 
 			}
-		}, {
-			field: 'state',
-			title: '审核状态',
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
 			formatter: function (value, row, index) {
 				return checkState(value);
 			}
@@ -226,3 +270,106 @@ $('#wating').bootstrapTable({
 	],
 	data: []
 });
+
+$('#wating1').bootstrapTable({
+	columns: [
+		{
+			field: 'name',
+			title: '成果名称'
+		}, {
+			field: 'type',
+			title: '类型',
+			formatter: function (value, row, index) {
+				return checkType(value)
+
+			}
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
+			formatter: function (value, row, index) {
+				return checkState(value);
+			}
+		}, {
+			field: 'operate',
+			title: '操作',
+			align: 'center',
+			events: operateEvents,
+			formatter: operateFormatter
+		}
+	],
+	data: []
+});
+
+$('#wating3').bootstrapTable({
+	columns: [
+		{
+			field: 'name',
+			title: '成果名称'
+		}, {
+			field: 'type',
+			title: '类型',
+			formatter: function (value, row, index) {
+				return checkType(value)
+
+			}
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
+			formatter: function (value, row, index) {
+				return checkState(value);
+			}
+		}, {
+			field: 'operate',
+			title: '操作',
+			align: 'center',
+			events: operateEvents,
+			formatter: operateFormatter
+		}
+	],
+	data: []
+});
+
+$('#wating4').bootstrapTable({
+	columns: [
+		{
+			field: 'name',
+			title: '成果名称'
+		}, {
+			field: 'type',
+			title: '类型',
+			formatter: function (value, row, index) {
+				return checkType(value)
+
+			}
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
+			formatter: function (value, row, index) {
+				return checkState(value);
+			}
+		}, {
+			field: 'operate',
+			title: '操作',
+			align: 'center',
+			events: operateEvents,
+			formatter: operateFormatter
+		}
+	],
+	data: []
+});
+
