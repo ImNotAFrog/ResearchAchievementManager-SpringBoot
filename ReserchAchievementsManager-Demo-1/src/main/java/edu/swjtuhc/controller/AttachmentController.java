@@ -30,6 +30,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -181,6 +182,7 @@ public class AttachmentController {
 	public String delete(HttpServletRequest request,@RequestBody Map<String,Object> reqMap) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
+		
 		String filename=(String) reqMap.get("filename");
 		Long aId=0L;		
 		String type = (String) reqMap.get("type");
@@ -258,4 +260,78 @@ public class AttachmentController {
 		return result.toString();
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02')")
+	@RequestMapping(value = "/adminDelete", method = RequestMethod.POST)
+	public String adminDelete(HttpServletRequest request,@RequestBody Map<String,Object> reqMap) {
+		String filename=(String) reqMap.get("filename");
+		Long aId=0L;		
+		String type = (String) reqMap.get("type");
+		JSONObject result = new JSONObject();
+		try {
+			aId = (Long) reqMap.get("aId");
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("state", "fail");
+			result.put("msg", "Id应为整型");
+			e.printStackTrace();
+			return result.toString();
+		}
+		
+		if(filename!=null&&aId!=null&&type!=null) {
+			switch (type) {
+			case "thesis":
+				Thesis t =thesisService.getThesisById(aId);
+				String filepath = attachmentPath + t.getUploader() + "/" + filename;
+				File file = new File(filepath);
+	            if (file.delete()) {
+	            	try {
+	            		t.setAttachment(filename);
+						if(thesisService.removeAttachment(t)==1) {
+			            	result.put("state", "success");
+							result.put("msg", "删除成功");
+						}else{
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						};
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+	            } else {
+	            	result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");	               
+	            }			
+				break;
+
+			case "textbook":
+
+				break;
+			case "patent":
+
+				break;
+			case "project":
+
+				break;
+			case "reformProject":
+
+				break;
+			case "law":
+
+				break;
+			default:
+				result.put("state", "fail");
+				result.put("msg", "文件类型参数错误");
+				break;
+			}
+			
+		}else {
+			result.put("state", "fail");
+			result.put("msg", "请检查参数");
+		}
+		
+		return result.toString();
+	}
 }
