@@ -148,10 +148,11 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
+		console.log(row.type);
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -159,8 +160,8 @@ window.operateEvents = {
 
 function operateFormatter(value, row, index) {
 	return [
-		'<button type="button" class="RoleOfA btn btn-primary  btn-sm" style="margin-right:15px;">查看</button>',
-		'<button type="button" class="RoleOfB btn btn-success  btn-sm" style="margin-right:15px;">编辑</button>',
+		'<button type="button" class="RoleOfA btn btn-primary  btn-sm _see" style="margin-right:15px;">查看</button>',
+		'<button type="button" class="RoleOfB btn btn-success  btn-sm _edit" style="margin-right:15px;">审核</button>',
 	].join('');
 }
 
@@ -190,7 +191,16 @@ function checkType(value) {
 	}
 }
 
+//筛选符合状态的成果
+function stateSiftArray(arr,state){
+	return arr.filter(item=>{
+		if(item.state==state){
+			return item
+		}
+	})
+}
 
+//高级管理员获取成果
 $(function () {
 	$.ajax({
 		type: "GET",
@@ -201,33 +211,38 @@ $(function () {
 			res = JSON.parse(res);
 			console.log(res.achievement);
 			if (res.state == "success") {
-				$('#wating').bootstrapTable('load', res.achievement);
+				var dataList=res.achievement;
+				//已通过的表
+				$('#wating4').bootstrapTable('load',stateSiftArray(dataList,4));
+				//待审核的表
+				$('#wating3').bootstrapTable('load',stateSiftArray(dataList,3));
+				//已驳回的表
+				console.log(stateSiftArray(dataList,-1))
+				$('#wating-1').bootstrapTable('load',stateSiftArray(dataList,-1));
+
 			} else {
 				layer.alert("获取成果列表失败", { icon: 5 }, function () {
+					location.href="/index.do"
 					layer.closeAll();
 				});
 			}
 		},
 		error: function (pa) {
-			layer.msg(132132)
+			layer.alert("请求数据失败", { icon: 5 }, function () {
+				location.href="/index.do"
+				layer.closeAll();
+			});
 		}
 	});
 })
 
 
 
-
-
-$('#wating').bootstrapTable({
+$('#wating4').bootstrapTable({
 	columns: [
 		{
 			field: 'name',
 			title: '成果名称'
-		}, {
-			field: 'aId',
-			title: '成果编号',
-			sortable:true,
-			order:'asc'
 		}, {
 			field: 'type',
 			title: '类型',
@@ -235,9 +250,14 @@ $('#wating').bootstrapTable({
 				return checkType(value)
 
 			}
-		}, {
-			field: 'state',
-			title: '审核状态',
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
 			formatter: function (value, row, index) {
 				return checkState(value);
 			}
@@ -251,3 +271,73 @@ $('#wating').bootstrapTable({
 	],
 	data: []
 });
+
+$('#wating3').bootstrapTable({
+	columns: [
+		{
+			field: 'name',
+			title: '成果名称'
+		}, {
+			field: 'type',
+			title: '类型',
+			formatter: function (value, row, index) {
+				return checkType(value)
+
+			}
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
+			formatter: function (value, row, index) {
+				return checkState(value);
+			}
+		}, {
+			field: 'operate',
+			title: '操作',
+			align: 'center',
+			events: operateEvents,
+			formatter: operateFormatter
+		}
+	],
+	data: []
+});
+
+$('#wating-1').bootstrapTable({
+	columns: [
+		{
+			field: 'name',
+			title: '成果名称'
+		}, {
+			field: 'type',
+			title: '类型',
+			formatter: function (value, row, index) {
+				return checkType(value)
+
+			}
+		},{
+			field: 'uploaderName',
+			title: '提交人',
+			sortable:true,
+			order:'asc'
+		},  {
+			field: 'score',
+			title: '成果得分',
+			formatter: function (value, row, index) {
+				return checkState(value);
+			}
+		}, {
+			field: 'operate',
+			title: '操作',
+			align: 'center',
+			events: operateEvents,
+			formatter: operateFormatter
+		}
+	],
+	data: []
+});
+
+

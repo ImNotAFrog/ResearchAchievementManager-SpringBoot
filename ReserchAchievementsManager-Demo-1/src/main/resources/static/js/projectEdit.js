@@ -10,7 +10,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         elem: '#publishDate'
         , type: 'date'
     });
-    var tId = GetQueryString('tId');
+    var pId = GetQueryString('pId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
     console.log(action)
@@ -25,7 +25,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     type: 'POST',
                     url: '/thesis/delete',
                     data: {
-                        tId:tId
+                        pId:pId
                     },
                     success: function (res) {
                         res=JSON.parse(res);
@@ -46,26 +46,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         });
 
     });
-
-    /*  成果state是1的时候，可以编辑，state是2或3的时候可以查看，可以撤回，不能编辑，state是3的时候，state是4的时候只能查看
-
-                服务器端开发-黄老师 2018/10/20 17:32:26
-                附件是一直可以下载的
-                
-                服务器端开发-黄老师 2018/10/20 17:32:43
-                state是-1的时候也是可以编辑 */
-                ///不能编辑的函数
-               // console.log(GetQueryString('state'));
-                  /*  switch (state) {
-                    case 1:
-                      //可以编辑、送审
-                        break;
-                    case 4:
-                        
-                    default:
-                     // 2、3可撤回 不能编辑、不能送审 只有查看
-                        break;
-                } */
                 console.log(checkState(state))
                 $('#state').val(checkState(state));
                 if((state==1 ||state==-1) && action==null){
@@ -77,7 +57,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                 type: 'POST',
                                 url: '/achievement/submit',
                                 data: {
-                                    aId:parseInt(tId)
+                                    aId:parseInt(pId)
                                 },
                                 success: function (res) {
                                     res = JSON.parse(res);
@@ -105,13 +85,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                             type: 'POST',
                             url: '/achievement/submitedWithdraw',
                             data: {
-                                aId:parseInt(tId)
+                                aId:parseInt(pId)
                             },
                             success: function (res) {
                                 res = JSON.parse(res);
                                 if (res.state == 'success') {
                                   layer.alert('撤回成果成功',{icon:1},function(){
-                                    location.href='/thesis/edit.do?tId='+tId+"&state=1";
+                                    location.href='/thesis/edit.do?pId='+pId+"&state=1";
                                   })
                                 } else {
                                     layer.alert('撤回成果失败',{icon:5},function(){
@@ -147,7 +127,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             , multiple: true
             , auto: false
             , data: {
-                id: parseInt(tId),
+                id: parseInt(pId),
                 type: 'thesis'
             }  //上传的额外数据
             , headers: { Authorization: 'Bearer ' + token }
@@ -222,7 +202,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                         url: '/attachment/delete',
                                         data: {
                                             filename:filename,
-                                            aId:parseInt(tId),
+                                            aId:parseInt(pId),
                                             type:"thesis"
                                         },
                                         success: function (res) {
@@ -261,7 +241,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         type: 'POST',
         url: '/thesis/getById',
         data: {
-            tId: tId
+            pId: pId
         },
         success: function (res) {
             res = JSON.parse(res);

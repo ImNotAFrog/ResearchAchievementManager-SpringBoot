@@ -11,27 +11,6 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         ,type: 'date'
     });
 
-//判断文件类型
-		function getIcon(filename) {
-            var result = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
-            result=result.toLowerCase();
-			if (result == "jpg" || result == "png" || result == "gif" || result == "jpg") {
-				result = 'img.png';
-			} else if (result == "pdf") {
-				result = "pdf.jpg"
-			} else if (result == "doc" || result == "docx") {
-				result = 'word.jpg';
-			} else if (result == "ppt" || result == "pptx") {
-				result = 'ppt.jpg';
-			} else if (result == "xls" || result == "xlsx") {
-				result = 'excel.jpg';
-			} else if (result == "7z" || result == "rar" || result == "zip") {
-				result = 'rar.jpg';
-			} else {
-				result = 'file.jpg';
-			}
-			return result;
-		}
 
 		 //多文件列表示例
     var demoListView = $('#fileList')
@@ -185,9 +164,10 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                 tId:tId
             }
             if(tId==null){
-                layer.alert("获取论文ID失败",{icon:5},function(){
+                layer.alert("获取论文ID失败,无法提交",{icon:5},function(){
                     layer.closeAll();
                 })
+                return false;
             }
             $.ajax({
                 type: "POST",

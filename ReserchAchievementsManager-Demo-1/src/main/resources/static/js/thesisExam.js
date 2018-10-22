@@ -71,7 +71,12 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('驳回成果成功',{icon:1},function(){
-                        location.href="/admin2.do?active=sh";
+                        if(checkAuth()==1){
+                            location.href="/admin1.do?active=sh";
+                        }else{
+                            location.href="/admin2.do?active=sh";
+                        }
+                       
                     })
                     } else {
                         layer.alert('驳回成果失败',{icon:5},function(){
@@ -136,7 +141,39 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('撤回成果成功',{icon:1},function(){
-                        location.href="/admin2.do";
+                        location.href="/admin1.do";
+                    })
+                    } else {
+                        layer.alert('撤回成果失败',{icon:5},function(){
+                            layer.closeAll();
+                        })
+                    
+                    }
+                },
+                error:function(){
+                    layer.closeAll();
+                    layer.msg('请求失败');
+                   
+                }
+            })
+        });
+    }
+
+     //高级管理员复审通过
+     function approve(){
+        $('.approve').click(function (e) { 
+            layer.load();
+            ajax_request({
+                type: 'POST',
+                url: '/achievement/approve',
+                data: {
+                    aId:parseInt(tId)
+                },
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.state == 'success') {
+                    layer.alert('复审通过',{icon:1},function(){
+                        location.href="/admin1.do";
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -174,14 +211,18 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             }
         }else if(state==2){
             if(checkAuth()==2){
-                $('.reject').removeClass('hidden');  //显示驳回按钮
+                $('.reject,.preCheck').removeClass('hidden');  //显示驳回按钮、上报按钮
                 reject();
-                $('form input').attr('readonly','readonly'); //只读
-                $('.preCheck').removeClass('hidden');  //显示上报按钮
                 preCheck();
+                $('form input').attr('readonly','readonly'); //只读
             }
+        }else if(state==3 && checkAuth()==1){
+            $('.btnSubmit,.submit,.reject,.approve').removeClass('hidden');  //显示驳提交按钮、保存、驳回、通过、重置
+            reject();
+            approve();
+            console.log('高级管理员');
         }else{
-                layer.alert('参数不合法',{icon:5},function () { 
+                layer.alert('请求不合法',{icon:5},function () { 
                     location.href='/teacher.do?active=Cg';
                 })
         }
@@ -322,6 +363,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 $('#journalLevel').val(res.thesis.journalLevel);
                 $('#journalName').val(res.thesis.journalName);
                 $('#journalId').val(res.thesis.journalId); 
+                $('#uploader').val(res.thesis.uploader); 
                 if(res.thesis.publishDate){
                     var publishDate=res.thesis.publishDate.time+"";
                     $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
@@ -333,7 +375,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 //此处与下面有重复代码 但不能删--
                 if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
-                    console.log(123)
                 }
                 //--此处与下面有重复代码 但不能删
 
@@ -366,7 +407,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 
                 if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
-                    console.log(123)
                 }
                 if(action!=null){
                     $('.see').hide();
@@ -458,24 +498,23 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         $("#btnSubmit").attr({"disabled":"true"});
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
         console.log(dataList);
-        dataList.uploader=account;
-    
         if (tId == null) {
-            layer.alert("获取论文ID失败,不是提交", { icon: 5 }, function () {
+            layer.alert("获取论文ID失败,不能提交", { icon: 5 }, function () {
                 layer.closeAll();
             })
             return false;
         }
         ajax_request({
             type: "POST",
-            url: "/thesis/upload",
+            url: "/thesis/adminModify",
             data:dataList,
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
                         layer.closeAll();
-                        window.location.href = "/teacher.do?active=myCg";
+                        layer.msg("修改成功")
+                       // window.location.href = "/admin1.do?active=myCg";
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {

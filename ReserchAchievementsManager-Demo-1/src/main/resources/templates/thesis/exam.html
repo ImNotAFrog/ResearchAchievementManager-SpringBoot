@@ -98,32 +98,7 @@
 
 						</div>
 
-						<div class="form-item see disable-eidt">
-							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
-							<button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
-							<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
-							<div class="layui-upload disable-eidt">
-								<div class="layui-upload-list">
-									<table class="layui-table">
-										<thead>
-											<tr>
-												<th>类型</th>
-												<th>名字</th>
-												<th>大小</th>
-												<th>状态</th>
-												<th>操作</th>
-											</tr>
-										</thead>
-										<tbody id="fileList">
-
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-
-
-						
+					
 						<div class="form-item" style="margin-top: 12px;">
 							<label for="" class="moco-control-label">同名成果:</label>
 							<div class="moco-control-input">
@@ -141,17 +116,18 @@
 								</table>
 						</div>
 
-
 						<div class="col-md-offset-2" style="margin-top: 5px;">
 							<button id="btnSubmit" type="submit" class="btn submit hidden see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
 							<button class="btn btn-default submit hidden btn-warning see disable-eidt" type="reset">重置</button>
 							<button type="button" class="btn btn-primary see preCheck hidden">上报</button>
+							<button type="button" class="btn btn-primary see approve hidden">通过</button>
 							<button type="button" class="btn btn-info see hidden reject">驳回</button>
 							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
 							<button type="button" class="btn btn-danger Withdraw hidden pull-right delthesis">撤回成果</button>
 						</div>
 
 						<input type="hidden" value="" name="tId" id="tId">
+						<input type="hidden" value="" name="uploader" id="uploader">
 					</form>
 				</div>
 			</div>

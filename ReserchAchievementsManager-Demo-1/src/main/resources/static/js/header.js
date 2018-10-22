@@ -265,8 +265,10 @@ function ajax_request(opt) {
 	opt.type = opt.type || 'GET';
 	opt.success = opt.success || function () { }
 	opt.error = opt.error || function () { }
-	data = JSON.stringify(opt.data);
-	//console.log(data)
+	data=opt.data;
+	if(opt.data!=null){
+		data = JSON.stringify(opt.data);
+	}
 	$.ajax({
 		type: opt.type,
 		url: opt.url,

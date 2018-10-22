@@ -299,6 +299,16 @@ a.edit:hover{
         border-radius: 2px;
         box-sizing: border-box;
    }
+    #wating4 ._edit,#wating-1 ._edit{
+        display: none !important;
+    }
+    #wating3 ._see{
+        display: none !important;
+    }
+
+
+
+
     /*椤圭洰琛ㄥ崟缁撴潫*/
 /*涓婁紶鎴愭灉缁撴潫*/
 
