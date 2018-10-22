@@ -10,10 +10,10 @@ class Header {
 		var role = TokenHelper.getRoleFromToken(token)
 		switch (role) {
 			case 'ROLE_ADMIN_01':
-				window.location.href = "/admin01.do"
+				window.location.href = "/admin1.do"
 				break;
 			case 'ROLE_ADMIN_02':
-				window.location.href = "/admin02.do"
+				window.location.href = "/admin2.do"
 				break;
 			case 'ROLE_TEACHER':
 				window.location.href = "/teacher.do"
@@ -231,6 +231,15 @@ function getValById(idName) {
 	return $('#' + idName).val();
 }
 
+//验证数据是否为正整数
+function checkIsInt(value) {
+	if (!(/(^[1-9]\d*$)/.test(value))) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 
 //获取地址栏的参数值
 function GetQueryString(name) {
@@ -248,12 +257,7 @@ function timestampToTime(timestamp) {
 }
 
 
-
-/**
-     *重绘的ajax请求
-     *
-     * @param {*} opt
-     */
+//重绘的ajax请求
 function ajax_request(opt) {
 	opt = opt || {};
 	opt.data = opt.data || null;
@@ -261,8 +265,10 @@ function ajax_request(opt) {
 	opt.type = opt.type || 'GET';
 	opt.success = opt.success || function () { }
 	opt.error = opt.error || function () { }
-	data = JSON.stringify(opt.data);
-	console.log(data)
+	data=opt.data;
+	if(opt.data!=null){
+		data = JSON.stringify(opt.data);
+	}
 	$.ajax({
 		type: opt.type,
 		url: opt.url,
@@ -301,26 +307,77 @@ function getIcon(filename) {
 	return result;
 }
 //下载文件
-function getFile(filename) {
+function getFile(filename,uploader) {
 	var a = document.createElement('a');
-	a.href = "/attachment/get/file?filename=" + filename + "&account=" + account;
+	a.href = "/attachment/get/file?filename=" + filename + "&account=" + uploader;
 	a.click();
 	$(a).remove();
 }
 
 //将表单序列化成对象
-$.fn.serializeObject = function() {  
-	var o = {};  
-	var a = this.serializeArray();  
-	$.each(a, function() {  
-		if (o[this.name]) {  
-			if (!o[this.name].push) {  
-				o[this.name] = [ o[this.name] ];  
-			}  
-			o[this.name].push(this.value || '');  
-		} else {  
-			o[this.name] = this.value || '';  
-		}  
-	});  
-	return o;  
+$.fn.serializeObject = function () {
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function () {
+		if (o[this.name]) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
 } 
+
+// 检查成果状态
+function checkState(value) {
+	switch (value) {
+		case -1:
+			return '驳回';
+			break;
+		case 1:
+			return '未提交';
+			break;
+		case 2:
+			return '待初审';
+			break;
+		case 3:
+			return '待复审';
+			break;
+		case 4:
+			return '已通过';
+			break;
+		default:
+			return '参数错误'
+			break;
+	}
+}
+
+
+// 查询成果中文名称
+function checkType(value) {
+	value = value.toLowerCase();
+	switch (value) {
+		case "thesis":
+			return '论文类';
+			break;
+		case "poject":
+			return '课题项目类';
+			break;
+		case "textbook":
+			return '论著、教材类';
+			break;
+		case "patent":
+			return '专利';
+			break;
+		case "edu-reform project":
+			return '教学改革项目类';
+			break;
+		default:
+			return '法律、法规类';
+			break;
+	}
+}
+

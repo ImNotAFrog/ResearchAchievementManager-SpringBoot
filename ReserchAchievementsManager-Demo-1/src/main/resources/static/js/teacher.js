@@ -143,14 +143,16 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		console.log(row);
-		console.log('查看')
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId;
-	},
-	'click .RoleOfC': function (e, value, row, index) {
-
+		if(row.state==4){
+			layer.alert('通过的成果只能查看',{icon:5},function(){
+				 layer.closeAll();
+			})
+			return false;
+		}
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -161,58 +163,6 @@ function operateFormatter(value, row, index) {
 		'<button type="button" class="RoleOfA btn btn-primary  btn-sm" style="margin-right:15px;">查看</button>',
 		'<button type="button" class="RoleOfB btn btn-success  btn-sm" style="margin-right:15px;">编辑</button>',
 	].join('');
-}
-
-
-
-// 检查状态
-function checkState(value) {
-	switch (value) {
-		case -1:
-			return '驳回';
-			break;
-		case 1:
-			return '未提交';
-			break;
-		case 2:
-			return '待初审';
-			break;
-		case 3:
-			return '待复审';
-			break;
-		case 4:
-			return '已通过';
-			break;
-		default:
-			return '参数错误'
-			break;
-	}
-}
-
-
-// 检查成果名称
-function checkType(value) {
-	value = value.toLowerCase();
-	switch (value) {
-		case "thesis":
-			return '论文类';
-			break;
-		case "poject":
-			return '课题项目类';
-			break;
-		case "textbook":
-			return '论著、教材类';
-			break;
-		case "patent":
-			return '专利';
-			break;
-		case "edu-reform project":
-			return '教学改革项目类';
-			break;
-		default:
-			return '法律、法规类';
-			break;
-	}
 }
 
 

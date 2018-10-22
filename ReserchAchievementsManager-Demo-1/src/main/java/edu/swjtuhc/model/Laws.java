@@ -16,6 +16,7 @@ public class Laws {
 	private Float maxScore;
 	private String department;
 	private String subDepartment;
+	
 	public Long getlId() {
 		return lId;
 	}

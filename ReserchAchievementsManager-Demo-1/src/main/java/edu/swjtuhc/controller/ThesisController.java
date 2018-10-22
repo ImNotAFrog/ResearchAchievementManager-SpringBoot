@@ -2,7 +2,6 @@ package edu.swjtuhc.controller;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,12 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import edu.swjtuhc.mapper.AchievementMapper;
-import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
-import edu.swjtuhc.service.AchievementService;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.JwtTokenUtil;

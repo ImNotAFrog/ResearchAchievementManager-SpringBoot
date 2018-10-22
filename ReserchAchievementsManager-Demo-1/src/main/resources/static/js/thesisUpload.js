@@ -11,27 +11,6 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         ,type: 'date'
     });
 
-//判断文件类型
-		function getIcon(filename) {
-            var result = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
-            result=result.toLowerCase();
-			if (result == "jpg" || result == "png" || result == "gif" || result == "jpg") {
-				result = 'img.png';
-			} else if (result == "pdf") {
-				result = "pdf.jpg"
-			} else if (result == "doc" || result == "docx") {
-				result = 'word.jpg';
-			} else if (result == "ppt" || result == "pptx") {
-				result = 'ppt.jpg';
-			} else if (result == "xls" || result == "xlsx") {
-				result = 'excel.jpg';
-			} else if (result == "7z" || result == "rar" || result == "zip") {
-				result = 'rar.jpg';
-			} else {
-				result = 'file.jpg';
-			}
-			return result;
-		}
 
 		 //多文件列表示例
     var demoListView = $('#fileList')
@@ -93,14 +72,49 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                         , tds = tr.children();
                     tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
                     //console.log(res.name)
-                    tds.eq(4).html('<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-danger filename">下载</button>');
-                   
+                    var optBtn='<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-warm filename">下载</button>'+
+                    '<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-danger delfile">删除</button>';
+                    tds.eq(4).html(optBtn);
                     //重新声明函数 因为doc节点发生变化
-                    (function($) {
-                        $(".filename").click(function (e) { 
-                           var filename=$(this).attr('filename');
-                           getFile(filename);
+                        (function($) {
+                            $(".filename").click(function (e) { 
+                            var filename=$(this).attr('filename');
+                            getFile(filename,account);
+                            });
+
+                            //删除文件  
+                        $(".delfile").click(function (e) {
+                            var filename = $(this).attr('filename');
+                            var removeEl=$(this).parent().parent();
+                            layer.confirm('确定要删除吗？', {
+                                btn: ['确定', '点错了'] //按钮
+                            }, function () {
+                            layer.load();
+                            ajax_request({
+                                    type: 'POST',
+                                    url: '/attachment/delete',
+                                    data: {
+                                        filename:filename,
+                                        aId:parseInt(tId),
+                                        type:"thesis"
+                                    },
+                                    success: function (res) {
+                                        res = JSON.parse(res);
+                                        if (res.state == 'success') {
+                                            layer.closeAll();
+                                            layer.msg(res.msg,{time:1000});
+                                            removeEl.remove();
+                                        } else {
+                                            layer.closeAll();
+                                            layer.msg("删除失败",{time:6000});
+                                        }
+                                    }
+                                }) 
+                            }, function () {
+                            });
                         });
+
+
                     })(jQuery);
                     return delete this.files[index]; //删除文件队列已经上传成功的文件    
                 }
@@ -118,19 +132,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         });
 
 
-        /**下载文件
-         * filename 文件名字
-         *  */ 
-        
-     function getFile(filename) {
-         var a = document.createElement('a');
-         a.href ="/attachment/get/file?filename="+filename+"&account="+account;
-         a.click();
-         $(a).remove();
-    }
 
-
-    
 //获取成果ID
     ajax_request({
         url: "/thesis/create", 
@@ -156,15 +158,16 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                 tName:getValById('tName'),
                 journalLevel:getValById('journalLevel'),
                 journalName:getValById('journalName'),
-                journalNum:getValById('journalNum'),
+                journalId:getValById('journalId'),
                 publishDate:getValById('publishDate'),
                 uploader:account,
                 tId:tId
             }
             if(tId==null){
-                layer.alert("获取论文ID失败",{icon:5},function(){
+                layer.alert("获取论文ID失败,无法提交",{icon:5},function(){
                     layer.closeAll();
                 })
+                return false;
             }
             $.ajax({
                 type: "POST",

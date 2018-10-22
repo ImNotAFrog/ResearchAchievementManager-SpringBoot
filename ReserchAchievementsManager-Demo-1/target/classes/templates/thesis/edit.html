@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>科研成果管理系统</title>
+	<title>论文编辑</title>
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
 	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
@@ -17,13 +17,21 @@
 	<div th:replace="header::html"></div>
 	<div class="container upload">
 		<div class="row">
-			<div class="col-md-9 col-md-offset-2">
+			<div class="col-md-9 col-md-offset-2 ">
 
 				<!--论文-->
 				<div class="re-item">
-
-					<h3>论文信息</h3>
+						<h3>论文信息</h3>  
 					<a href="javascript:Header.home()" class="moco-modal-close"></a>
+					
+					<div class="form-item">
+						<label>当前状态:</label>
+						<div class="moco-control-input">
+							<input type="text" id="state" readonly="readonly" class="moco-form-control">
+							<div class="rlf-tip-wrap errorHint color-red"></div>
+						</div>
+					</div>
+
 					<form id="fileupload" method="post" target="nm_iframe" onchange="confirmFlag=0;">
 						<div class="form-item">
 							<label for="thesisName">论文名称:</label>
@@ -57,9 +65,9 @@
 							</div>
 						</div>
 						<div class="form-item">
-							<label for="journalNum">刊号:</label>
+							<label for="journalId">刊号:</label>
 							<div class="moco-control-input">
-								<input type="text" name="journalNum" id="journalNum" autocomplete="off" class="moco-form-control" placeholder="请输入刊物编号...">
+								<input type="text" name="journalId" id="journalId" autocomplete="off" class="moco-form-control" placeholder="请输入刊物编号...">
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>
@@ -73,7 +81,6 @@
 						<div class="form-item" id="yc" style="margin-top: 12px;">
 							<label for="" class="moco-control-label">已上传附件:</label>
 							<div class="moco-control-input">
-								
 							</div>
 							<table class="layui-table">
 									<thead>
@@ -91,11 +98,11 @@
 
 						</div>
 
-						<div class="form-item" id=''>
+						<div class="form-item see disable-eidt" id=''>
 							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
 							<button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
 							<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
-							<div class="layui-upload">
+							<div class="layui-upload disable-eidt">
 								<div class="layui-upload-list">
 									<table class="layui-table">
 										<thead>
@@ -117,10 +124,13 @@
 						</div>
 
 
-						<div class="col-md-offset-2">
-							<button id="btnSubmit" type="submit" class="btn btn-primary submit" style="opacity: 0.75">提交</button>
-							<button class="btn btn-default btn-warning" type="reset">重置</button>
-							<button type="button" class="btn btn-default" onclick="Header.home()">返回</button>
+						<div class="col-md-offset-2" style="margin-top: 5px;">
+							<button id="btnSubmit" type="submit" class="btn see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
+							<button class="btn btn-default btn-warning see disable-eidt" type="reset">重置</button>
+							<button type="button" class="btn btn-info see submit hidden disable-eidt">提交送审</button>
+							<button type="button" class="btn btn-info see hidden submitedWithdraw">撤销送审</button>
+							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
+							<button type="button" class="btn btn-danger see pull-right delthesis">删除论文</button>
 						</div>
 
 						<input type="hidden" value="" name="tId" id="tId">
@@ -133,7 +143,6 @@
 	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
-<script type="text/javascript" src="/js/vue.js"></script>
 <script src="/js/thesisEdit.js"></script>
 
 </html>

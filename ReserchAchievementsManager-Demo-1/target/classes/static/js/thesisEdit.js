@@ -4,7 +4,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     var laydate = layui.laydate;
     var upload = layui.upload;
     var laytpl = layui.laytpl;
-    var tId = null;
     var flist = [];
     //日期时间选择器
     laydate.render({
@@ -12,6 +11,131 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         , type: 'date'
     });
     var tId = GetQueryString('tId');
+    var state=parseInt(GetQueryString('state'));
+    var action=GetQueryString('action');
+    console.log(action)
+    //删除已上传文件
+    $('.delthesis').click(function (e) { 
+        $(".delthesis").attr({"disabled":"true"});
+        layer.confirm('确定要此论文吗？', {
+            btn: ['确定', '点错了'] //按钮
+        }, function () {
+              layer.load();
+                ajax_request({
+                    type: 'POST',
+                    url: '/thesis/delete',
+                    data: {
+                        tId:tId
+                    },
+                    success: function (res) {
+                        res=JSON.parse(res);
+                    if (res.state == "success") {
+                        layer.alert(res.msg, { icon: 1 }, function () {
+                            layer.closeAll();
+                            window.location.href = "/teacher.do?active=myCg";
+                        });
+                    } else {
+                        layer.alert(res.msg, { icon: 5 }, function () {
+                            layer.closeAll();
+                        });
+                        $("#btnSubmit").attr({"disabled":"false"});
+                    }
+                    }
+            })
+        }, function () {
+        });
+
+    });
+
+    /*  成果state是1的时候，可以编辑，state是2或3的时候可以查看，可以撤回，不能编辑，state是3的时候，state是4的时候只能查看
+
+                服务器端开发-黄老师 2018/10/20 17:32:26
+                附件是一直可以下载的
+                
+                服务器端开发-黄老师 2018/10/20 17:32:43
+                state是-1的时候也是可以编辑 */
+                ///不能编辑的函数
+               // console.log(GetQueryString('state'));
+                  /*  switch (state) {
+                    case 1:
+                      //可以编辑、送审
+                        break;
+                    case 4:
+                        
+                    default:
+                     // 2、3可撤回 不能编辑、不能送审 只有查看
+                        break;
+                } */
+                console.log(checkState(state))
+                $('#state').val(checkState(state));
+                if((state==1 ||state==-1) && action==null){
+                    if(state!=-1){
+                        $('.submit').removeClass('hidden');
+                        $('.submit').click(function (e) { 
+                            layer.load();
+                            ajax_request({
+                                type: 'POST',
+                                url: '/achievement/submit',
+                                data: {
+                                    aId:parseInt(tId)
+                                },
+                                success: function (res) {
+                                    res = JSON.parse(res);
+                                    if (res.state == 'success') {
+                                    layer.alert('送审成功',{icon:1},function(){
+                                        location.href='/teacher.do?active=Cg';
+                                    })
+                                    } else {
+                                        layer.alert('送审失败',{icon:5},function(){
+                                            layer.closeAll();
+                                        })
+                                    
+                                    }
+                                }
+                            })
+                        });
+                    }
+                }else if((state==2 ||state==3) && action==null){
+                    $('.submitedWithdraw').removeClass('hidden');
+                    $('form input').attr('readonly','readonly');
+                    $('.disable-eidt').hide();
+                    $('.submitedWithdraw').click(function (e) { 
+                        layer.load();
+                        ajax_request({
+                            type: 'POST',
+                            url: '/achievement/submitedWithdraw',
+                            data: {
+                                aId:parseInt(tId)
+                            },
+                            success: function (res) {
+                                res = JSON.parse(res);
+                                if (res.state == 'success') {
+                                  layer.alert('撤回成果成功',{icon:1},function(){
+                                    location.href='/thesis/edit.do?tId='+tId+"&state=1";
+                                  })
+                                } else {
+                                    layer.alert('撤回成果失败',{icon:5},function(){
+                                        layer.closeAll();
+                                      })
+                                   
+                                }
+                            }
+                        })
+                    });
+
+                }else{
+                    if(action=="see"){
+                        console.log('查看模式')
+                        $('form input').attr('readonly','readonly');
+                        $('.see').hide();
+                    }else{
+                        layer.alert('参数不合法',{icon:5},function () { 
+                            location.href='/teacher.do?active=Cg';
+                         })
+                    }
+                   
+                }
+
 
     //多文件列表示例
     var demoListView = $('#fileList')
@@ -73,15 +197,51 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                         , tds = tr.children();
                     tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
                     //console.log(res.name)
-                    tds.eq(4).html('<button type="button" filename="' + res.name + '" class="layui-btn layui-btn-xs layui-btn-danger filename">下载</button>');
-
+                    var optBtn='<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs layui-btn-warm filename">下载</button>'+
+                    '<button type="button" filename="'+res.name+'" class="layui-btn layui-btn-xs disable-eidt layui-btn-danger delfile">删除</button>';
+                    tds.eq(4).html(optBtn);
                     //重新声明函数 因为doc节点发生变化
                     (function ($) {
                         $(".filename").click(function (e) {
                             var filename = $(this).attr('filename');
-                            getFile(filename);
+                            getFile(filenamee,account);
                         });
                     })(jQuery);
+
+                    
+                            //删除文件  
+                            $(".delfile").click(function (e) {
+                                var filename = $(this).attr('filename');
+                                var removeEl=$(this).parent().parent();
+                                layer.confirm('确定要删除吗？', {
+                                    btn: ['确定', '点错了'] //按钮
+                                }, function () {
+                                layer.load();
+                                ajax_request({
+                                        type: 'POST',
+                                        url: '/attachment/delete',
+                                        data: {
+                                            filename:filename,
+                                            aId:parseInt(tId),
+                                            type:"thesis"
+                                        },
+                                        success: function (res) {
+                                            res = JSON.parse(res);
+                                            if (res.state == 'success') {
+                                                layer.closeAll();
+                                                layer.msg(res.msg,{time:1000});
+                                                removeEl.remove();
+                                            } else {
+                                                layer.closeAll();
+                                                layer.msg("删除失败",{time:6000});
+                                            }
+                                        }
+                                    }) 
+                                }, function () {
+                                });
+                            });
+
+
                     return delete this.files[index]; //删除文件队列已经上传成功的文件    
                 }
                 this.error(index, upload);
@@ -96,7 +256,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 tds.eq(4).find('.demo-reload').val('重新上传'); //显示重传
             }
         });
-
+//取回论文信息
     ajax_request({
         type: 'POST',
         url: '/thesis/getById',
@@ -109,7 +269,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 $('#tName').val(res.thesis.tName);
                 $('#journalLevel').val(res.thesis.journalLevel);
                 $('#journalName').val(res.thesis.journalName);
-                $('#journalNum').val(res.thesis.journalNum);  //漏了
+                $('#journalId').val(res.thesis.journalId); 
                 if(res.thesis.publishDate){
                     var publishDate=res.thesis.publishDate.time+"";
                     $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
@@ -124,7 +284,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     return false;
                 }
                 $.each(fileData, function (index, item) { 
-                    console.log(item)
                     if(item==""){
                       //  return false;
                       return true;
@@ -137,20 +296,27 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                         '</td>'+
                        ' <td>'+item+'</td>'+
                        '<td>'+
-                       '<button type="button" filename="'+item+'" class="layui-btn layui-btn-xs filename">下载</button>'+
-                       '<button class="layui-btn layui-btn-xs layui-btn-danger  delfile" filename="'+item+'" type="button">删除</button>'+
+                       '<button type="button" filename="'+item+'" class="layui-btn layui-btn-warm layui-btn-xs filename">下载</button>'+
+                       '<button class="layui-btn layui-btn-xs layui-btn-danger see  disable-eidt delfile" filename="'+item+'" type="button">删除</button>'+
                         '</td>'+
                        '</tr>';
-                        console.log(item);
                     fileUploaded.append(tr);
                 });
+
+                if(state==2 ||state==3){
+                    $('.disable-eidt').hide();
+                }
+                if(action!=null){
+                    $('.see').hide();
+                }
                 //console.log(JSON.stringify(fileData))
                 //给filename类添加事件
+                
                 (function ($) {
                     //下载文件
                     $(".filename").click(function (e) {
                         var filename = $(this).attr('filename');
-                        getFile(filename);
+                        getFile(filename,account);
                     });
                     //删除文件  
                     $(".delfile").click(function (e) {
@@ -185,6 +351,11 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     });
 
                 })(jQuery);
+               
+                
+              
+                
+
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
@@ -221,9 +392,10 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
+                        $("#btnSubmit").attr({"disabled":"false"});
                         layer.closeAll();
                     });
-                    $("#btnSubmit").attr({"disabled":"false"});
+                  
                 }
             }
         })

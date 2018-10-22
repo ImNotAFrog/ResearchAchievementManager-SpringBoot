@@ -7,7 +7,7 @@ import edu.swjtuhc.model.UserProfile;
 
 public interface ProjectService {
 	Long createProject(String account) throws IOException;
-	Project getProjectById(Long tId);
+	Project getProjectById(Long pId);
 	Integer updateProject(Project project,UserProfile user) throws IOException;
 	Integer deleteProject(Long pId) throws IOException;
 	Integer modifyProject(Project project) throws IOException;

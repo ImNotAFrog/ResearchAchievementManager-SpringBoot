@@ -13,7 +13,6 @@ import edu.swjtuhc.mapper.AchievementMapper;
 import edu.swjtuhc.mapper.ProjectMapper;
 import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.Project;
-import edu.swjtuhc.model.Project;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.utils.IdWorker;

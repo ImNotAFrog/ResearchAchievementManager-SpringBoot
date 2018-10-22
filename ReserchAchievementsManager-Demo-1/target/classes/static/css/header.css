@@ -326,4 +326,91 @@ nav .wrap .research-wrap .research img{
 	background: #b2544e;
 }
 
+
+/* 上下左右居中 */
+.flex1{
+	display: flex;
+	flex-direction:column ;
+	flex-wrap:wrap;
+	justify-content:center;
+	 align-items:center;
+  }
+  
+  
+  /* 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。 */
+  .flex2{
+	display: flex;
+	flex-direction:row ;
+	flex-wrap:wrap;
+	justify-content:space-around;
+  }
+  
+  /* 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍,上下垂直居中 */
+  .flex3{
+	display: flex;
+	flex-direction:row ;
+	flex-wrap:wrap;
+	justify-content:space-around;
+	align-items: center;
+  }
+  
+  
+  /* 从头开始排  垂直居中 */
+  .flex4{
+	display: flex;
+	flex-direction:row ;
+	flex-wrap:wrap;
+	align-items: center;
+  }
+  
+  
+  /* 两端对齐，项目之间的间隔都相等。交叉轴没有居中 */
+  .flex5{
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:space-between;
+  }
+  
+  /* 上下两端对齐，交叉轴居中居中 */
+  .flex6{
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:space-between;
+	align-items: center;
+  }
+  
+  /* 从上往下排 两端对齐 */
+  .flex7{
+	display: flex;
+	flex-direction:column;
+	flex-wrap:wrap;
+	justify-content:space-between;
+  }
+  
+  /* 从上往下排 不换行 */
+  .flex8{
+	display: flex;
+	flex-wrap:nowrap;
+  }
+  
+  
+  /* space-between：两端对齐，项目之间的间隔都相等。 */
+  .flex9{
+	display: flex;
+	flex-direction:row ;
+	flex-wrap:wrap;
+	justify-content:space-between;
+	align-content: center;
+  }
+  
+  /* 从上往下排 主轴两端对齐 交叉轴右对齐 */
+  .flex10{
+	display: flex;
+	flex-direction:column;
+	flex-wrap:wrap;
+	justify-content:space-between;
+	align-items: flex-end
+  }
+  
+
 /* 鎼存洟鍎� */

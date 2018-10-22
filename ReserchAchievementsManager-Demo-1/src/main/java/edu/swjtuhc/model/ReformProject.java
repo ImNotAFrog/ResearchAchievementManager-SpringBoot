@@ -3,8 +3,8 @@ package edu.swjtuhc.model;
 import java.util.Date;
 
 public class ReformProject {
-	private Long rPId;
-	private String rPName;
+	private Long rpId;
+	private String rpName;
 	private Integer involvement;
 	private Integer status;
 	private Date projectDate; 
@@ -15,11 +15,20 @@ public class ReformProject {
 	private Float maxScore;
 	private String department;
 	private String subDepartment;
-	public String getrPName() {
-		return rPName;
+	
+
+	public Long getRpId() {
+		return rpId;
 	}
-	public void setrPName(String rPName) {
-		this.rPName = rPName;
+	public void setRpId(Long rpId) {
+		this.rpId = rpId;
+	}
+
+	public String getRpName() {
+		return rpName;
+	}
+	public void setRpName(String rpName) {
+		this.rpName = rpName;
 	}
 	public Integer getInvolvement() {
 		return involvement;

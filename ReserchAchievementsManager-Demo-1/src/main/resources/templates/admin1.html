@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>科研成果管理系统</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" type="text/css" href="/css/admin1.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table.css">
+	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+</head>
+
+<body>
+	<div th:replace="header::html"></div>
+	<div class="content">
+		<div class="container clearfix">
+			<div class="left">
+				<ul>
+					<li><a class="" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state4"> <span>已通过成果</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state3"> <span>待审核成果</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state-1"> <span>已驳回成果</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state-1"> <span>成果评比</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state-1"> <span>成果导出</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state-1"> <span>新闻列表</span> <span class="icon">&gt;</span>
+						</a></li>
+					<li><a href="#" id="state-1"> <span>调研活动</span> <span class="icon">&gt;</span>
+						</a></li>
+
+					<li><a href="#" id="state-1"> <span>其他学术活动</span> <span class="icon">&gt;</span>
+						</a></li>
+
+				</ul>
+			</div>
+			<div class="right-fix">
+				<div class="right">
+					<div id="detail" class="content-item">
+						<div class="common-title">
+							个人信息 <a href="/editPassword.do" class="pull-right edit">修改密码</a>
+							<a href="/editUser.do" class="pull-right edit">编辑</a>
+						</div>
+						<div class="detail">
+							<div class="line"></div>
+							<div class="info-box clearfix">
+								<label class="pull-left">账号</label>
+								<div id='account' class="pull-left"></div>
+							</div>
+							<div id='nameBlock' class="info-box clearfix">
+								<label class="pull-left">姓名</label>
+								<div id='name' class="pull-left"></div>
+							</div>
+							<div id='positionBlock' class="info-box clearfix">
+								<label class="pull-left">职务</label>
+								<div id='position' class="pull-left"></div>
+							</div>
+							<div id='titleBlock' class="info-box clearfix">
+								<label class="pull-left">职称</label>
+								<div id='title' class="pull-left"></div>
+							</div>
+							<div id='positionLevelBlock' class="info-box clearfix">
+								<label class="pull-left">职级</label>
+								<div id='positionLevel' class="pull-left"></div>
+							</div>
+							<div id='departmentBlock' class="info-box clearfix">
+								<label class="pull-left">所属部门</label>
+								<div id='department' class="pull-left"></div>
+							</div>
+							<div id='subDepartmentBlock' class="info-box clearfix">
+								<label class="pull-left">所属科室</label>
+								<div id='subDepartment' class="pull-left"></div>
+							</div>
+						</div>
+					</div>
+					<div id="_state4" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--已通过-->
+						<div class="examing">
+							<table id="wating4" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
+							 data-sort-order="desc" data-height="516" data-search="true">
+							</table>
+						</div>
+
+					</div>
+					<div id="_state3" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--待审核-->
+						<div class="examing">
+							<table id="wating3" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
+							 data-sort-order="desc" data-height="516" data-search="true">
+							</table>
+						</div>
+
+					</div>
+					<div id="_state-1" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--已驳回-->
+						<div class="examing">
+							<table id="wating-1" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
+							 data-sort-order="desc" data-height="516" data-search="true">
+							</table>
+						</div>
+					</div>
+					<div id="research" class="content-item">
+						成果评比
+
+					</div>
+
+					<div id="research" class="content-item">
+
+						已驳回成果
+					</div>
+
+					<div id="research" class="content-item">
+						成果导出
+
+					</div>
+
+					<div id="research" class="content-item">
+						新闻列表
+
+					</div>
+					<div id="research" class="content-item">
+						调研活动
+
+					</div>
+					<div id="research" class="content-item">
+						其他学术活动
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/js/bootstrap-table.js"></script>
+<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/admin1.js"></script>
+
+</html>

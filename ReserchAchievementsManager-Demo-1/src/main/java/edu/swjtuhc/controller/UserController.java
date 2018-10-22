@@ -1,30 +1,18 @@
 package edu.swjtuhc.controller;
 
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import edu.swjtuhc.enums.Department;
-import edu.swjtuhc.mapper.UserMapper;
-import edu.swjtuhc.mapper.UserProfileMapper;
 import edu.swjtuhc.model.SysUser;
-import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
-import edu.swjtuhc.service.AuthService;
 import edu.swjtuhc.service.UserService;
-import edu.swjtuhc.utils.DepartmentListUtil;
 import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

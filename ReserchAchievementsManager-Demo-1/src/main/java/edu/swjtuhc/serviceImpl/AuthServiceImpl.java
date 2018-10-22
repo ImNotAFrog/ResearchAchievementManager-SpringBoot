@@ -1,6 +1,5 @@
 package edu.swjtuhc.serviceImpl;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 	public boolean verifyPassword(String account, String password) {
 		// TODO Auto-generated method stub
 		UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(account, password);
-	    final Authentication authentication = authenticationManager.authenticate(upToken);
+	    authenticationManager.authenticate(upToken);
 	    return true;
 	}
     
