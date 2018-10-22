@@ -40,8 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import edu.swjtuhc.model.Project;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
+import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.FileUploadUtil;
@@ -64,7 +66,10 @@ public class AttachmentController {
 
 	@Autowired
 	private ThesisService thesisService;
-	
+
+	@Autowired
+	private ProjectService projectService;
+
 	@Autowired
 	private UserService userService;
 
@@ -84,7 +89,7 @@ public class AttachmentController {
 		String id = params.getParameter("id");
 		try {
 			UserProfile user = userService.getUserProfileByAccount(account);
-			if(user==null) {
+			if (user == null) {
 				result.put("state", "fail");
 				result.put("msg", "用户权限错误");
 				return result.toString();
@@ -95,16 +100,15 @@ public class AttachmentController {
 			case "thesis":
 				Thesis t = thesisService.getThesisById(attachmentId);
 				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
-				if(t==null) {
-					result=new JSONObject();
+				if (t == null) {
+					result = new JSONObject();
 					result.put("state", "fail");
 					result.put("msg", "论文不存在");
-				}
-				else if(result.getString("state").equals("success")) {					
+				} else if (result.getString("state").equals("success")) {
 					t.setAttachment(result.getString("name"));
 					int i = thesisService.appendAttachment(t);
-					if(i!=1) {
-						result=new JSONObject();
+					if (i != 1) {
+						result = new JSONObject();
 						result.put("state", "fail");
 						result.put("msg", "附件上传失败");
 					}
@@ -117,7 +121,21 @@ public class AttachmentController {
 
 				break;
 			case "project":
-
+				Project p = projectService.getProjectById(attachmentId);
+				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
+				if (p == null) {
+					result = new JSONObject();
+					result.put("state", "fail");
+					result.put("msg", "课题项目不存在");
+				} else if (result.getString("state").equals("success")) {
+					p.setAttachment(result.getString("name"));
+					int i = projectService.appendAttachment(p);
+					if (i != 1) {
+						result = new JSONObject();
+						result.put("state", "fail");
+						result.put("msg", "附件上传失败");
+					}
+				}
 				break;
 			case "reformProject":
 
@@ -133,7 +151,7 @@ public class AttachmentController {
 			return result.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-			result=new JSONObject();
+			result = new JSONObject();
 			result.put("state", "fail");
 			result.put("msg", "文件ID应为整形");
 			return result.toString();
@@ -144,7 +162,8 @@ public class AttachmentController {
 
 	@RequestMapping(value = "/get/file", method = RequestMethod.GET)
 	public void getFile(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("filename") String filename,@RequestParam("account") String account) throws UnsupportedEncodingException {
+			@RequestParam("filename") String filename, @RequestParam("account") String account)
+			throws UnsupportedEncodingException {
 		request.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Description", "File Transfer");
@@ -177,14 +196,14 @@ public class AttachmentController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String delete(HttpServletRequest request,@RequestBody Map<String,Object> reqMap) {
+	public String delete(HttpServletRequest request, @RequestBody Map<String, Object> reqMap) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
-		
-		String filename=(String) reqMap.get("filename");
-		Long aId=0L;		
+
+		String filename = (String) reqMap.get("filename");
+		Long aId = 0L;
 		String type = (String) reqMap.get("type");
 		JSONObject result = new JSONObject();
 		try {
@@ -196,28 +215,30 @@ public class AttachmentController {
 			e.printStackTrace();
 			return result.toString();
 		}
-		
-		if(filename!=null&&aId!=null&&type!=null) {
+		String filepath=null;
+		File file=null;
+		if (filename != null && aId != null && type != null) {
 			switch (type) {
 			case "thesis":
-				Thesis t =thesisService.getThesisById(aId);
-				if(t.getUploader()==null||!t.getUploader().equals(account)) {
+				Thesis t = thesisService.getThesisById(aId);
+				if (t.getUploader() == null || !t.getUploader().equals(account)) {
 					result.put("state", "fail");
 					result.put("msg", "论文或用户权限错误");
 					return result.toString();
 				}
-				String filepath = attachmentPath + t.getUploader() + "/" + filename;
-				File file = new File(filepath);
-	            if (file.delete()) {
-	            	try {
-	            		t.setAttachment(filename);
-						if(thesisService.removeAttachment(t)==1) {
-			            	result.put("state", "success");
+				filepath = attachmentPath + t.getUploader() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						t.setAttachment(filename);
+						if (thesisService.removeAttachment(t) == 1) {
+							result.put("state", "success");
 							result.put("msg", "删除成功");
-						}else{
+						} else {
 							result.put("state", "success");
 							result.put("msg", "数据库更新失败或文件不存在");
-						};
+						}
+						;
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						result.put("state", "success");
@@ -225,12 +246,11 @@ public class AttachmentController {
 						e.printStackTrace();
 						return request.toString();
 					}
-	            } else {
-	            	result.put("state", "failed");
-					result.put("msg", "删除失败，文件或不存在");	               
-	            }			
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
 				break;
-
 			case "textbook":
 
 				break;
@@ -238,7 +258,36 @@ public class AttachmentController {
 
 				break;
 			case "project":
-
+				Project p = projectService.getProjectById(aId);
+				if (p.getUploader() == null || !p.getUploader().equals(account)) {
+					result.put("state", "fail");
+					result.put("msg", "论文或用户权限错误");
+					return result.toString();
+				}
+				filepath = attachmentPath + p.getUploader() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						p.setAttachment(filename);
+						if (projectService.removeAttachment(p) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
 				break;
 			case "reformProject":
 
@@ -251,20 +300,20 @@ public class AttachmentController {
 				result.put("msg", "文件类型参数错误");
 				break;
 			}
-			
-		}else {
+
+		} else {
 			result.put("state", "fail");
 			result.put("msg", "请检查参数");
 		}
-		
+
 		return result.toString();
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02')")
 	@RequestMapping(value = "/adminDelete", method = RequestMethod.POST)
-	public String adminDelete(HttpServletRequest request,@RequestBody Map<String,Object> reqMap) {
-		String filename=(String) reqMap.get("filename");
-		Long aId=0L;		
+	public String adminDelete(HttpServletRequest request, @RequestBody Map<String, Object> reqMap) {
+		String filename = (String) reqMap.get("filename");
+		Long aId = 0L;
 		String type = (String) reqMap.get("type");
 		JSONObject result = new JSONObject();
 		try {
@@ -276,23 +325,25 @@ public class AttachmentController {
 			e.printStackTrace();
 			return result.toString();
 		}
-		
-		if(filename!=null&&aId!=null&&type!=null) {
+		String filepath=null;
+		File file=null;
+		if (filename != null && aId != null && type != null) {
 			switch (type) {
 			case "thesis":
-				Thesis t =thesisService.getThesisById(aId);
-				String filepath = attachmentPath + t.getUploader() + "/" + filename;
-				File file = new File(filepath);
-	            if (file.delete()) {
-	            	try {
-	            		t.setAttachment(filename);
-						if(thesisService.removeAttachment(t)==1) {
-			            	result.put("state", "success");
+				Thesis t = thesisService.getThesisById(aId);
+				filepath = attachmentPath + t.getUploader() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						t.setAttachment(filename);
+						if (thesisService.removeAttachment(t) == 1) {
+							result.put("state", "success");
 							result.put("msg", "删除成功");
-						}else{
+						} else {
 							result.put("state", "success");
 							result.put("msg", "数据库更新失败或文件不存在");
-						};
+						}
+						;
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						result.put("state", "success");
@@ -300,12 +351,11 @@ public class AttachmentController {
 						e.printStackTrace();
 						return request.toString();
 					}
-	            } else {
-	            	result.put("state", "failed");
-					result.put("msg", "删除失败，文件或不存在");	               
-	            }			
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
 				break;
-
 			case "textbook":
 
 				break;
@@ -313,7 +363,31 @@ public class AttachmentController {
 
 				break;
 			case "project":
-
+				Project p = projectService.getProjectById(aId);
+				filepath = attachmentPath + p.getUploader() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						p.setAttachment(filename);
+						if (projectService.removeAttachment(p) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
 				break;
 			case "reformProject":
 
@@ -326,12 +400,12 @@ public class AttachmentController {
 				result.put("msg", "文件类型参数错误");
 				break;
 			}
-			
-		}else {
+
+		} else {
 			result.put("state", "fail");
 			result.put("msg", "请检查参数");
 		}
-		
+
 		return result.toString();
 	}
 }

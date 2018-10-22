@@ -46,12 +46,12 @@ public class ProjectController {
 		JSONObject result = new JSONObject();
 		if (token != null && account != null) {
 			
-			Long tId = -1L;
+			Long pId = -1L;
 			try {
-				tId = projectService.createProject(account);
-				if(tId!=0) {
+				pId = projectService.createProject(account);
+				if(pId!=0) {
 					result.put("state", "success");
-					result.put("tId", tId);
+					result.put("pId", pId);
 				}else {
 					result.put("state", "fail");
 					result.put("msg", "课题项目状态出错");
