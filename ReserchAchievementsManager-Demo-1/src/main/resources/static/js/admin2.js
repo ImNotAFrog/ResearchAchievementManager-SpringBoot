@@ -151,7 +151,6 @@ window.operateEvents = {
 		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		console.log(row.type);
 		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
 	}
 }

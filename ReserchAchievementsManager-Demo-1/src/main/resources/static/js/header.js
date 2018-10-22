@@ -363,7 +363,7 @@ function checkType(value) {
 		case "thesis":
 			return '论文类';
 			break;
-		case "poject":
+		case "project":
 			return '课题项目类';
 			break;
 		case "textbook":

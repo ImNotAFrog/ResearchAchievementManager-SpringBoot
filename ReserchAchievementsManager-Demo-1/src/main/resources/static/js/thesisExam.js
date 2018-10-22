@@ -11,7 +11,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         elem: '#publishDate'
         , type: 'date'
     });
-    var tId = GetQueryString('tId');
+    var tId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
 

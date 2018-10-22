@@ -45,9 +45,9 @@
 							</div>
 						</div>
 						<div class="form-item">
-							<label for="projectLevel">项目级别:</label>
+							<label for="level">项目级别:</label>
 							<div class="moco-control-input">
-                           				  <select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" data-validate="require-select" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex">
+                           				  <select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" data-validate="require-select" onfocus="this.defaultIndex=this.selectedIndex;">
 	                           	 				<option value="1">公安消防部队高等专科学校：国家级</option>
 	                                            <option value="2">公安消防部队高等专科学校：省部级</option>
 	                                            <option value="3">公安消防部队高等专科学校：校级</option> 
@@ -86,7 +86,25 @@
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>
-						<div class="form-item" id=''>
+
+						<div class="form-item" id="yc" style="margin-top: 12px;">
+							<label for="" class="moco-control-label">已上传附件:</label>
+							<div class="moco-control-input">
+							</div>
+							<table class="layui-table">
+									<thead>
+										<tr>
+											<th>类型</th>
+											<th>名字</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="fileUploaded">
+										
+									</tbody>
+								</table>
+						</div>
+						<div class="form-item see disable-eidt" id=''>
 							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
 							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
 								<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
@@ -104,16 +122,18 @@
 								  </table>
 								</div>
 							  </div> 
-						
 						</div>
 
+						<input type="hidden" value="" name="pId" id="pId">
+
 						
-						<div class="col-md-offset-2">
-							<button id="btnSubmit" type="submit"
-								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
-							<button class="btn btn-default btn-warning" type="reset">重置</button>
-							<button type="button" class="btn btn-default"
-								onclick="Header.home()">返回</button>
+						<div class="col-md-offset-2" style="margin-top: 5px;">
+							<button id="btnSubmit" type="submit" class="btn see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
+							<button class="btn btn-default btn-warning see disable-eidt" type="reset">重置</button>
+							<button type="button" class="btn btn-info see submit hidden disable-eidt">提交送审</button>
+							<button type="button" class="btn btn-info see hidden submitedWithdraw">撤销送审</button>
+							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
+							<button type="button" class="btn btn-danger see pull-right delproject">删除课题项目</button>
 						</div>
 					</form>
 				</div>
