@@ -5,8 +5,8 @@
 <mapper namespace="edu.swjtuhc.mapper.ReformProjectMapper">
 	<resultMap id="BaseResultMap"
 		type="edu.swjtuhc.model.ReformProject">
-		<id column="r_p_id" property="rPId" jdbcType="BIGINT" />
-		<result column="r_p_name" property="rPName"
+		<id column="r_p_id" property="rpId" jdbcType="BIGINT" />
+		<result column="r_p_name" property="rpName"
 			jdbcType="VARCHAR" />
 		<result column="involvement" property="involvement"
 			jdbcType="INTEGER" />
@@ -37,7 +37,7 @@
 		select
 		<include refid="Base_Column_List"></include>
 		from reform_project
-		where r_p_id = #{rPId}
+		where r_p_id = #{rpId}
 	</select>
 	<insert id="createReformProject"
 		parameterType="edu.swjtuhc.model.ReformProject">
@@ -45,22 +45,22 @@
 		reform_project
 		(<include refid="Base_Column_List"></include>)
 		values
-		(#{rPId},#{rPName},#{involvement},#{status},#{attachment},#{uploader},#{projectDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+		(#{rpId},#{rpName},#{involvement},#{status},#{attachment},#{uploader},#{projectDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
 	</insert>
 	<update id="updateReformProject" parameterType="edu.swjtuhc.model.ReformProject">
 		UPDATE
 		reform_project
 		SET
-		r_p_name = #{rPName},involvement = #{involvement},status=#{status},attachment=#{attachment},uploader=#{uploader},project_date=#{projectDate},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		r_p_name = #{rpName},involvement = #{involvement},status=#{status},attachment=#{attachment},uploader=#{uploader},project_date=#{projectDate},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
 		WHERE
-		r_p_id = #{rPId}
+		r_p_id = #{rpId}
 	</update>
 	
 	<delete id="deleteReformProjectById" parameterType="java.lang.Long">
 		DELETE FROM
 		reform_project
 		WHERE
-		r_p_id=#{rPId}
+		r_p_id=#{rpId}
 		
 	</delete>
 

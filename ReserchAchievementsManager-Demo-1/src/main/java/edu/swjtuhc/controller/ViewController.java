@@ -75,9 +75,9 @@ public class ViewController {
 		return "/reformProject/upload";
 	}
 	
-	@RequestMapping(value="/law/upload.do",method=RequestMethod.GET)
+	@RequestMapping(value="/laws/upload.do",method=RequestMethod.GET)
 	public String lawUpload() {
-		return "/law/upload";
+		return "/laws/upload";
 	}
 	
 	@RequestMapping(value="/thesis/edit.do",method=RequestMethod.GET)
@@ -105,9 +105,9 @@ public class ViewController {
 		return "/reformProject/edit";
 	}
 	
-	@RequestMapping(value="/law/edit.do",method=RequestMethod.GET)
+	@RequestMapping(value="/laws/edit.do",method=RequestMethod.GET)
 	public String lawEdit() {
-		return "/law/edit";
+		return "/laws/edit";
 	}
 	
 	@RequestMapping(value="/thesis/exam.do",method=RequestMethod.GET)
@@ -135,8 +135,8 @@ public class ViewController {
 		return "/reformProject/exam";
 	}
 	
-	@RequestMapping(value="/law/exam.do",method=RequestMethod.GET)
+	@RequestMapping(value="/laws/exam.do",method=RequestMethod.GET)
 	public String lawExam() {
-		return "/law/exam";
+		return "/laws/exam";
 	}
 }
