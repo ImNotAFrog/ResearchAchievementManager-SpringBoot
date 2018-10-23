@@ -49,7 +49,7 @@
 		textbook
 		(<include refid="Base_Column_List"></include>)
 		values
-		(#{tbId},#{tbName},#{involvement},#{level},#{publisher},#{ISBN},#{publish_date},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+		(#{tbId},#{tbName},#{involvement},#{level},#{publisher},#{ISBN},#{publishDate},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
 	</insert>
 	<update id="updateTextbook" parameterType="edu.swjtuhc.model.Textbook">
 		UPDATE
