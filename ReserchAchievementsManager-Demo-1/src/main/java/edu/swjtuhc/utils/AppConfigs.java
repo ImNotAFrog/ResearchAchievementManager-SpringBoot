@@ -21,7 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @WebListener
 public class AppConfigs implements ServletContextListener{
-	public static ArrayList<Double> SCORES = new ArrayList();
+	public static ArrayList<Double> SCORES = new ArrayList<Double>();
 	public static void load(){
 		FileInputStream inputStream;
 		String p = AppConfigs.class.getResource("/").getPath();  
@@ -64,7 +64,7 @@ public class AppConfigs implements ServletContextListener{
     	            StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);  
     	            WatchKey watckKey = watcher.take();  
     	            List<WatchEvent<?>> events = watckKey.pollEvents();  
-    	            for (WatchEvent event : events) {  
+    	            for (WatchEvent<?> event : events) {  
     	                 if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {  
     	                     System.out.println("Created: " + event.context().toString());  
     	                     load();

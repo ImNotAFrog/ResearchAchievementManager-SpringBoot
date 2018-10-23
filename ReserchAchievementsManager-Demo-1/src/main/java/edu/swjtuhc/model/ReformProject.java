@@ -1,7 +1,6 @@
 package edu.swjtuhc.model;
 
 import java.util.Date;
-
 public class ReformProject {
 	private Long rpId;
 	private String rpName;

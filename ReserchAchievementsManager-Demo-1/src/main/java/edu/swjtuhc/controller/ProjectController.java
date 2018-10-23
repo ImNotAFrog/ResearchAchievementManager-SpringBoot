@@ -94,8 +94,7 @@ public class ProjectController {
 			} else {
 				result.put("state", "fail");
 				result.put("msg", "用户权限错误");
-			}
-			
+			}			
 		} else {
 			result.put("state", "fail");
 			result.put("msg", "请登陆");

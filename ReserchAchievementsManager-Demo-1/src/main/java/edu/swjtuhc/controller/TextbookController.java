@@ -79,6 +79,7 @@ public class TextbookController {
 			// System.err.println(jwtTokenUtil.getUsernameFromToken(token));
 			if (jwtTokenUtil.getUsernameFromToken(token).equals(account)) {
 
+				System.out.println(textbook.getISBN());
 				Integer state = null;
 				try {
 					state = textbookService.updateTextbook(textbook,user);

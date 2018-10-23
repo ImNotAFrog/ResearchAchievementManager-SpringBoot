@@ -2,12 +2,15 @@ package edu.swjtuhc.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Textbook {
 	private Long tbId;
 	private String tbName;
 	private Integer level;
 	private Integer involvement;
 	private String publisher;
+	@JsonProperty(value = "ISBN")
 	private String ISBN;
 	private Date publishDate;
 	private String attachment;
@@ -47,6 +50,7 @@ public class Textbook {
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
+	
 	public String getISBN() {
 		return ISBN;
 	}

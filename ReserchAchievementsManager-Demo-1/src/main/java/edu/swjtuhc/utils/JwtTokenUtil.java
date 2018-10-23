@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import edu.swjtuhc.model.JwtUser;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

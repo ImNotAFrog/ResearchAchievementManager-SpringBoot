@@ -4,9 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.ibatis.type.JdbcType;
@@ -14,10 +12,10 @@ import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
 
 @MappedTypes(value = List.class)
-public class StringListHandler  implements TypeHandler<List> {
+public class StringListHandler  implements TypeHandler<List<String>> {
 
 	@Override
-	public void setParameter(PreparedStatement ps, int i, List parameter, JdbcType jdbcType) throws SQLException {
+	public void setParameter(PreparedStatement ps, int i, List<String> parameter, JdbcType jdbcType) throws SQLException {
 		// TODO Auto-generated method stub
 		if(parameter!=null){	
 			StringBuffer sb = new StringBuffer();

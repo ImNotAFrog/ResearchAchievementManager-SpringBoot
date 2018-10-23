@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.Thesis;
 
 public class ModelUtil {

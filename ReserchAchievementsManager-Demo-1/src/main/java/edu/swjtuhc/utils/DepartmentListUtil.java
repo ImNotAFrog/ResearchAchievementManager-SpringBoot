@@ -1,12 +1,8 @@
 package edu.swjtuhc.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 import edu.swjtuhc.enums.Department;
 import edu.swjtuhc.enums.SubDepartment;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 
 public class DepartmentListUtil {
