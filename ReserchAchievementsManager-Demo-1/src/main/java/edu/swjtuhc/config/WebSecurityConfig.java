@@ -45,8 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // 由于使用的是JWT，我们这里不需要csrf
-                .csrf().disable()
-
+                .csrf().disable()                
+                
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
@@ -78,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
+        httpSecurity.headers().frameOptions().sameOrigin();
     }
     @Bean
 	@Override
