@@ -2,6 +2,7 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,12 @@ public class PatentServiceImpl implements PatentService {
 		patent.setUploader(account);
 		patent.setUploadDate(new Date());
 		patent.setPaId(IdWorker.getInstance().nextId());
+		patent.setScore(0f);
+		patent.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(patent.getPaId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(patent.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("patent");
 		achievement.setState(1);
 		int i =createPatent(patent,achievement);
@@ -59,24 +61,27 @@ public class PatentServiceImpl implements PatentService {
 	@Override
 	public Integer updatePatent(Patent patent,UserProfile user) throws IOException {
 		// TODO Auto-generated method stub
-		Patent p = getPatentById(patent.getPaId());
-		if(p==null) {
+		Patent pa = getPatentById(patent.getPaId());
+		if(pa==null) {
 			return 0;
 		}
-		Achievement achievement= achievementMapper.getAchievementById(p.getPaId());
+		Achievement achievement= achievementMapper.getAchievementById(pa.getPaId());
 		if(achievement==null||achievement.getState()>1) {
 			return 0;
 		}
-		p = (Patent) ModelUtil.updateModelByModel(p, patent);
-		p.setDepartment(user.getDepartment());
-		p.setSubDepartment(user.getSubDepartment());
-		p.setUploader(user.getAccount());
-		p.setUploadDate(new Date());
-		achievement.setDepartment(p.getDepartment());
-		achievement.setSubDepartment(p.getSubDepartment());
-		achievement.setUploadDate(p.getUploadDate());
-		achievement.setName(p.getPaName());
-		int i = updatePatent(p, achievement);
+		pa = (Patent) ModelUtil.updateModelByModel(pa, patent);
+		pa.setDepartment(user.getDepartment());
+		pa.setSubDepartment(user.getSubDepartment());
+		pa.setUploader(user.getAccount());
+		pa.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(pa);
+		pa.setScore(scores.get("score"));
+		pa.setMaxScore(scores.get("maxScore"));
+		achievement.setDepartment(pa.getDepartment());
+		achievement.setSubDepartment(pa.getSubDepartment());
+		achievement.setUploadDate(pa.getUploadDate());
+		achievement.setName(pa.getPaName());
+		int i = updatePatent(pa, achievement);
 		
 		return i;
 	}

@@ -7,7 +7,7 @@ public class Project {
 	private Integer involvement;
 	private String pName;
 	private Integer level;
-	private String subject;
+	private Integer subject;
 	private Integer status;
 	private Date projectDate;
 	private String attachment;
@@ -38,10 +38,10 @@ public class Project {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	public String getSubject() {
+	public Integer getSubject() {
 		return subject;
 	}
-	public void setSubject(String subject) {
+	public void setSubject(Integer subject) {
 		this.subject = subject;
 	}
 	public String getAttachment() {

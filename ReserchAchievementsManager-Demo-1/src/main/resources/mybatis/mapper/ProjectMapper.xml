@@ -13,7 +13,7 @@
 		<result column="level" property="level"
 			jdbcType="INTEGER" />
 		<result column="subject" property="subject"
-			jdbcType="VARCHAR" />
+			jdbcType="INTEGER" />
 		<result column="status" property="status"
 			jdbcType="INTEGER" />
 		<result column="project_date"

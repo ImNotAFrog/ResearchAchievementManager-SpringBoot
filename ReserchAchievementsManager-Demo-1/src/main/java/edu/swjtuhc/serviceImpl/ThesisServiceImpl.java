@@ -2,6 +2,8 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -33,11 +35,12 @@ public class ThesisServiceImpl implements ThesisService{
 		thesis.setUploader(account);
 		thesis.setUploadDate(new Date());
 		thesis.settId(IdWorker.getInstance().nextId());
+		thesis.setScore(0f);
+		thesis.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(thesis.gettId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(thesis.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("thesis");
 		achievement.setState(1);
 		int i =createThesis(thesis,achievement);
@@ -71,13 +74,15 @@ public class ThesisServiceImpl implements ThesisService{
 		t.setSubDepartment(user.getSubDepartment());
 		t.setUploader(user.getAccount());
 		t.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(t);
+		t.setScore(scores.get("score"));
+		t.setMaxScore(scores.get("maxScore"));
 		achievement.setDepartment(t.getDepartment());
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setName(t.gettName());
 		achievement.setState(1);
-		int i = updateThesis(t, achievement);
-		
+		int i = updateThesis(t, achievement);		
 		return i;
 	}
 

@@ -1,4 +1,4 @@
-package edu.swjtuhc.utils;
+package edu.swjtuhc.config;
 
 import java.io.FileInputStream;
 import java.nio.file.Path;
@@ -19,9 +19,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import edu.swjtuhc.enums.Scores;
+
 @WebListener
 public class AppConfigs implements ServletContextListener{
-	public static ArrayList<Double> SCORES = new ArrayList<Double>();
 	public static void load(){
 		FileInputStream inputStream;
 		String p = AppConfigs.class.getResource("/").getPath();  
@@ -33,16 +34,17 @@ public class AppConfigs implements ServletContextListener{
 		    //读取工作表  
 		    XSSFSheet sheet = workBook.getSheetAt(0);  
 		    //读取行  
-		    for(int i =3;i<47;i++){
+		    Scores.reset();
+		    for(int i =3;i<51;i++){
 		    	XSSFRow row = sheet.getRow(i); 
 		    	 //读取单元格  
 			    XSSFCell cell = row.getCell(5);  
 			    double value = cell.getNumericCellValue();  
 			    System.out.println(value);
-			    SCORES.add(value);
+			    
+			    Scores.addScore((float)value);
 		    }
-            
-		    inputStream.close();  
+            inputStream.close();  
 		    workBook.close();//最后记得关闭工作簿  
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

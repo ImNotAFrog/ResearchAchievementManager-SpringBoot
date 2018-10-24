@@ -2,6 +2,7 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,12 @@ public class TextbookServiceImpl implements TextbookService {
 		textbook.setUploader(account);
 		textbook.setUploadDate(new Date());
 		textbook.setTbId(IdWorker.getInstance().nextId());
+		textbook.setScore(0f);
+		textbook.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(textbook.getTbId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(textbook.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("textbook");
 		achievement.setState(1);
 		int i =createTextbook(textbook,achievement);
@@ -72,6 +74,9 @@ public class TextbookServiceImpl implements TextbookService {
 		t.setSubDepartment(user.getSubDepartment());
 		t.setUploader(user.getAccount());
 		t.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(t);
+		t.setScore(scores.get("score"));
+		t.setMaxScore(scores.get("maxScore"));
 		achievement.setDepartment(t.getDepartment());
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());

@@ -16,4 +16,6 @@ public interface AchievementMapper {
 	List<Achievement> getAchievementByName(String name);
 	Achievement getAchievementById(Long aId);
 	Integer deleteAchievement(Long aId);
+	Achievement getNextAchievementId(Integer state);
+	Achievement getNextAchievementIdOfType(Achievement achievement);
 }

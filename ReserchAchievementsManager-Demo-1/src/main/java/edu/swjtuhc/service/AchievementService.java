@@ -13,8 +13,11 @@ public interface AchievementService {
 	Integer submit(Long aId);
 	Integer precheck(Long aId);
 	Integer approve(Long aId);
-	Integer reject(Long aId);
+	Integer admin1Reject(Long aId);
+	Integer admin2Reject(Long aId);
 	Integer approvedWithdraw(Long aId);
 	Integer preCheckedWithdraw(Long aId);
 	Integer submitedWithdraw(Long aId);
+	Achievement getNextAchievementId(Integer state);
+	Achievement getNextAchievementIdOfType(Achievement achievement);
 }

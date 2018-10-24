@@ -197,7 +197,7 @@ public class AchievementController {
 		return result.toString();
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01',ROLE_ADMIN_02)")
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
 	public String reject(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
 		JSONObject result = new JSONObject();
@@ -210,7 +210,11 @@ public class AchievementController {
 			return result.toString();
 		}
 		Integer i=0;
-		i = achievementService.reject(aId);
+		if(request.isUserInRole("ROLE_ADMIN_01")) {
+			i = achievementService.admin1Reject(aId);
+		}else {
+			i = achievementService.admin2Reject(aId);
+		}
 		if(i==1) {
 			result.put("state", "success");
 			result.put("msg", "已驳回");
@@ -219,7 +223,8 @@ public class AchievementController {
 			result.put("msg", "驳回失败，请检查成果状态");
 		}		
 		return result.toString();
-	}
+	}	
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/approvedWithdraw", method = RequestMethod.POST)
 	public String approvedWithdraw(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
@@ -287,6 +292,46 @@ public class AchievementController {
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "撤回失败，请检查成果状态");
+		}		
+		return result.toString();
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01',ROLE_ADMIN_02)")
+	@RequestMapping(value = "/getNextAchievementId", method = RequestMethod.POST)
+	public String getNextAchievementId(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
+		JSONObject result = new JSONObject();
+		String type = null;
+		try {
+			type=(String) reqMap.get("type");
+		} catch (Exception e) {
+		}
+		Achievement a=null;
+		if(request.isUserInRole("ROLE_ADMIN_01")) {
+			if(type==null) {
+				a = achievementService.getNextAchievementId(3);
+			}else {
+				Achievement temp = new Achievement();
+				temp.setState(3);
+				temp.setType(type);
+				a = achievementService.getNextAchievementIdOfType(temp);
+			}			
+		}else {
+			if(type==null) {
+				a = achievementService.getNextAchievementId(2);
+			}else {
+				Achievement temp = new Achievement();
+				temp.setState(2);
+				temp.setType(type);
+				a = achievementService.getNextAchievementIdOfType(temp);
+			}	
+		}
+		if(a==null||a.getaId()==null||a.getType()==null) {
+			result.put("state", "fail");
+			result.put("msg", "没有下一条成果");
+		}else {
+			result.put("state", "success");
+			result.put("aId", a.getaId());
+			result.put("type", a.getType());
 		}		
 		return result.toString();
 	}

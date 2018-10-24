@@ -84,6 +84,26 @@
 		ON a.uploader=u.account
 		where a.a_id = #{aId}
 	</select>
+	
+	<select id="getNextAchievementId" parameterType="java.lang.Integer" 
+		resultType="edu.swjtuhc.model.Achievement">
+		select
+		a_id,type
+		from achievement
+		where 
+		state={#state} 
+		limit 1
+	</select>
+	
+	<select id="getNextAchievementIdOfType" parameterType="edu.swjtuhc.model.Achievement" 
+		resultType="edu.swjtuhc.model.Achievement">
+		select
+		a_id,type
+		from achievement
+		where 
+		state={#state} and type={#type}
+		limit 1
+	</select>
 
 	<update id="updateAchievement"
 		parameterType="edu.swjtuhc.model.Achievement">

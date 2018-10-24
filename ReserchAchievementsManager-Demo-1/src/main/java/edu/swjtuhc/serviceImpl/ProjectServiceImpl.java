@@ -2,6 +2,7 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,12 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setUploader(account);
 		project.setUploadDate(new Date());
 		project.setpId(IdWorker.getInstance().nextId());
+		project.setScore(0f);
+		project.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(project.getpId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(project.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("project");
 		achievement.setState(1);
 		int i =createProject(project,achievement);
@@ -72,6 +74,9 @@ public class ProjectServiceImpl implements ProjectService {
 		p.setSubDepartment(user.getSubDepartment());
 		p.setUploader(user.getAccount());
 		p.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(p);
+		p.setScore(scores.get("score"));
+		p.setMaxScore(scores.get("maxScore"));
 		achievement.setDepartment(p.getDepartment());
 		achievement.setSubDepartment(p.getSubDepartment());
 		achievement.setUploadDate(p.getUploadDate());

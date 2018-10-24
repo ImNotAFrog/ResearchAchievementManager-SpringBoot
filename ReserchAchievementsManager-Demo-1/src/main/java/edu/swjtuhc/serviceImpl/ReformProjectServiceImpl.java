@@ -2,6 +2,7 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,12 @@ public class ReformProjectServiceImpl implements ReformProjectService {
 		reformProject.setUploader(account);
 		reformProject.setUploadDate(new Date());
 		reformProject.setRpId(IdWorker.getInstance().nextId());
+		reformProject.setScore(0f);
+		reformProject.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(reformProject.getRpId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(reformProject.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("reformProject");
 		achievement.setState(1);
 		int i =createReformProject(reformProject,achievement);
@@ -72,6 +74,9 @@ public class ReformProjectServiceImpl implements ReformProjectService {
 		rp.setSubDepartment(user.getSubDepartment());
 		rp.setUploader(user.getAccount());
 		rp.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(rp);
+		rp.setScore(scores.get("score"));
+		rp.setMaxScore(scores.get("maxScore"));
 		achievement.setDepartment(rp.getDepartment());
 		achievement.setSubDepartment(rp.getSubDepartment());
 		achievement.setUploadDate(rp.getUploadDate());

@@ -2,6 +2,7 @@ package edu.swjtuhc.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,12 @@ public class LawsServiceImpl implements LawsService {
 		laws.setUploader(account);
 		laws.setUploadDate(new Date());
 		laws.setlId(IdWorker.getInstance().nextId());
+		laws.setScore(0f);
+		laws.setMaxScore(0f);
 		Achievement achievement=new Achievement();
 		achievement.setaId(laws.getlId());
 		achievement.setUploader(account);
 		achievement.setUploadDate(laws.getUploadDate());
-		achievement.setState(0);
 		achievement.setType("laws");
 		achievement.setState(1);
 		int i =createLaws(laws,achievement);
@@ -72,6 +74,9 @@ public class LawsServiceImpl implements LawsService {
 		l.setSubDepartment(user.getSubDepartment());
 		l.setUploader(user.getAccount());
 		l.setUploadDate(new Date());
+		Map<String,Float> scores = ModelUtil.caculateScore(l);
+		l.setScore(scores.get("score"));
+		l.setMaxScore(scores.get("maxScore"));
 		achievement.setDepartment(l.getDepartment());
 		achievement.setSubDepartment(l.getSubDepartment());
 		achievement.setUploadDate(l.getUploadDate());

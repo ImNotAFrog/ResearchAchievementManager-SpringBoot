@@ -70,19 +70,32 @@ public class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Override
-	public Integer reject(Long aId) {
+	public Integer admin1Reject(Long aId) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		Achievement achievement = achievementMapper.getAchievementById(aId);
 		int i=0;
-		if (achievement != null && achievement.getState() > 1) {
+		if (achievement != null && achievement.getState() == 3) {
 			achievement.setState(-1);
 			i = achievementMapper.updateAchievement(achievement);
 		}
 		
 		return i;
 	}
-
+	
+	@Override
+	public Integer admin2Reject(Long aId) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Achievement achievement = achievementMapper.getAchievementById(aId);
+		int i=0;
+		if (achievement != null && achievement.getState() == 2) {
+			achievement.setState(-1);
+			i = achievementMapper.updateAchievement(achievement);
+		}
+		
+		return i;
+	}
 	@Override
 	public Integer approvedWithdraw(Long aId) {
 		// TODO Auto-generated method stub
@@ -124,6 +137,18 @@ public class AchievementServiceImpl implements AchievementService {
 		// TODO Auto-generated method stub
 		return achievementMapper.getAchievementByName(name);
 		
+	}
+
+	@Override
+	public Achievement getNextAchievementId(Integer state) {
+		// TODO Auto-generated method stub
+		return achievementMapper.getNextAchievementId(state);
+	}
+
+	@Override
+	public Achievement getNextAchievementIdOfType(Achievement achievement) {
+		// TODO Auto-generated method stub
+		return achievementMapper.getNextAchievementIdOfType(achievement);
 	}
 
 }
