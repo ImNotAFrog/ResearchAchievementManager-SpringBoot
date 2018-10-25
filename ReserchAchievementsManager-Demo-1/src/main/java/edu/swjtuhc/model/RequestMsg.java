@@ -4,7 +4,7 @@ public class RequestMsg {
 	private int page=1;
 	private int start;
 	private int limit=50;
-	private int state;
+	private int state=0;
 	private String type;
 	private String keyword;
 	private String account;

@@ -46,11 +46,10 @@ public class AchievementController {
 		JSONObject result = new JSONObject();
 		try {
 			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
-			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("code", 0);
 			result.put("msg","请求成功");
-			result.put("count",count);
+			result.put("count",list.size());
 			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
@@ -67,11 +66,10 @@ public class AchievementController {
 		
 		try {
 			List<Achievement> list = achievementService.getAchievementList(msg);
-			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("code", 0);
 			result.put("msg","请求成功");
-			result.put("count",count);
+			result.put("count",list.size());
 			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
@@ -98,11 +96,10 @@ public class AchievementController {
 		msg.setSubDepartment(subDepartment);
 		try {
 			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
-			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("code", 0);
 			result.put("msg","请求成功");
-			result.put("count",count);
+			result.put("count",list.size());
 			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
@@ -124,11 +121,10 @@ public class AchievementController {
 		}
 		try {
 			List<Achievement> list = achievementService.getAchievementByName(msg);
-			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("code", 0);
 			result.put("msg","请求成功");
-			result.put("count",count);
+			result.put("count",list.size());
 			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
