@@ -42,10 +42,10 @@ public class AchievementController {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
-		Integer start=0;
+		Integer pageNo=1;
 		Integer pageSize=30;
 		try {
-			start = (Integer) reqMap.get("start");
+			pageNo = (Integer) reqMap.get("pageNo");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -55,7 +55,7 @@ public class AchievementController {
 			// TODO: handle exception
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementListByAccount(account,start,pageSize);
+			List<Achievement> list = achievementService.getAchievementListByAccount(account,pageNo,pageSize);
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("state", "success");
 			result.put("achievement", jList);
@@ -71,10 +71,10 @@ public class AchievementController {
 	@RequestMapping(value="/getAll", method = RequestMethod.POST)
 	public String getAll(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
 		JSONObject result = new JSONObject();
-		Integer start=0;
+		Integer pageNo=1;
 		Integer pageSize=30;
 		try {
-			start = (Integer) reqMap.get("start");
+			pageNo = (Integer) reqMap.get("pageNo");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -84,7 +84,7 @@ public class AchievementController {
 			// TODO: handle exception
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementList(start,pageSize);
+			List<Achievement> list = achievementService.getAchievementList(pageNo,pageSize);
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("state", "success");
 			result.put("achievement", jList);
@@ -105,10 +105,10 @@ public class AchievementController {
 		JSONObject result = new JSONObject();
 		UserProfile userProfile=userService.getUserProfileByAccount(account);
 		String subDepartment=userProfile.getSubDepartment();
-		Integer start=0;
+		Integer pageNo=1;
 		Integer pageSize=30;
 		try {
-			start = (Integer) reqMap.get("start");
+			pageNo = (Integer) reqMap.get("pageNo");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -123,7 +123,7 @@ public class AchievementController {
 			return result.toString();
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementListBySubDepartment(subDepartment,start,pageSize);
+			List<Achievement> list = achievementService.getAchievementListBySubDepartment(subDepartment,pageNo,pageSize);
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("state", "success");
 			result.put("achievement", jList);
@@ -141,10 +141,10 @@ public class AchievementController {
 	public String getListByName(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
 		JSONObject result = new JSONObject();
 		String name=(String) reqMap.get("name");
-		Integer start=0;
+		Integer pageNo=1;
 		Integer pageSize=30;
 		try {
-			start = (Integer) reqMap.get("start");
+			pageNo = (Integer) reqMap.get("pageNo");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -159,7 +159,7 @@ public class AchievementController {
 			return result.toString();
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementByName(name,start,pageSize);
+			List<Achievement> list = achievementService.getAchievementByName(name,pageNo,pageSize);
 			JSONArray jList = JSONArray.fromObject(list);
 			result.put("state", "success");
 			result.put("achievement", jList);

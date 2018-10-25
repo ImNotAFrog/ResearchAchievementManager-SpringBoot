@@ -6,10 +6,10 @@ import edu.swjtuhc.model.Achievement;
 
 public interface AchievementService {
 
-	List<Achievement> getAchievementListByAccount(String account,Integer start,Integer pageSize);
-	List<Achievement> getAchievementList(Integer start,Integer pageSize);
-	List<Achievement> getAchievementListBySubDepartment(String subDepartment,Integer start,Integer pageSize);
-	List<Achievement> getAchievementByName(String name,Integer start,Integer pageSize);
+	List<Achievement> getAchievementListByAccount(String account,Integer pageNo,Integer pageSize);
+	List<Achievement> getAchievementList(Integer pageNo,Integer pageSize);
+	List<Achievement> getAchievementListBySubDepartment(String subDepartment,Integer pageNo,Integer pageSize);
+	List<Achievement> getAchievementByName(String name,Integer pageNo,Integer pageSize);
 	Integer submit(Long aId);
 	Integer precheck(Long aId);
 	Integer approve(Long aId);

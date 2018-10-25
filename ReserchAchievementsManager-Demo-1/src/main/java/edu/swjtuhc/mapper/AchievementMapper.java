@@ -11,10 +11,10 @@ import edu.swjtuhc.model.Achievement;
 public interface AchievementMapper {
 	Long createAchievement(Achievement achievement);
 	Integer updateAchievement(Achievement achievement);
-	List<Achievement> getAchievementListByAccount(HashMap map);
-	List<Achievement> getAchievementList(HashMap map);
-	List<Achievement> getAchievementListBySubDepartment(HashMap map);
-	List<Achievement> getAchievementByName(HashMap map);
+	List<Achievement> getAchievementListByAccount(HashMap<String, Object> map);
+	List<Achievement> getAchievementList(HashMap<String, Object> map);
+	List<Achievement> getAchievementListBySubDepartment(HashMap<String, Object> map);
+	List<Achievement> getAchievementByName(HashMap<String, Object> map);
 	Achievement getAchievementById(Long aId);
 	Integer deleteAchievement(Long aId);
 	Achievement getNextAchievementId(Integer state);
