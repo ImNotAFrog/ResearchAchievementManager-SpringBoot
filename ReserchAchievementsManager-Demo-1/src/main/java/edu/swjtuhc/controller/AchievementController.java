@@ -90,11 +90,12 @@ public class AchievementController {
 		JSONObject result = new JSONObject();
 		UserProfile userProfile=userService.getUserProfileByAccount(account);
 		String subDepartment=userProfile.getSubDepartment();		
-		if(subDepartment==null||msg.getSubDepartment()==null) {
+		if(subDepartment==null) {
 			result.put("state", -1);
 			result.put("msg", "未设置科室");
 			return result.toString();
 		}
+		msg.setSubDepartment(subDepartment);
 		try {
 			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
 			Integer count = achievementService.getCount();
