@@ -53,7 +53,7 @@
 			and a.state=#{state}
 		</if>
 		<if test='null!=keyword and ""!=keyword'>
-			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 		limit #{start},#{limit}
 	</select>
@@ -90,7 +90,7 @@
 			and a.state=#{state}
 		</if>
 		<if test='null!=keyword and ""!=keyword'>
-			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 		limit #{start},#{limit}
 	</select>
@@ -109,7 +109,7 @@
 			and a.state=#{state}
 		</if>
 		<if test='null!=keyword and ""!=keyword'>
-			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 		limit #{start},#{limit}
 	</select>
