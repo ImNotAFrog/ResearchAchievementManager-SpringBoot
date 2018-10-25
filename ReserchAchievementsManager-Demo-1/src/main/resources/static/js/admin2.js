@@ -3,16 +3,6 @@ layui.use(['layer',], function () {
 })
 var departmentList
 var department
-
-// var active=GetQueryString('active');
-// if(active!=null){
-// 	console.log();
-// 	setTimeout(() => {
-// 		$('#'+active).click();	
-// 	}, 1000);
-// }
-// console.log(active)
-
 $(function () {
 	if (token == null) {
 		window.location.href = '/index'
@@ -151,6 +141,7 @@ window.operateEvents = {
 		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
+		console.log(row.type);
 		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
 	}
 }

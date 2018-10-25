@@ -143,7 +143,7 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state+"&action=see";
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
 		if(row.state==4){
@@ -152,7 +152,7 @@ window.operateEvents = {
 			})
 			return false;
 		}
-		location.href="/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state;
+		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 

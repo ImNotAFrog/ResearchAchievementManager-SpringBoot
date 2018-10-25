@@ -162,10 +162,10 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                 return false;
             }
             var dataList=$('#fileupload').serializeObject();
-           /*  dataList.involvement=parseInt(dataList.involvement);
+            dataList.involvement=parseInt(dataList.involvement);
             dataList.level=parseInt(dataList.level);
             dataList.status=parseInt(dataList.status);
-            console.log(dataList) */
+            console.log(dataList)
          /*    involvement: "2"
 level: "1"
 pId: 8371188958646272
@@ -188,7 +188,7 @@ uploader: "20170001" */
             $("#btnSubmit").attr({"disabled":"false"});
             $.ajax({
                 type: "POST",
-                url: "/project/upload",
+                url: "/thesis/upload",
                 headers: { Authorization: 'Bearer ' + token },
                 data: JSON.stringify(dataList),
                 contentType : 'application/json',

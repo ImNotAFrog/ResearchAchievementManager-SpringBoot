@@ -148,10 +148,11 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state+"&action=see";
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state;
+		console.log(row.type);
+		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
 	}
 }
 
