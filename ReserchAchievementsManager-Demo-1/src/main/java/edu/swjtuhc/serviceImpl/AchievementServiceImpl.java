@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.swjtuhc.mapper.AchievementMapper;
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.RequestMsg;
 import edu.swjtuhc.service.AchievementService;
 
 @Service
@@ -16,42 +17,31 @@ public class AchievementServiceImpl implements AchievementService {
 	AchievementMapper achievementMapper;
 
 	@Override
-	public List<Achievement> getAchievementListByAccount(String account,Integer pageNo,Integer pageSize) {
-		// TODO Auto-generated method stub
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("account", account);
-		map.put("start", (pageNo-1)*pageSize);
-		map.put("pageSize", pageSize);		
-		return achievementMapper.getAchievementListByAccount(map);
+	public List<Achievement> getAchievementListByAccount(RequestMsg msg) {
+		// TODO Auto-generated method stub		
+		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		return achievementMapper.getAchievementListByAccount(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementList(Integer pageNo,Integer pageSize) {
-		// TODO Auto-generated method stub
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("start", (pageNo-1)*pageSize);
-		map.put("pageSize", pageSize);		
-		return achievementMapper.getAchievementList(map);
+	public List<Achievement> getAchievementList(RequestMsg msg) {
+		// TODO Auto-generated method stub	
+		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		return achievementMapper.getAchievementList(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementListBySubDepartment(String subDepartment,Integer pageNo,Integer pageSize) {
+	public List<Achievement> getAchievementListBySubDepartment(RequestMsg msg) {
 		// TODO Auto-generated method stub
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("subDepartment", subDepartment);
-		map.put("start", (pageNo-1)*pageSize);
-		map.put("pageSize", pageSize);		
-		return achievementMapper.getAchievementListBySubDepartment(map);
+		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		return achievementMapper.getAchievementListBySubDepartment(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementByName(String name,Integer pageNo,Integer pageSize) {
+	public List<Achievement> getAchievementByName(RequestMsg msg) {
 		// TODO Auto-generated method stub
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("name", name);
-		map.put("start", (pageNo-1)*pageSize);
-		map.put("pageSize", pageSize);
-		return achievementMapper.getAchievementByName(map);
+		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		return achievementMapper.getAchievementByName(msg);
 		
 	}
 	@Override
@@ -165,6 +155,12 @@ public class AchievementServiceImpl implements AchievementService {
 	public Achievement getNextAchievementIdOfType(Achievement achievement) {
 		// TODO Auto-generated method stub
 		return achievementMapper.getNextAchievementIdOfType(achievement);
+	}
+
+	@Override
+	public Integer getCount() {
+		// TODO Auto-generated method stub
+		return achievementMapper.getCount();
 	}
 
 }

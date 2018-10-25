@@ -18,8 +18,8 @@
 		<result column="sub_department" property="subDepartment"
 			jdbcType="VARCHAR" />
 		<association property="uploaderName" column="uploader"
-		javaType="java.lang.String">
-		<result property="uploaderName" column="u.name" />
+			javaType="java.lang.String">
+			<result property="uploaderName" column="u.name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
@@ -38,73 +38,110 @@
 		values
 		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
 	</insert>
-	<select id="getAchievementListByAccount" parameterType="hashmap"
-		resultMap="BaseResultMap">
+	<select id="getAchievementListByAccount"
+		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.uploader = #{account}
-		limit #{start},#{pageSize}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state or 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+		</if>
+		limit #{start},#{limit}
 	</select>
-	<select id="getAchievementByName" parameterType="hashmap"
-		resultMap="BaseResultMap">
+	<select id="getAchievementByName"
+		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.name = #{name}
-		limit #{start},#{pageSize}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state or 0!=state'>
+			and a.state=#{state}
+		</if>
+		limit
+		#{start},#{limit}
 	</select>
-	<select id="getAchievementListBySubDepartment" parameterType="hashmap"
-		resultMap="BaseResultMap">
+	<select id="getAchievementListBySubDepartment"
+		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.sub_department = #{subDepartment}
-		limit #{start},#{pageSize}
+		where a.sub_department =
+		#{subDepartment}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state or 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+		</if>
+		limit #{start},#{limit}
 	</select>
-	
-	<select id="getAchievementList" parameterType="hashmap"
-		resultMap="BaseResultMap">
+
+	<select id="getAchievementList"
+		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		LEFT JOIN user_profile u
 		ON a.uploader=u.account
-		limit #{start},#{pageSize}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state or 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			match (a.name) AGAINST (#{keyword} IN BOOLEAN MODE);
+		</if>
+		limit #{start},#{limit}
 	</select>
-	
+
 	<select id="getAchievementById" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.a_id = #{aId}
 	</select>
-	
-	<select id="getNextAchievementId" parameterType="java.lang.Integer" 
+
+	<select id="getNextAchievementId"
+		parameterType="java.lang.Integer"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
 		a_id,type
 		from achievement
-		where 
-		state={#state} 
+		where
+		state={#state}
 		limit 1
 	</select>
-	
-	<select id="getNextAchievementIdOfType" parameterType="edu.swjtuhc.model.Achievement" 
+
+	<select id="getNextAchievementIdOfType"
+		parameterType="edu.swjtuhc.model.Achievement"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
 		a_id,type
 		from achievement
-		where 
+		where
 		state={#state} and type={#type}
 		limit 1
 	</select>
@@ -114,7 +151,10 @@
 		UPDATE
 		achievement
 		SET
-		name = #{name},type= #{type},uploader= #{uploader},state= #{state},upload_date= #{uploadDate},department= #{department},sub_department= #{subDepartment}
+		name = #{name},type=
+		#{type},uploader= #{uploader},state= #{state},upload_date=
+		#{uploadDate},department= #{department},sub_department=
+		#{subDepartment}
 		WHERE
 		a_id = #{aId}
 	</update>
@@ -126,4 +166,8 @@
 		a_id=#{aId}
 	</delete>
 
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT count(a_id) FROM 
+		achievement
+	</select>
 </mapper> 

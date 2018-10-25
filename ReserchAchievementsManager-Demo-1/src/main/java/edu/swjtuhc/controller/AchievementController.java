@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.RequestMsg;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.AchievementService;
 import edu.swjtuhc.service.UserService;
@@ -38,30 +39,22 @@ public class AchievementController {
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 	
 	@RequestMapping(value="/getListByAccount", method = RequestMethod.POST)
-	public String getListByAccount(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
+	public String getListByAccount(HttpServletRequest request, @RequestBody RequestMsg msg){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
+		msg.setAccount(account);
 		JSONObject result = new JSONObject();
-		Integer pageNo=1;
-		Integer pageSize=30;
 		try {
-			pageNo = (Integer) reqMap.get("pageNo");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			pageSize=(Integer) reqMap.get("pageSize");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			List<Achievement> list = achievementService.getAchievementListByAccount(account,pageNo,pageSize);
+			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
+			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
-			result.put("state", "success");
-			result.put("achievement", jList);
+			result.put("code", 0);
+			result.put("msg","请求成功");
+			result.put("count",count);
+			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
-			result.put("state", "fail");
+			result.put("state", -1);
 			result.put("msg", e);
 			return result.toString();
 		}
@@ -69,28 +62,20 @@ public class AchievementController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/getAll", method = RequestMethod.POST)
-	public String getAll(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
+	public String getAll(HttpServletRequest request, @RequestBody RequestMsg msg){
 		JSONObject result = new JSONObject();
-		Integer pageNo=1;
-		Integer pageSize=30;
+		
 		try {
-			pageNo = (Integer) reqMap.get("pageNo");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			pageSize=(Integer) reqMap.get("pageSize");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			List<Achievement> list = achievementService.getAchievementList(pageNo,pageSize);
+			List<Achievement> list = achievementService.getAchievementList(msg);
+			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
-			result.put("state", "success");
-			result.put("achievement", jList);
+			result.put("code", 0);
+			result.put("msg","请求成功");
+			result.put("count",count);
+			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
-			result.put("state", "fail");
+			result.put("state", -1);
 			result.put("msg", e);
 			e.printStackTrace();
 			return result.toString();
@@ -99,37 +84,28 @@ public class AchievementController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
 	@RequestMapping(value="/getListBySubDepartment", method = RequestMethod.POST)
-	public String getListBySubDepartment(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
+	public String getListBySubDepartment(HttpServletRequest request, @RequestBody RequestMsg msg){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
 		UserProfile userProfile=userService.getUserProfileByAccount(account);
-		String subDepartment=userProfile.getSubDepartment();
-		Integer pageNo=1;
-		Integer pageSize=30;
-		try {
-			pageNo = (Integer) reqMap.get("pageNo");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			pageSize=(Integer) reqMap.get("pageSize");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		if(subDepartment==null||subDepartment.length()==0) {
-			result.put("state", "fail");
-			result.put("msg", "用户未设置科室");
+		String subDepartment=userProfile.getSubDepartment();		
+		if(subDepartment==null||msg.getSubDepartment()==null) {
+			result.put("state", -1);
+			result.put("msg", "未设置科室");
 			return result.toString();
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementListBySubDepartment(subDepartment,pageNo,pageSize);
+			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
+			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
-			result.put("state", "success");
-			result.put("achievement", jList);
+			result.put("code", 0);
+			result.put("msg","请求成功");
+			result.put("count",count);
+			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
-			result.put("state", "fail");
+			result.put("state", -1);
 			result.put("msg", e);
 			return result.toString();
 		}
@@ -138,34 +114,24 @@ public class AchievementController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
 	@RequestMapping(value="/getListByName", method = RequestMethod.POST)
-	public String getListByName(HttpServletRequest request, @RequestBody Map<String,Object> reqMap){
-		JSONObject result = new JSONObject();
-		String name=(String) reqMap.get("name");
-		Integer pageNo=1;
-		Integer pageSize=30;
-		try {
-			pageNo = (Integer) reqMap.get("pageNo");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		try {
-			pageSize=(Integer) reqMap.get("pageSize");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		if(name==null){
+	public String getListByName(HttpServletRequest request, @RequestBody RequestMsg msg){
+		JSONObject result = new JSONObject();		
+		if(msg.getName()==null){
 			result.put("state", "fail");
 			result.put("msg", "参数错误");
 			return result.toString();
 		}
 		try {
-			List<Achievement> list = achievementService.getAchievementByName(name,pageNo,pageSize);
+			List<Achievement> list = achievementService.getAchievementByName(msg);
+			Integer count = achievementService.getCount();
 			JSONArray jList = JSONArray.fromObject(list);
-			result.put("state", "success");
-			result.put("achievement", jList);
+			result.put("code", 0);
+			result.put("msg","请求成功");
+			result.put("count",count);
+			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
-			result.put("state", "fail");
+			result.put("state", -1);
 			result.put("msg", e);
 			return result.toString();
 		}
