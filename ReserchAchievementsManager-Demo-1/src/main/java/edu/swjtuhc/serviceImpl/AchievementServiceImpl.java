@@ -1,5 +1,6 @@
 package edu.swjtuhc.serviceImpl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,44 @@ public class AchievementServiceImpl implements AchievementService {
 	AchievementMapper achievementMapper;
 
 	@Override
-	public List<Achievement> getAchievementListByAccount(String account) {
+	public List<Achievement> getAchievementListByAccount(String account,Integer start,Integer pageSize) {
 		// TODO Auto-generated method stub
-		return achievementMapper.getAchievementListByAccount(account);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("account", account);
+		map.put("start", start);
+		map.put("pageSize", pageSize);		
+		return achievementMapper.getAchievementListByAccount(map);
 	}
 
 	@Override
-	public List<Achievement> getAchievementList() {
+	public List<Achievement> getAchievementList(Integer start,Integer pageSize) {
 		// TODO Auto-generated method stub
-		return achievementMapper.getAchievementList();
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("pageSize", pageSize);		
+		return achievementMapper.getAchievementList(map);
 	}
 
 	@Override
-	public List<Achievement> getAchievementListBySubDepartment(String subDepartment) {
+	public List<Achievement> getAchievementListBySubDepartment(String subDepartment,Integer start,Integer pageSize) {
 		// TODO Auto-generated method stub
-		return achievementMapper.getAchievementListBySubDepartment(subDepartment);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("subDepartment", subDepartment);
+		map.put("start", start);
+		map.put("pageSize", pageSize);		
+		return achievementMapper.getAchievementListBySubDepartment(map);
 	}
 
+	@Override
+	public List<Achievement> getAchievementByName(String name,Integer start,Integer pageSize) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("name", name);
+		map.put("start", start);
+		map.put("pageSize", pageSize);
+		return achievementMapper.getAchievementByName(map);
+		
+	}
 	@Override
 	public Integer submit(Long aId) {
 		// TODO Auto-generated method stub
@@ -132,12 +154,6 @@ public class AchievementServiceImpl implements AchievementService {
 		return i;
 	}
 
-	@Override
-	public List<Achievement> getAchievementByName(String name) {
-		// TODO Auto-generated method stub
-		return achievementMapper.getAchievementByName(name);
-		
-	}
 
 	@Override
 	public Achievement getNextAchievementId(Integer state) {

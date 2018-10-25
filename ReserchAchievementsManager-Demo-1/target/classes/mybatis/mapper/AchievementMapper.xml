@@ -38,7 +38,7 @@
 		values
 		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
 	</insert>
-	<select id="getAchievementListByAccount" parameterType="java.lang.String"
+	<select id="getAchievementListByAccount" parameterType="hashmap"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
@@ -46,8 +46,9 @@
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.uploader = #{account}
+		limit #{start},#{pageSize}
 	</select>
-	<select id="getAchievementByName" parameterType="java.lang.String"
+	<select id="getAchievementByName" parameterType="hashmap"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
@@ -55,8 +56,9 @@
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.name = #{name}
+		limit #{start},#{pageSize}
 	</select>
-	<select id="getAchievementListBySubDepartment" parameterType="java.lang.String"
+	<select id="getAchievementListBySubDepartment" parameterType="hashmap"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
@@ -64,15 +66,17 @@
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where a.sub_department = #{subDepartment}
+		limit #{start},#{pageSize}
 	</select>
 	
-	<select id="getAchievementList"
+	<select id="getAchievementList" parameterType="hashmap"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a 
 		LEFT JOIN user_profile u
 		ON a.uploader=u.account
+		limit #{start},#{pageSize}
 	</select>
 	
 	<select id="getAchievementById" parameterType="java.lang.Long"
