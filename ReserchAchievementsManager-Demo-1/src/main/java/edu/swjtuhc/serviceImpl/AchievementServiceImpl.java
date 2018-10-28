@@ -40,7 +40,7 @@ public class AchievementServiceImpl implements AchievementService {
 	@Override
 	public List<Achievement> getAchievementByName(RequestMsg msg) {
 		// TODO Auto-generated method stub
-		msg.setStart((msg.getPage()-1)*msg.getLimit());
+//		msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return achievementMapper.getAchievementByName(msg);
 		
 	}

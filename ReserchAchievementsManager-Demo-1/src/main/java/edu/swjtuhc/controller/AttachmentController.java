@@ -250,6 +250,16 @@ public class AttachmentController {
 			}
 		}
 	}
+	
+	@RequestMapping(value="imgUpload",method=RequestMethod.POST)
+	public String imgUpload(HttpServletRequest request){
+		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
+		MultipartFile uploadImg = params.getFile("img");
+		String id = params.getParameter("newsId");
+		
+		JSONObject result = new JSONObject();
+		return result.toString();
+	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String delete(HttpServletRequest request, @RequestBody Map<String, Object> reqMap) {

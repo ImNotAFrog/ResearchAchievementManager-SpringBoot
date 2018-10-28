@@ -139,4 +139,9 @@ public class ViewController {
 	public String lawExam() {
 		return "/laws/exam";
 	}
+	
+	@RequestMapping(value="/news.do",method=RequestMethod.GET)
+	public String news() {
+		return "/news";
+	}
 }

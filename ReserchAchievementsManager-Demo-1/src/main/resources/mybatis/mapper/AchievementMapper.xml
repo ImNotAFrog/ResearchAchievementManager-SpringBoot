@@ -71,8 +71,9 @@
 		<if test='null!=state or 0!=state'>
 			and a.state=#{state}
 		</if>
-		limit
-		#{start},#{limit}
+		<if test='null!=keyword and ""!=keyword'>
+			and a.name like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
 	<select id="getAchievementListBySubDepartment"
 		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
