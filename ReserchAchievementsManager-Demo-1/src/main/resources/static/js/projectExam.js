@@ -1,21 +1,19 @@
-layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
+
+layui.use(['layer', 'element','laydate', 'upload'], function () {
     var layer = layui.layer;
     var element = layui.element;
     var laydate = layui.laydate;
     var upload = layui.upload;
     var laytpl = layui.laytpl;
-    var tId = null;
     var flist = [];
     //日期时间选择器
     laydate.render({
-        elem: '#publishDate'
+        elem: '#projectDate'
         , type: 'date'
     });
-    var tId = GetQueryString('aId');
+    var pId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
-
-    
     //检查用户级别  
     function checkAuth(){
         if(role=="ROLE_ADMIN_01"){
@@ -25,27 +23,24 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         }else{
             layer.alert('非法访问',{icon:5},function(){
                  layer.closeAll();
-                 location.href='/index.do';
             })
         }
     }
-
     //初级管理员添加上报成果事件
     function preCheck(){
         $('.preCheck').click(function (e) { 
-            layer.load();
+            var load=layer.load();
             ajax_request({
                 type: 'POST',
                 url: '/achievement/preCheck',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(pId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                      layer.alert('上报成果成功',{icon:1},function(){
-                        location.href="/admin2.do?active=sh";
-                      })
+                        layer.close(load);
+                        successOpt("上报成果成功");
                     } else {
                         layer.alert('上报成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -65,18 +60,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/reject',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(pId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('驳回成果成功',{icon:1},function(){
-                        if(checkAuth()==1){
-                            location.href="/admin1.do?active=sh";
-                        }else{
-                            location.href="/admin2.do?active=sh";
-                        }
-                       
+
                     })
                     } else {
                         layer.alert('驳回成果失败',{icon:5},function(){
@@ -88,7 +78,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 error:function(){
                     layer.closeAll();
                     layer.msg('请求失败');
-                   
                 }
             })
         });
@@ -103,14 +92,12 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/preCheckedWithdraw',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(pId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                    layer.alert('撤回成果成功',{icon:1},function(){
-                        location.href="/admin2.do";
-                    })
+                        successOpt('撤回成功')
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -135,13 +122,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/approvedWithdraw',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(pId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('撤回成果成功',{icon:1},function(){
-                        location.href="/admin1.do";
+                        
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -167,17 +154,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/approve',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(pId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('复审通过',{icon:1},function(){
-                        if(checkAuth()==1){
-                            location.href="/admin1.do?active=sh";
-                        }else{
-                            location.href="/admin2.do?active=sh";
-                        }
+                        
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -227,32 +210,33 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             console.log('高级管理员');
         }else{
                 layer.alert('请求不合法',{icon:5},function () { 
-                    location.href='/teacher.do?active=Cg';
+                    layer.closeAll();
                 })
         }
 
     
-//取回论文信息
+
+//取回课题项目信息
     ajax_request({
         type: 'POST',
-        url: '/thesis/adminGetById',
+        url: '/project/adminGetById',
         data: {
-            tId: tId
+            pId: pId
         },
         success: function (res) {
             res = JSON.parse(res);
             if (res.state == 'success') {
-                $('#tName').val(res.thesis.tName);
-                $('#journalLevel').val(res.thesis.journalLevel);
-                $('#journalName').val(res.thesis.journalName);
-                $('#journalId').val(res.thesis.journalId); 
-                $('#uploader').val(res.thesis.uploader); 
-                if(res.thesis.publishDate){
-                    var publishDate=res.thesis.publishDate.time+"";
-                    $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
+                $('#involvement').val(res.project.involvement);
+                $('#level').val(res.project.level);
+                $('#pName').val(res.project.pName);
+                $('#subject').val(res.project.subject); 
+                $('#uploader').val(res.project.uploader); 
+                if(res.project.projectDate){
+                    var projectDate=res.project.projectDate.time+"";
+                    $('#projectDate').val(timestampToTime(projectDate.substring(0,10)));
                 }
-                $('#tId').val(res.thesis.tId);
-                getTm(res.thesis.tName);//获取同名结果
+                $('#pId').val(res.project.pId);
+                getTm(res.project.pName);//获取同名结果
                 var fileUploaded=$('#fileUploaded');
 
                 //此处与下面有重复代码 但不能删--
@@ -261,8 +245,8 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 }
                 //--此处与下面有重复代码 但不能删
 
-                if(res.thesis.attachment){
-                    var fileData=res.thesis.attachment+"";
+                if(res.project.attachment){
+                    var fileData=res.project.attachment+"";
                     fileData=fileData.split("|");
                 }else{
                     $('#yc').hide();  //文件为空就隐藏已上传列表
@@ -291,14 +275,14 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
                 //下载文件
                 $(".filename").click(function (e) {
                     var filename = $(this).attr('filename');
-                    getFile(filename,res.thesis.uploader);
+                    getFile(filename,res.project.uploader);
                 });
                 (function ($) {
                     //删除文件  
@@ -314,8 +298,8 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                 url: '/attachment/adminDelete',
                                 data: {
                                     filename:filename,
-                                    aId:parseInt(tId),
-                                    type:"thesis"
+                                    aId:parseInt(pId),
+                                    type:"project"
                                 },
                                 success: function (res) {
                                     res = JSON.parse(res);
@@ -337,7 +321,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
-                    location.href='/teacher.do?active=cg';
                 });
             }
         }
@@ -350,13 +333,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             type: 'POST',
             url: '/achievement/getListByName',
             data: {
-                name: name
+                name: name,
             },
             success: function (res) {
                 res = JSON.parse(res);
-                if (res.state == 'success') {
+                if (res.code == 0) {
                     var tm=$('#tm');
-                    $.each(res.achievement, function (index, item) { 
+                    $.each(res.data, function (index, item) { 
                         if(item==""){
                           return true;
                         }
@@ -377,11 +360,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     }
 
 
+
     $('#fileupload').submit(function (e) {
+        layer.load();
         $("#btnSubmit").attr({"disabled":"true"});
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
         console.log(dataList);
-        if (tId == null) {
+        if (pId == null) {
             layer.alert("获取论文ID失败,不能提交", { icon: 5 }, function () {
                 layer.closeAll();
             })
@@ -389,14 +374,14 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         }
         ajax_request({
             type: "POST",
-            url: "/thesis/adminModify",
+            url: "/project/adminModify",
             data:dataList,
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
                         layer.closeAll();
-                        window.location.reload();
+                            location.reload();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
@@ -413,6 +398,39 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 
     });
 
+    $(".goback").click(function (e) { 
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+       parent.layer.close(index)
+    });
+
+    //跳转到下一页
+    window.jumpNext=function(type=null){
+        var data=null;
+        if(type!=null){
+           data={
+               type:type
+           }
+        }
+        var load=layer.load();
+        ajax_request({
+             type: 'POST',
+             url: '/achievement/getNextAchievementId',
+             data: data,
+             success: function (res) {
+                res = JSON.parse(res);
+                if (res.state == 'success') {
+                    layer.close(load);
+                    location.href="/type="+res.type+"/exam.do?aId="+res.aId+"&state="+state;
+                } else {
+                    layer.close(load);
+                        var alert=alert=layer.alert(res.msg,{icon:5},function() {
+                            layer.close(alert);
+                      });
+                }
+             }
+        })
+
+    }
 
 
 

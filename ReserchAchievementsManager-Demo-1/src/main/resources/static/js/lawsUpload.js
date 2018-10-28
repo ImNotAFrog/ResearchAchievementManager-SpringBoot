@@ -1,16 +1,9 @@
-layui.use(['layer', 'element','laydate','upload'], function(){
+layui.use(['layer', 'element','upload'], function(){
 	var layer = layui.layer;
 	var element = layui.element;
-	var laydate = layui.laydate;
     var upload = layui.upload;
-    var tbId=null;
+    var lId=null;
     var flist=[];
-    //日期时间选择器
-    laydate.render({
-    elem: '#publishDate'
-        ,type: 'date'
-    });
-
 		 //多文件列表示例
     var demoListView = $('#fileList')
         , uploadListIns = upload.render({
@@ -21,7 +14,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
             , auto: false
             , data: {
                 id: null,
-                type: 'textbook'
+                type: 'laws'
             }  //上传的额外数据
             , headers: { Authorization: 'Bearer ' + token }
             , bindAction: '#stratAction'
@@ -93,8 +86,8 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                                     url: '/attachment/delete',
                                     data: {
                                         filename:filename,
-                                        aId:parseInt(tbId),
-                                        type:"textbook"
+                                        aId:parseInt(lId),
+                                        type:"laws"
                                     },
                                     success: function (res) {
                                         res = JSON.parse(res);
@@ -133,12 +126,12 @@ layui.use(['layer', 'element','laydate','upload'], function(){
 
 //获取成果ID
     ajax_request({
-        url: "/textbook/create", 
+        url: "/laws/create", 
         success: function (res){
             res=JSON.parse(res);
             if (res.state == "success") {
-                uploadListIns.config.data.id =res.tbId;
-                tbId=res.tbId;
+                uploadListIns.config.data.id =res.lId;
+                lId=res.lId;
             } else {
                 layer.msg('获取成果ID失败');
             }
@@ -152,7 +145,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
 	
     $('#fileupload').submit(function (e) {
         $("#btnSubmit").attr({ "disabled": "true" });
-        if (tbId == null) {
+        if (lId == null) {
             layer.alert("获取成果ID失败,无法保存。", { icon: 5 }, function () {
                 $("#btnSubmit").attr({ "disabled": "false" });
                 layer.closeAll();
@@ -160,11 +153,18 @@ layui.use(['layer', 'element','laydate','upload'], function(){
             return false;
         }
         var dataList=$('#fileupload').serializeObject();
-        dataList.tbId = tbId;
+        dataList.lId = lId;
         dataList.uploader = account;
+        if(!checkIsInt(dataList.wordsCount)){
+            $("#btnSubmit").attr({ "disabled": "false" });
+            layer.alert('字数请输入正整数',{icon:5},function(){
+                 layer.closeAll();
+            })
+            return false;
+        }
         $.ajax({
             type: "POST",
-            url: "/textbook/upload",
+            url: "/laws/upload",
             headers: { Authorization: 'Bearer ' + token },
             data: JSON.stringify(dataList),
             contentType: 'application/json',
@@ -185,8 +185,4 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         });
         return false;
     });
-
-
-
-
 	});

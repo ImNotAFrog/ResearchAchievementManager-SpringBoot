@@ -1,38 +1,38 @@
-
-layui.use(['layer', 'element','laydate', 'upload'], function () {
+layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     var layer = layui.layer;
     var element = layui.element;
     var laydate = layui.laydate;
     var upload = layui.upload;
+    var laytpl = layui.laytpl;
     var flist = [];
     //日期时间选择器
     laydate.render({
-        elem: '#projectDate'
+        elem: '#publishDate'
         , type: 'date'
     });
-    var pId = GetQueryString('aId');
+    var tbId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
-
+    console.log(action)
     //删除已上传文件
-    $('.delproject').click(function (e) { 
-        $(".delproject").attr({"disabled":"true"});
-        layer.confirm('确定要删除此课题项目吗？', {
+    $('.deltextbook').click(function (e) { 
+        $(".deltextbook").attr({"disabled":"true"});
+        layer.confirm('确定要删除此成果吗吗？', {
             btn: ['确定', '点错了'] //按钮
         }, function () {
               layer.load();
                 ajax_request({
                     type: 'POST',
-                    url: '/project/delete',
+                    url: '/textbook/delete',
                     data: {
-                        pId:pId
+                        tbId:tbId
                     },
                     success: function (res) {
                         res=JSON.parse(res);
                     if (res.state == "success") {
                         layer.alert(res.msg, { icon: 1 }, function () {
                             layer.closeAll();
-                           Header.home();
+                            window.location.href = "/teacher.do?active=myCg";
                         });
                     } else {
                         layer.alert(res.msg, { icon: 5 }, function () {
@@ -46,7 +46,6 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
         });
 
     });
-                console.log(checkState(state))
                 $('#state').val(checkState(state));
                 if((state==1 ||state==-1) && action==null){
                     if(state!=-1){
@@ -57,13 +56,13 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                                 type: 'POST',
                                 url: '/achievement/submit',
                                 data: {
-                                    aId:parseInt(pId)
+                                    aId:parseInt(tbId)
                                 },
                                 success: function (res) {
                                     res = JSON.parse(res);
                                     if (res.state == 'success') {
                                     layer.alert('送审成功',{icon:1},function(){
-                                       Header.home();
+                                        location.href='/teacher.do?active=Cg';
                                     })
                                     } else {
                                         layer.alert('送审失败',{icon:5},function(){
@@ -85,13 +84,13 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                             type: 'POST',
                             url: '/achievement/submitedWithdraw',
                             data: {
-                                aId:parseInt(pId)
+                                aId:parseInt(tbId)
                             },
                             success: function (res) {
                                 res = JSON.parse(res);
                                 if (res.state == 'success') {
                                   layer.alert(res.msg,{icon:1},function(){
-                                    location.href='/project/edit.do?aId='+pId+"&state=1";
+                                    location.href='/textbook/edit.do?aId='+tbId+"&state=1";
                                   })
                                 } else {
                                     layer.alert(res.msg,{icon:5},function(){
@@ -109,7 +108,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                         $('.see').hide();
                     }else{
                         layer.alert('参数不合法',{icon:5},function () { 
-                            Header.home();
+                            location.href='/teacher.do?active=Cg';
                          })
                     }
                    
@@ -123,8 +122,8 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
             , multiple: true
             , auto: false
             , data: {
-                id: parseInt(pId),
-                type: 'project'
+                id: parseInt(tbId),
+                type: 'textbook'
             }  //上传的额外数据
             , headers: { Authorization: 'Bearer ' + token }
             , bindAction: '#stratAction'
@@ -199,8 +198,8 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                                         url: '/attachment/delete',
                                         data: {
                                             filename:filename,
-                                            aId:parseInt(pId),
-                                            type:"project"
+                                            aId:parseInt(tbId),
+                                            type:"textbook"
                                         },
                                         success: function (res) {
                                             res = JSON.parse(res);
@@ -233,29 +232,30 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 tds.eq(4).find('.demo-reload').val('重新上传'); //显示重传
             }
         });
-//取回论文信息
+//取回成果信息
     ajax_request({
         type: 'POST',
-        url: '/project/getById',
+        url: '/textbook/getById',
         data: {
-            pId: pId
+            tbId: tbId
         },
         success: function (res) {
             res = JSON.parse(res);
             if (res.state == 'success') {
-                $('#pId').val(res.project.pId);
-                $('#pName').val(res.project.pName);
-                $('#pId').val(res.project.pId);
-                $('#level').val(res.project.level);
-                $('#subject').val(res.project.subject); 
-                $('#involvement').val(res.project.involvement); 
-                if(res.project.projectDate){
-                    var projectDate=res.project.projectDate.time+"";
-                    $('#projectDate').val(timestampToTime(projectDate.substring(0,10)));
+                $('#tbId').val(res.textbook.tbId);
+                $('#tbName').val(res.textbook.tbName);
+                $('#publisher').val(res.textbook.publisher);
+                $('#level').val(res.textbook.level);
+                $('#ISBN').val(res.textbook.ISBN); 
+                $('#involvement').val(res.textbook.involvement); 
+                if(res.textbook.publishDate){
+                    var publishDate=res.textbook.publishDate.time+"";
+                    console.log(publishDate)
+                    $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
                 }
                 var fileUploaded=$('#fileUploaded');
-                if(res.project.attachment){
-                    var fileData=res.project.attachment+"";
+                if(res.textbook.attachment){
+                    var fileData=res.textbook.attachment+"";
                     fileData=fileData.split("|");
                 }else{
                     $('#yc').hide();  //文件为空就隐藏已上传列表
@@ -309,8 +309,8 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                                 url: '/attachment/delete',
                                 data: {
                                     filename:filename,
-                                    aId:parseInt(pId),
-                                    type:"project"
+                                    aId:parseInt(tbId),
+                                    type:"textbook"
                                 },
                                 success: function (res) {
                                     res = JSON.parse(res);
@@ -333,7 +333,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
-                    Header.home();
+                    location.href='/teacher.do?active=cg';
                 });
             }
         }
@@ -346,21 +346,23 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
         $("#btnSubmit").attr({"disabled":"true"});
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
         dataList.uploader=account;
-        if (pId == null) {
-            layer.alert("获取论文ID失败,不是提交", { icon: 5 }, function () {
+        //console.log(dataList)
+        //return false;
+        if (tbId == null) {
+            layer.alert("获取成果ID失败,不能提交", { icon: 5 }, function () {
                 layer.closeAll();
             })
             return false;
         }
         ajax_request({
             type: "POST",
-            url: "/project/upload",
+            url: "/textbook/upload",
             data:dataList,
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
-                       Header.home();
+                        window.location.href = "/teacher.do?active=myCg";
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {

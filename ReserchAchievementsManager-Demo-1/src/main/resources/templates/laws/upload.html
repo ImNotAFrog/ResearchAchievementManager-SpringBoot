@@ -22,23 +22,23 @@
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
 					<div class="form-item">
-							<label for="lawName">法规名称:</label>
+							<label for="lName">法律、法规名称:</label>
 							<div class="moco-control-input">
-									<input type="text" name="lawName" id="lawName" autocomplete="off" class="moco-form-control"  placeholder="请输入法规名称...">
+									<input type="text" name="lName" id="lName" autocomplete="off" class="moco-form-control"  placeholder="请输入法规名称...">
 									<div class="rlf-tip-wrap errorHint color-red"></div>
 								</div>
 						</div>
 						<div class="form-item">
-							<label for="lawNumber">法规编号:</label>
+							<label for="lNum">法律、法规编号:</label>
 							<div class="moco-control-input">
-									<input type="text" name="lawNumber" id="lawNumber" autocomplete="off" class="moco-form-control"  placeholder="请输入法规编号...">
+									<input type="text" name="lNum" id="lNum" autocomplete="off" class="moco-form-control"  placeholder="请输入法规编号...">
 									<div class="rlf-tip-wrap errorHint color-red"></div>
 								</div>
 						</div>
 						<div class="form-item">
-							<label>级别:</label>
+							<label for="level">级别:</label>
 							<div class="moco-control-input">
-								<select class="moco-form-control rlf-select" name="lawLevel" hidefocus="true" id="lawLevel" data-validate="require-select" >
+								<select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" data-validate="require-select" >
 										<option value="1">法律、行政法规、国家标准</option>
 									<option value="2">部门规章、行业标准规范</option>
 									<option value="3">地方性法规、政府规章、地方性标准规范</option>                              
@@ -47,9 +47,9 @@
 								</div>
 						</div>
 						<div class="form-item">
-							<label for="" class="moco-control-label">作者参与情况：</label>
+							<label for="involvement" class="moco-control-label">作者参与情况：</label>
 							<div class="moco-control-input">
-								<select class="moco-form-control rlf-select" name="authorSituation" hidefocus="true" id="authorSituation" data-validate="require-select">
+								<select class="moco-form-control rlf-select" name="involvement" hidefocus="true" id="involvement" data-validate="require-select">
 										<option value="1">1.主编</option>
 										<option value="2">2.参编</option>                               
 									</select>
@@ -63,6 +63,7 @@
 									<div class="rlf-tip-wrap errorHint color-red"></div>
 								</div>
 						</div>
+
 						<div class="form-item" id=''>
 							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
 							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
@@ -101,5 +102,5 @@
 	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
-<script src="/js/lawUpload.js"></script>
+<script src="/js/lawsUpload.js"></script>
 </html>

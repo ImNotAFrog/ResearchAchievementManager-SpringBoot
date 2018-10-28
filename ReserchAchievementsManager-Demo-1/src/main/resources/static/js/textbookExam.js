@@ -1,17 +1,14 @@
-layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
+layui.use(['layer', 'element','laydate'], function () {
     var layer = layui.layer;
     var element = layui.element;
     var laydate = layui.laydate;
-    var upload = layui.upload;
-    var laytpl = layui.laytpl;
-    var tId = null;
     var flist = [];
     //日期时间选择器
     laydate.render({
         elem: '#publishDate'
         , type: 'date'
     });
-    var tId = GetQueryString('aId');
+    var tbId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
 
@@ -38,7 +35,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/preCheck',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(tbId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
@@ -65,7 +62,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/reject',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(tbId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
@@ -103,7 +100,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/preCheckedWithdraw',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(tbId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
@@ -135,7 +132,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/approvedWithdraw',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(tbId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
@@ -167,17 +164,13 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 type: 'POST',
                 url: '/achievement/approve',
                 data: {
-                    aId:parseInt(tId)
+                    aId:parseInt(tbId)
                 },
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('复审通过',{icon:1},function(){
-                        if(checkAuth()==1){
-                            location.href="/admin1.do?active=sh";
-                        }else{
-                            location.href="/admin2.do?active=sh";
-                        }
+                        location.href="/admin1.do";
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -232,37 +225,39 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         }
 
     
-//取回论文信息
+
+//取回课题项目信息
     ajax_request({
         type: 'POST',
-        url: '/thesis/adminGetById',
+        url: '/textbook/adminGetById',
         data: {
-            tId: tId
+            tbId: tbId
         },
         success: function (res) {
             res = JSON.parse(res);
             if (res.state == 'success') {
-                $('#tName').val(res.thesis.tName);
-                $('#journalLevel').val(res.thesis.journalLevel);
-                $('#journalName').val(res.thesis.journalName);
-                $('#journalId').val(res.thesis.journalId); 
-                $('#uploader').val(res.thesis.uploader); 
-                if(res.thesis.publishDate){
-                    var publishDate=res.thesis.publishDate.time+"";
+                $('#tbId').val(res.textbook.tbId);
+                $('#tbName').val(res.textbook.tbName);
+                $('#publisher').val(res.textbook.publisher);
+                $('#level').val(res.textbook.level);
+                $('#ISBN').val(res.textbook.ISBN); 
+                $('#involvement').val(res.textbook.involvement); 
+                $('#uploader').val(res.textbook.uploader); 
+                if(res.textbook.publishDate){
+                    var publishDate=res.textbook.publishDate.time+"";
+                    console.log(publishDate)
                     $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
                 }
-                $('#tId').val(res.thesis.tId);
-                getTm(res.thesis.tName);//获取同名结果
+                getTm(res.textbook.tbName);//获取同名结果
                 var fileUploaded=$('#fileUploaded');
-
                 //此处与下面有重复代码 但不能删--
                 if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
                 }
                 //--此处与下面有重复代码 但不能删
 
-                if(res.thesis.attachment){
-                    var fileData=res.thesis.attachment+"";
+                if(res.textbook.attachment){
+                    var fileData=res.textbook.attachment+"";
                     fileData=fileData.split("|");
                 }else{
                     $('#yc').hide();  //文件为空就隐藏已上传列表
@@ -298,7 +293,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 //下载文件
                 $(".filename").click(function (e) {
                     var filename = $(this).attr('filename');
-                    getFile(filename,res.thesis.uploader);
+                    getFile(filename,res.textbook.uploader);
                 });
                 (function ($) {
                     //删除文件  
@@ -314,8 +309,8 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                 url: '/attachment/adminDelete',
                                 data: {
                                     filename:filename,
-                                    aId:parseInt(tId),
-                                    type:"thesis"
+                                    aId:parseInt(tbId),
+                                    type:"textbook"
                                 },
                                 success: function (res) {
                                     res = JSON.parse(res);
@@ -335,6 +330,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 
                 })(jQuery);
             } else {
+
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
                     location.href='/teacher.do?active=cg';
@@ -371,6 +367,8 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                            '</tr>';
                         tm.append(tr);
                     });
+                }else{
+                    layer.msg('获取同名成果失败');
                 }
             }
         })
@@ -378,10 +376,11 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 
 
     $('#fileupload').submit(function (e) {
+        layer.load();
         $("#btnSubmit").attr({"disabled":"true"});
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
         console.log(dataList);
-        if (tId == null) {
+        if (tbId == null) {
             layer.alert("获取论文ID失败,不能提交", { icon: 5 }, function () {
                 layer.closeAll();
             })
@@ -389,14 +388,14 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         }
         ajax_request({
             type: "POST",
-            url: "/thesis/adminModify",
+            url: "/textbook/adminModify",
             data:dataList,
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
                         layer.closeAll();
-                        window.location.reload();
+                        location.reload();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {

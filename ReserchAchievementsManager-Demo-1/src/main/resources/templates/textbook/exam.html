@@ -1,26 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>论著、教材类上传</title>
-<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
-<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
-<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
-<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
-<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+<head>
+	<meta charset="UTF-8">
+	<title>课题项目审核、查看</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
+	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 
 </head>
+
 <body>
 	<div th:replace="header::html"></div>
 	<div class="container upload">
 		<div class="row">
-			<div class="col-md-9 col-md-offset-2">
+			<div class="col-md-9 col-md-offset-2 ">
+
+				<!--论文-->
 				<div class="re-item">
-					<h3>论著、教材类</h3>
+						<h3>论著、教材类</h3>  
 					<a href="javascript:Header.home()" class="moco-modal-close"></a>
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
+
+						<div class="form-item">
+								<label>当前状态:</label>
+								<div class="moco-control-input">
+									<input type="text" id="state" readonly="readonly" class="moco-form-control">
+									<div class="rlf-tip-wrap errorHint color-red"></div>
+								</div>
+							</div>
+
+							
 						<div class="form-item">
 							<label for="tbName">论著成果名称:</label>
 							<div class="moco-control-input">
@@ -73,37 +87,52 @@
 							</div>
 						</div>
 
-
-
-						<div class="form-item" id=''>
-							<label class="col-md-2">成果附件:&nbsp;&nbsp; </label>
-							  <button type="button" class="btn btn-success fileinput-button" id="select">添加附件</button>
-								<button type="button" id="stratAction" class="btn btn-primary start">上传所有</button>
-							  <div class="layui-upload">
-								<div class="layui-upload-list">
-								  <table class="layui-table">
+						<div class="form-item" id="yc" style="margin-top: 12px;">
+							<label for="" class="moco-control-label">已上传附件:</label>
+							<div class="moco-control-input">
+							</div>
+							<table class="layui-table">
 									<thead>
-										<tr><th>类型</th>
-										<th>名字</th>
-									  <th>大小</th>
-									  <th>状态</th>
-									  <th>操作</th>
-									</tr></thead>
-									<tbody id="fileList"></tbody>
-								  </table>
-								</div>
-							  </div> 
-						
+										<tr>
+											<th>类型</th>
+											<th>名字</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody id="fileUploaded">
+										
+									</tbody>
+								</table>
+						</div>
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="" class="moco-control-label">同名成果:</label>
+							<div class="moco-control-input">
+							</div>
+							<table id="tm" class="layui-table">
+									<thead>
+										<tr>
+											<th>成果名称</th>
+											<th>类型</th>
+											<th>提交人</th>
+											<th>自评得分</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+								</table>
 						</div>
 
-						
-						<div class="col-md-offset-2">
-							<button id="btnSubmit" type="submit"
-								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
-							<button class="btn btn-default btn-warning" type="reset">重置</button>
-							<button type="button" class="btn btn-default"
-								onclick="Header.home()">返回</button>
+						<div class="col-md-offset-2" style="margin-top: 5px;">
+							<button id="btnSubmit" type="submit" class="btn submit hidden see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
+							<button class="btn btn-default submit hidden btn-warning see disable-eidt" type="reset">重置</button>
+							<button type="button" class="btn btn-primary see preCheck hidden">上报</button>
+							<button type="button" class="btn btn-primary see approve hidden">通过</button>
+							<button type="button" class="btn btn-info see hidden reject">驳回</button>
+							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
+							<button type="button" class="btn btn-danger Withdraw hidden pull-right delthesis">撤回成果</button>
 						</div>
+
+						<input type="hidden" value="" name="tbId" id="tbId">
+						<input type="hidden" value="" name="uploader" id="uploader">
 					</form>
 				</div>
 			</div>
@@ -113,5 +142,6 @@
 	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
-<script src="/js/textbookUpload.js"></script>
+<script src="/js/textbookExam.js"></script>
+
 </html>

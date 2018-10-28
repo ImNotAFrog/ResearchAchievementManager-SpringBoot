@@ -1,8 +1,9 @@
-layui.use(['layer',], function () {
-	var layer = layui.layer;
-})
+
 var departmentList
 var department
+
+
+
 $(function () {
 	if (token == null) {
 		window.location.href = '/index'
@@ -138,11 +139,19 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state+"&action=see";
+		console.log(e)
+		console.log(row)
+		console.log(value)
+		console.log(index)
+	//location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state+"&action=see";
 	},
 	'click .RoleOfB': function (e, value, row, index) {
-		console.log(row.type);
-		location.href="/"+row.type+"/exam.do?tId="+row.aId+"&state="+row.state;
+		console.log(e)
+		console.log(row)
+		console.log(value)
+		console.log(index)
+
+		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -155,32 +164,6 @@ function operateFormatter(value, row, index) {
 	].join('');
 }
 
-
-// 查询成果名称
-function checkType(value) {
-	value = value.toLowerCase();
-	switch (value) {
-		case "thesis":
-			return '论文类';
-			break;
-		case "poject":
-			return '课题项目类';
-			break;
-		case "textbook":
-			return '论著、教材类';
-			break;
-		case "patent":
-			return '专利';
-			break;
-		case "edu-reform project":
-			return '教学改革项目类';
-			break;
-		default:
-			return '法律、法规类';
-			break;
-	}
-}
-
 //筛选符合状态的成果
 function stateSiftArray(arr,state){
 	return arr.filter(item=>{
@@ -190,176 +173,233 @@ function stateSiftArray(arr,state){
 	})
 }
 
-//管理员获取相应部门成果列表
-$(function () {
-	$.ajax({
-		type: "GET",
-		url: "/achievement/getListBySubDepartment",
-		contentType: 'application/json',
-		headers: { Authorization: 'Bearer ' + token },
-		success: function (res) {
-			res = JSON.parse(res);
-			console.log(res.achievement);
-			if (res.state == "success") {
-				var dataList=res.achievement;
-				$('#wating').bootstrapTable('load',stateSiftArray(dataList,4));
-				//待初审的表
-				$('#wating1').bootstrapTable('load',stateSiftArray(dataList,2));
-				//已上报的表
-				$('#wating3').bootstrapTable('load',stateSiftArray(dataList,3));
-				//未通过的表
-				$('#wating4').bootstrapTable('load',stateSiftArray(dataList,-1));
-			} else {
-				layer.alert("获取成果列表失败", { icon: 5 }, function () {
-					location.href="/index.do"
-					layer.closeAll();
-				});
-			}
-		},
-		error: function (pa) {
-			layer.alert("请求数据失败", { icon: 5 }, function () {
-				location.href="/index.do"
-				layer.closeAll();
+
+	layui.use([ 'layer', 'table', 'element'], function(){
+		layer = layui.layer //弹层
+		,table = layui.table //表格
+		,element = layui.element //元素操作
+		//执行一个 table 实例
+
+
+
+		function openIframe(type,aid,state,action=null){
+			var height=$(window).height()-50;
+			console.log("/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action);
+			//return false;
+			layer.open({
+			//title:'查看'+data.user+'的信息',
+			type: 2,
+			area: ['800px', height+'px'],
+			content: "/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action,
+			scrollbar:true,
+			end: function () {
+				$(".layui-laypage-btn").click();  //重新点击分页页面
+			  }  
+		  });
+		}
+
+			var table4=table.render({
+				elem: '#table4'
+				,height: 312
+				,url: '/achievement/getListBySubDepartment' //数据接口
+				,method:"POST"
+				,where:{
+					state:4,
+				}
+				,page: true //开启分页
+				,headers: { Authorization: 'Bearer ' + token }
+				,contentType: 'application/json'
+				,cols: [[ //表头
+				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',templet: function(d){
+					return checkType(d.type);
+				  }}
+				,{field: 'uploaderName', title: '提交者'} 
+				,{field: 'score', title: '成果得分'}
+				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar4'}
+				]]
 			});
-		}
+			//监听工具条
+			table.on('tool(t4)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			var tr = obj.tr; //获得当前行 tr 的DOM对象
+			if(layEvent === 'detail'){ //查看
+					console.log(data.state)
+					openIframe(data.type,data.aId,data.state,'see')
+			}
+			});
+			
+
+
+			//执行一个 table 实例
+			var table2=table.render({
+				elem: '#table2'
+				,height: 312
+				,url: '/achievement/getListBySubDepartment' //数据接口
+				,method:"POST"
+				,where:{
+					state:2,
+				}
+				,page: true //开启分页
+				,headers: { Authorization: 'Bearer ' + token }
+				,contentType: 'application/json'
+				,cols: [[ //表头
+				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',templet: function(d){
+					return checkType(d.type);
+				  }}
+				,{field: 'uploaderName', title: '提交者'} 
+				,{field: 'score', title: '成果得分'}
+				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar2'}
+				]]
+			});
+
+			table.on('tool(t2)', function(obj){
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event;
+			var active=null;
+			if(layEvent == 'detail'){ //审核模式
+				active="see";
+			}
+			console.log(active)
+			openIframe(data.type,data.aId,data.state,active);
+			});
+
+			//执行一个 table 实例
+			var table3=table.render({
+				elem: '#table3'
+				,height: 312
+				,url: '/achievement/getListBySubDepartment' //数据接口
+				,page: true //开启分页
+				,method:"POST"
+				,where:{
+					state:3,
+				}
+				,headers: { Authorization: 'Bearer ' + token }
+				,contentType: 'application/json'
+				,cols: [[ //表头
+				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',templet: function(d){
+					return checkType(d.type);
+				  }}
+				,{field: 'uploaderName', title: '提交者'} 
+				,{field: 'score', title: '成果得分'}
+				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar3'}
+				]]
+			});
+
+			//监听工具条
+			table.on('tool(t3)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			var tr = obj.tr; //获得当前行 tr 的DOM对象
+			if(layEvent === 'detail'){ //查看
+					openIframe(data.type,data.aId,data.state,'see')
+			}
+			})
+
+
+			//执行一个 table 实例
+			var table_1=table.render({
+				elem: '#table-1'
+				,height: 312
+				,url: '/achievement/getListBySubDepartment' //数据接口
+				,page: true //开启分页
+				,method:"POST"
+				,where:{
+					state:-1,
+				}
+				,headers: { Authorization: 'Bearer ' + token }
+				,contentType: 'application/json'
+				,cols: [[ //表头
+				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',templet: function(d){
+					return checkType(d.type);
+				  }}
+				,{field: 'uploaderName', title: '提交者'} 
+				,{field: 'score', title: '成果得分'}
+				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-1'}
+				]]
+			});
+
+				//监听工具条
+				table.on('tool(t-1)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+				var data = obj.data; //获得当前行数据
+				var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+				var tr = obj.tr; //获得当前行 tr 的DOM对象
+				if(layEvent === 'detail'){ //查看
+						openIframe(data.type,data.aId,data.state,'see')
+				}
+				})
+	
+	
+
+
+		$('.searchBtn').click(function (e) { 
+			var state=$(this).attr('state');
+			var type=$(".table"+state+" .optType").val();
+			var keyword=$(".table"+state+" .keyword").val();
+			console.log("查询的类型:"+type);
+			console.log("查询的关键字:"+keyword);
+			var conditions={
+				where: {
+					type: type,
+					state: parseInt(state),
+					keyword:keyword
+				}
+				,page: {
+				  curr: 1 
+				}
+			  }
+
+			if(state==4){
+				table4.reload(conditions);
+			}else if(state==2){
+				table2.reload(conditions);
+			}else if(state==3){
+				table3.reload(conditions);
+			}else if(state==-1){
+				table_1.reload(conditions);
+			}
+		});
+
+
+		$('.refresh').click(function (e) { 
+			console.log(state);
+			var state=$(this).attr('state');
+			console.log(state);
+			$(".table"+state+" .optType").val("");
+			$(".table"+state+" .keyword").val('');
+			var conditions={
+				where: {
+					state: parseInt(state),
+				}
+				,page: {
+				  curr: 1 
+				}
+			  }
+			if(state==4){
+				table4.reload(conditions);
+			}else if(state==2){
+				table2.reload(conditions);
+			}else if(state==3){
+				table3.reload(conditions);
+			}else if(state==-1){
+				table_1.reload(conditions);
+			}
+		});
+
+
+
+	})	
+
+$(document).ready(function () {
+	if (getItem('active')) {
+		$('#' + getItem('active')).click();
+	}
+	$('.left a').click(function (e) {
+		var obj = $(this);
+		setItem('active', obj.attr('id'))
 	});
-})
-
-
-
-$('#wating').bootstrapTable({
-	columns: [
-		{
-			field: 'name',
-			title: '成果名称'
-		}, {
-			field: 'type',
-			title: '类型',
-			formatter: function (value, row, index) {
-				return checkType(value)
-
-			}
-		},{
-			field: 'uploaderName',
-			title: '提交人',
-			sortable:true,
-			order:'asc'
-		},  {
-			field: 'score',
-			title: '成果得分',
-			formatter: function (value, row, index) {
-				return checkState(value);
-			}
-		}, {
-			field: 'operate',
-			title: '操作',
-			align: 'center',
-			events: operateEvents,
-			formatter: operateFormatter
-		}
-	],
-	data: []
 });
-
-$('#wating1').bootstrapTable({
-	columns: [
-		{
-			field: 'name',
-			title: '成果名称'
-		}, {
-			field: 'type',
-			title: '类型',
-			formatter: function (value, row, index) {
-				return checkType(value)
-
-			}
-		},{
-			field: 'uploaderName',
-			title: '提交人',
-			sortable:true,
-			order:'asc'
-		},  {
-			field: 'score',
-			title: '成果得分',
-			formatter: function (value, row, index) {
-				return checkState(value);
-			}
-		}, {
-			field: 'operate',
-			title: '操作',
-			align: 'center',
-			events: operateEvents,
-			formatter: operateFormatter
-		}
-	],
-	data: []
-});
-
-$('#wating3').bootstrapTable({
-	columns: [
-		{
-			field: 'name',
-			title: '成果名称'
-		}, {
-			field: 'type',
-			title: '类型',
-			formatter: function (value, row, index) {
-				return checkType(value)
-
-			}
-		},{
-			field: 'uploaderName',
-			title: '提交人',
-			sortable:true,
-			order:'asc'
-		},  {
-			field: 'score',
-			title: '成果得分',
-			formatter: function (value, row, index) {
-				return checkState(value);
-			}
-		}, {
-			field: 'operate',
-			title: '操作',
-			align: 'center',
-			events: operateEvents,
-			formatter: operateFormatter
-		}
-	],
-	data: []
-});
-
-$('#wating4').bootstrapTable({
-	columns: [
-		{
-			field: 'name',
-			title: '成果名称'
-		}, {
-			field: 'type',
-			title: '类型',
-			formatter: function (value, row, index) {
-				return checkType(value)
-
-			}
-		},{
-			field: 'uploaderName',
-			title: '提交人',
-			sortable:true,
-			order:'asc'
-		},  {
-			field: 'score',
-			title: '成果得分',
-			formatter: function (value, row, index) {
-				return checkState(value);
-			}
-		}, {
-			field: 'operate',
-			title: '操作',
-			align: 'center',
-			events: operateEvents,
-			formatter: operateFormatter
-		}
-	],
-	data: []
-});
-
