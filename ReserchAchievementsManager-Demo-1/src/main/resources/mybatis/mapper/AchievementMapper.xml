@@ -129,10 +129,10 @@
 		parameterType="java.lang.Integer"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
-		a_id,type
+		a_id as aId,type
 		from achievement
 		where
-		state=	#{state}
+		state=#{state}
 		limit 1
 	</select>
 
@@ -140,7 +140,7 @@
 		parameterType="edu.swjtuhc.model.Achievement"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
-		a_id,type
+		a_id as aId,type
 		from achievement
 		where
 		state=#{state} and type=#{type}

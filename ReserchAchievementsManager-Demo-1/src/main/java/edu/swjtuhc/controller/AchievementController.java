@@ -319,6 +319,7 @@ public class AchievementController {
 		if(request.isUserInRole("ROLE_ADMIN_01")) {
 			if(type==null) {
 				a = achievementService.getNextAchievementId(3);
+				
 			}else {
 				Achievement temp = new Achievement();
 				temp.setState(3);
