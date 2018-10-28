@@ -83,9 +83,29 @@
 						<div class="line"></div>
 						<!--已通过-->
 						<div class="examing">
-							<table id="wating4" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
-							 data-sort-order="desc" data-height="516" data-search="true">
-							</table>
+							<div class="toolbar flex7 table4">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+										<select class="form-control optType">
+												<option value="">所有</option>
+												<option value="project">课题项目类</option>
+												<option value="thesis">论文类</option>
+												<option value="textbook">论著、教材类</option>
+												<option value="patent">专利</option>
+												<option value="reformProject">教育改革项目类</option>
+												<option value="laws">法律法规类</option>
+										</select>
+										<div class="flex5">
+												<input class="form-control keyword" type="text" placeholder="关键字..">
+												<button type="button" state="4" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="4" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table4" lay-filter="t4"></table>
+						<script type="text/html" id="toolBar4">
+								<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+						</script>
 						</div>
 
 					</div>
@@ -94,9 +114,29 @@
 						<div class="line"></div>
 						<!--待审核-->
 						<div class="examing">
-							<table id="wating3" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
-							 data-sort-order="desc" data-height="516" data-search="true">
-							</table>
+							<div class="toolbar flex7 table">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+										<select class="form-control optType">
+												<option value="">所有</option>
+												<option value="project">课题项目类</option>
+												<option value="thesis">论文类</option>
+												<option value="textbook">论著、教材类</option>
+												<option value="patent">专利</option>
+												<option value="reformProject">教育改革项目类</option>
+												<option value="laws">法律法规类</option>
+										</select>
+										<div class="flex5">
+												<input class="form-control keyword" type="text" placeholder="关键字..">
+												<button type="button" state="2" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="2" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table3" lay-filter="t3"></table>
+						<script type="text/html" id="toolBar3">
+								<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">审核</a>
+						</script>
 						</div>
 
 					</div>
@@ -105,9 +145,30 @@
 						<div class="line"></div>
 						<!--已驳回-->
 						<div class="examing">
-							<table id="wating-1" class="table table-striped table-bordered table-hover" data-pagination="true" data-sort-name="aId"
-							 data-sort-order="desc" data-height="516" data-search="true">
-							</table>
+							<div class="toolbar flex7 table-1">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+									<select class="form-control optType">
+										<option value="">所有</option>
+										<option value="project">课题项目类</option>
+										<option value="thesis">论文类</option>
+										<option value="textbook">论著、教材类</option>
+										<option value="patent">专利</option>
+										<option value="reformProject">教育改革项目类</option>
+										<option value="laws">法律法规类</option>
+									</select>
+										<div class="flex5">
+											<input class="form-control keyword" type="text" placeholder="关键字..">
+											<button type="button" state="-1" class="btn searchBtn btn-default">搜索</button>
+											<button type="button" state="-1" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table-1" lay-filter="t4"></table>
+						<script type="text/html" id="toolBar-1">
+								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+								<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+						</script>
 						</div>
 					</div>
 					<div id="research" class="content-item">
@@ -115,10 +176,6 @@
 
 					</div>
 
-					<div id="research" class="content-item">
-
-						已驳回成果
-					</div>
 
 					<div id="research" class="content-item">
 						成果导出

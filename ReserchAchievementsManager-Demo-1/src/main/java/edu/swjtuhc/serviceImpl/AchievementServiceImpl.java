@@ -148,6 +148,7 @@ public class AchievementServiceImpl implements AchievementService {
 	@Override
 	public Achievement getNextAchievementId(Integer state) {
 		// TODO Auto-generated method stub
+		System.err.println(state);
 		return achievementMapper.getNextAchievementId(state);
 	}
 

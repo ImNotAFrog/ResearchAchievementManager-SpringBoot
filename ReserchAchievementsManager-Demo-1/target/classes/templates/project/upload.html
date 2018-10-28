@@ -21,7 +21,7 @@
 				<div class="re-item">
 
 					<h3>课题项目信息</h3>
-					<a href="javascript:Header.home()" class="moco-modal-close"></a>
+					<a href="javascript:Header.home();" class="moco-modal-close"></a>
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
 						<div class="form-item">
@@ -45,10 +45,10 @@
 							</div>
 						</div>
 						<div class="form-item">
-							<label for="projectLevel">项目级别:</label>
+							<label for="level">项目级别:</label>
 							<div class="moco-control-input">
-                           				  <select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" data-validate="require-select" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex">
-	                           	 				<option value="1">公安消防部队高等专科学校：国家级</option>
+                           				  <select class="moco-form-control rlf-select" name="level" hidefocus="true" id="level" onfocus="this.defaultIndex=this.selectedIndex;">
+	                           	 				<option value="1" selected>公安消防部队高等专科学校：国家级</option>
 	                                            <option value="2">公安消防部队高等专科学校：省部级</option>
 	                                            <option value="3">公安消防部队高等专科学校：校级</option> 
 	                                            <option value="4">外单位项目：国家级</option>   
@@ -62,9 +62,14 @@
 						<div class="form-item">
 							<label for="subject">项目主体名称:</label>
 							<div class="moco-control-input">
-                           				  <input type="text" name="subject" id="subject" autocomplete="off" class="moco-form-control"  placeholder="如：公安消防部队高等专科学校...">
-                            				 <div class="rlf-tip-wrap errorHint color-red"></div>
-                        				 </div>
+									<div class="moco-control-input">
+													 <select class="moco-form-control rlf-select" name="subject" hidefocus="true" id="subject">
+														<option value="1" selected>1、公安消防部队高等专科学校</option>
+														<option value="2">2、外单位</option>                                                                             
+													</select>
+											  <div class="rlf-tip-wrap errorHint color-red"></div>
+										</div>
+                        	</div>
 						</div>
 						<div class="form-item">
 							<label for="status">项目状态</label>
@@ -112,8 +117,7 @@
 							<button id="btnSubmit" type="submit"
 								class="btn btn-primary submit" style="opacity: 0.75">提交</button>
 							<button class="btn btn-default btn-warning" type="reset">重置</button>
-							<button type="button" class="btn btn-default"
-								onclick="Header.home()">返回</button>
+							<button type="button" class="btn btn-default" onclick="Header.home();">返回</button>
 						</div>
 					</form>
 				</div>

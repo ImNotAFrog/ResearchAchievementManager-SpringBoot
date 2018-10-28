@@ -4,6 +4,23 @@
  * @Last Modified by:   MaiBenBen
  * @Last Modified time: 2018-02-13 18:09:29
  */
+
+ //设置本地储存
+function setItem(key,val){
+	localStorage.setItem(key,val);
+}
+
+//获取本地储存
+function getItem(key){
+	return localStorage.getItem(key);
+}
+
+//删除本地储存
+function removeItem(key){
+	localStorage.removeItem(key);
+}
+
+
 class Header {
 	static home() {
 		var token = TokenHelper.getLocalToken()
@@ -35,6 +52,7 @@ class Header {
 				console.log('logout error')
 			}
 		})
+		removeItem('active');
 	}
 }
 var token = TokenHelper.getLocalToken()
@@ -363,7 +381,7 @@ function checkType(value) {
 		case "thesis":
 			return '论文类';
 			break;
-		case "poject":
+		case "project":
 			return '课题项目类';
 			break;
 		case "textbook":
@@ -372,12 +390,18 @@ function checkType(value) {
 		case "patent":
 			return '专利';
 			break;
-		case "edu-reform project":
+		case "reformproject":
 			return '教学改革项目类';
 			break;
-		default:
+		case "laws":
 			return '法律、法规类';
+			break;
+		default:
+			return '不存在的类型';
 			break;
 	}
 }
+
+
+
 

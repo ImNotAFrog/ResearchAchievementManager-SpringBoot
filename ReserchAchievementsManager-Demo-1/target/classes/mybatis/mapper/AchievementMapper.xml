@@ -132,7 +132,7 @@
 		a_id,type
 		from achievement
 		where
-		state={#state}
+		state=	#{state}
 		limit 1
 	</select>
 
@@ -143,7 +143,7 @@
 		a_id,type
 		from achievement
 		where
-		state={#state} and type={#type}
+		state=#{state} and type=#{type}
 		limit 1
 	</select>
 
