@@ -68,7 +68,7 @@
 		<if test='null!=type and ""!=type'>
 			and a.type=#{type}
 		</if>
-		<if test='null!=state or 0!=state'>
+		<if test='null!=state and 0!=state'>
 			and a.state=#{state}
 		</if>
 		<if test='null!=keyword and ""!=keyword'>

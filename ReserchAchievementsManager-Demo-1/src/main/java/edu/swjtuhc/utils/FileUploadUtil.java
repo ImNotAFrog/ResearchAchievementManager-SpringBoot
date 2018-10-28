@@ -41,12 +41,32 @@ public class FileUploadUtil {
         return suffix;
     }
     
+    public static boolean isImg(String fileName) {
+    	boolean flag=false;
+    	String suffix = getSuffix(fileName);
+    	switch(suffix) {
+    	case "png":
+    	case "jpg":
+    	case "jpeg":
+    	case "gif":
+    	case "ico":
+    	case "bmp":
+    		flag=true;
+    		break;
+    		default:
+    			break;
+    	}
+    	return flag;
+    }
+    
     public static String saveLocalImg(MultipartFile imgs,String attachmentPath,Long id) {
     	String fileName = null;
 		if (imgs != null) {
 			try {
 				fileName = new Date().getTime()+"-" + imgs.getOriginalFilename();
-
+				if(!isImg(fileName)) {
+					return "false";
+				}
 				String dirPath = attachmentPath +"news/"+ id + "/";
 				String filePath = attachmentPath + "news/"+ id + "/" + fileName;
 				File backupDir = new File(dirPath);
