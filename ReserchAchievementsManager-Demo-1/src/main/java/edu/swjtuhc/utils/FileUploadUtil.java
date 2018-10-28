@@ -65,7 +65,7 @@ public class FileUploadUtil {
 			try {
 				fileName = new Date().getTime()+"-" + imgs.getOriginalFilename();
 				if(!isImg(fileName)) {
-					return "false";
+					return null;
 				}
 				String dirPath = attachmentPath +"news/"+ id + "/";
 				String filePath = attachmentPath + "news/"+ id + "/" + fileName;
@@ -90,7 +90,7 @@ public class FileUploadUtil {
 			} catch (Exception e) {
 				e.printStackTrace();
 				
-				return e.getMessage();
+				return null;
 			}
 		}
 		return "/attachment/get?filename=" + fileName;

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import edu.swjtuhc.model.Laws;
+import edu.swjtuhc.model.News;
 import edu.swjtuhc.model.Patent;
 import edu.swjtuhc.model.Project;
 import edu.swjtuhc.model.ReformProject;
@@ -255,9 +258,24 @@ public class AttachmentController {
 	public String imgUpload(HttpServletRequest request){
 		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
 		MultipartFile uploadImg = params.getFile("img");
-		String id = params.getParameter("newsId");
-		
+		Long id = Long.parseLong(params.getParameter("newsId"));
+		News news= null;
 		JSONObject result = new JSONObject();
+		if(id==null || news==null || uploadImg==null) {
+			result.put("errno", 1);
+			result.put("msg", "Id或图片不存在");
+			return result.toString();
+		}
+		String imgPath = FileUploadUtil.saveLocalImg(uploadImg, attachmentPath, id);
+		if(imgPath==null) {
+			result.put("errno", 1);
+			result.put("msg", "图片不存在");
+			return result.toString();
+		}
+		List<String> urls = new ArrayList<>();
+		urls.add(imgPath);
+		result.put("errno", 0);
+		result.put("data", urls);		
 		return result.toString();
 	}
 

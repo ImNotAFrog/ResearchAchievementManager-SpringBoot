@@ -207,7 +207,7 @@ public class AchievementController {
 		return result.toString();
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01',ROLE_ADMIN_02)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02')")
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
 	public String reject(HttpServletRequest request, @RequestBody Map<String,Object> reqMap) {		
 		JSONObject result = new JSONObject();
