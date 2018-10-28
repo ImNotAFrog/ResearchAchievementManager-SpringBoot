@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.NewsMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.News">
+		<id column="n_id" property="nId" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />		
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="uploader" property="uploader"
+			jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="upload_date" property="uploadDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<association property="uploaderName" column="uploader"
+			javaType="java.lang.String">
+			<result property="uploaderName" column="u.name" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		n_id,title,content,upload_date,uploader,state
+	</sql>
+	<sql id="Association_Userprofile">
+		n.n_id,n.title,n.content,n.uploader,n.upload_date,n.state,u.name
+	</sql>
+	<insert id="createNews"
+		parameterType="edu.swjtuhc.model.News">
+		INSERT INTO
+		news
+		(
+		<include refid="Base_Column_List"></include>
+		)
+		values
+		(#{nId},#{title},#{content},#{uploadDate},#{uploader},#{state})
+	</insert>
+	
+	
+
+	<select id="getNewsList"
+		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		select
+		<include refid="Association_Userprofile"></include>
+		from news n
+		LEFT JOIN user_profile u
+		ON n.uploader=u.account		
+		<if test='null!=state and 0!=state'>
+			and n.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and n.title like CONCAT('%',#{keyword},'%')
+		</if>
+		limit #{start},#{limit}
+	</select>
+
+	<select id="getNewsById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Association_Userprofile"></include>
+		from news n
+		JOIN user_profile u
+		ON n.uploader=u.account
+		where n.n_id = #{nId}
+	</select>
+
+	<update id="updateNews"
+		parameterType="edu.swjtuhc.model.News">
+		UPDATE
+		news
+		SET
+		title = #{title},content=#{content},uploader= #{uploader},upload_date=#{uploadDate},state= #{state}
+		WHERE
+		n_id = #{nId}
+	</update>
+
+	<delete id="deleteNews" parameterType="java.lang.Long">
+		DELETE FROM
+		news
+		WHERE
+		n_id=#{nId}
+	</delete>
+
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT count(a_id) FROM 
+		achievement
+	</select>
+</mapper> 
