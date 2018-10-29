@@ -81,6 +81,7 @@ public class ProjectServiceImpl implements ProjectService {
 		achievement.setSubDepartment(p.getSubDepartment());
 		achievement.setUploadDate(p.getUploadDate());
 		achievement.setName(p.getpName());
+		achievement.setState(1);
 		int i = updateProject(p, achievement);
 		
 		return i;

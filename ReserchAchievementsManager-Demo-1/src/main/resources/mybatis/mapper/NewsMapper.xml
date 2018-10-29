@@ -38,7 +38,7 @@
 	
 
 	<select id="getNewsList"
-		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from news n

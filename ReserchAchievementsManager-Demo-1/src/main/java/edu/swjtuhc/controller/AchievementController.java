@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.swjtuhc.model.Achievement;
-import edu.swjtuhc.model.RequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.AchievementService;
 import edu.swjtuhc.service.UserService;
@@ -39,14 +39,16 @@ public class AchievementController {
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 	
 	@RequestMapping(value="/getListByAccount", method = RequestMethod.POST)
-	public String getListByAccount(HttpServletRequest request, @RequestBody RequestMsg msg){
+	public String getListByAccount(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		msg.setAccount(account);
 		JSONObject result = new JSONObject();
 		try {
 			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
-			JSONArray jList = JSONArray.fromObject(list);
+			msg.setStart((msg.getPage()-1)*msg.getLimit());
+			List<Achievement> pageList = list.subList(msg.getStart(), msg.getStart()+msg.getLimit());
+			JSONArray jList = JSONArray.fromObject(pageList);
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
@@ -61,7 +63,7 @@ public class AchievementController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/getAll", method = RequestMethod.POST)
-	public String getAll(HttpServletRequest request, @RequestBody RequestMsg msg){
+	public String getAll(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		JSONObject result = new JSONObject();
 		
 		try {
@@ -82,7 +84,7 @@ public class AchievementController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
 	@RequestMapping(value="/getListBySubDepartment", method = RequestMethod.POST)
-	public String getListBySubDepartment(HttpServletRequest request, @RequestBody RequestMsg msg){
+	public String getListBySubDepartment(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
@@ -112,7 +114,7 @@ public class AchievementController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN_02','ROLE_ADMIN_01')")
 	@RequestMapping(value="/getListByName", method = RequestMethod.POST)
-	public String getListByName(HttpServletRequest request, @RequestBody RequestMsg msg){
+	public String getListByName(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		JSONObject result = new JSONObject();		
 		if(msg.getName()==null){
 			result.put("state", "fail");

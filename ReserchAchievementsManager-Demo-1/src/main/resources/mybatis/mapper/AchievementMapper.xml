@@ -39,7 +39,7 @@
 		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
 	</insert>
 	<select id="getAchievementListByAccount"
-		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
@@ -55,10 +55,9 @@
 		<if test='null!=keyword and ""!=keyword'>
 			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
-		limit #{start},#{limit}
 	</select>
 	<select id="getAchievementByName"
-		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
@@ -76,7 +75,7 @@
 		</if>
 	</select>
 	<select id="getAchievementListBySubDepartment"
-		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
@@ -93,11 +92,10 @@
 		<if test='null!=keyword and ""!=keyword'>
 			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
-		limit #{start},#{limit}
 	</select>
 
 	<select id="getAchievementList"
-		parameterType="edu.swjtuhc.model.RequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
@@ -112,7 +110,6 @@
 		<if test='null!=keyword and ""!=keyword'>
 			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
-		limit #{start},#{limit}
 	</select>
 
 	<select id="getAchievementById" parameterType="java.lang.Long"
@@ -166,9 +163,18 @@
 		WHERE
 		a_id=#{aId}
 	</delete>
-
-	<select id="getCount" resultType="java.lang.Integer">
-		SELECT count(a_id) FROM 
+	
+	<select id="getAchievementDuring" parameterType="edu.swjtuhc.model.RankingRequestMsg"
+		 resultMap="BaseResultMap">
+		SELECT 
+		<include refid="Association_Userprofile"></include>
+		from achievement a
+		JOIN user_profile u
+		ON a.uploader=u.account
+		where 
+		
+		FROM
 		achievement
 	</select>
+	
 </mapper> 

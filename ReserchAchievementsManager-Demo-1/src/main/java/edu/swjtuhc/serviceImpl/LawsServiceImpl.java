@@ -81,6 +81,7 @@ public class LawsServiceImpl implements LawsService {
 		achievement.setSubDepartment(l.getSubDepartment());
 		achievement.setUploadDate(l.getUploadDate());
 		achievement.setName(l.getlName());
+		achievement.setState(1);
 		int i = updateLaws(l, achievement);
 		
 		return i;

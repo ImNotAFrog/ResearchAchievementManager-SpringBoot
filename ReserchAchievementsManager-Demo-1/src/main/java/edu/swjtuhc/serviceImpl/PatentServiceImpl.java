@@ -81,6 +81,7 @@ public class PatentServiceImpl implements PatentService {
 		achievement.setSubDepartment(pa.getSubDepartment());
 		achievement.setUploadDate(pa.getUploadDate());
 		achievement.setName(pa.getPaName());
+		achievement.setState(1);
 		int i = updatePatent(pa, achievement);
 		
 		return i;

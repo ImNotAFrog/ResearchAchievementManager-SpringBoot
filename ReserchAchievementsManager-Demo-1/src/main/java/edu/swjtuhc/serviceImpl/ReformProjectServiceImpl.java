@@ -81,6 +81,7 @@ public class ReformProjectServiceImpl implements ReformProjectService {
 		achievement.setSubDepartment(rp.getSubDepartment());
 		achievement.setUploadDate(rp.getUploadDate());
 		achievement.setName(rp.getRpName());
+		achievement.setState(1);
 		int i = updateReformProject(rp, achievement);
 		
 		return i;

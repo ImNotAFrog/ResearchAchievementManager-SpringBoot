@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.swjtuhc.mapper.AchievementMapper;
 import edu.swjtuhc.model.Achievement;
-import edu.swjtuhc.model.RequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.service.AchievementService;
 
 @Service
@@ -17,28 +17,28 @@ public class AchievementServiceImpl implements AchievementService {
 	AchievementMapper achievementMapper;
 
 	@Override
-	public List<Achievement> getAchievementListByAccount(RequestMsg msg) {
+	public List<Achievement> getAchievementListByAccount(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub		
-		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		//msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return achievementMapper.getAchievementListByAccount(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementList(RequestMsg msg) {
+	public List<Achievement> getAchievementList(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub	
-		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		//msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return achievementMapper.getAchievementList(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementListBySubDepartment(RequestMsg msg) {
+	public List<Achievement> getAchievementListBySubDepartment(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
-		msg.setStart((msg.getPage()-1)*msg.getLimit());
+		//msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return achievementMapper.getAchievementListBySubDepartment(msg);
 	}
 
 	@Override
-	public List<Achievement> getAchievementByName(RequestMsg msg) {
+	public List<Achievement> getAchievementByName(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
 //		msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return achievementMapper.getAchievementByName(msg);
@@ -158,11 +158,4 @@ public class AchievementServiceImpl implements AchievementService {
 		// TODO Auto-generated method stub
 		return achievementMapper.getNextAchievementIdOfType(achievement);
 	}
-
-	@Override
-	public Integer getCount() {
-		// TODO Auto-generated method stub
-		return achievementMapper.getCount();
-	}
-
 }

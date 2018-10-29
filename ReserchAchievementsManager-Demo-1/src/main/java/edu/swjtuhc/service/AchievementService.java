@@ -3,14 +3,14 @@ package edu.swjtuhc.service;
 import java.util.List;
 
 import edu.swjtuhc.model.Achievement;
-import edu.swjtuhc.model.RequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
 
 public interface AchievementService {
 
-	List<Achievement> getAchievementListByAccount(RequestMsg msg);
-	List<Achievement> getAchievementList(RequestMsg msg);
-	List<Achievement> getAchievementListBySubDepartment(RequestMsg msg);
-	List<Achievement> getAchievementByName(RequestMsg msg);
+	List<Achievement> getAchievementListByAccount(PagingRequestMsg msg);
+	List<Achievement> getAchievementList(PagingRequestMsg msg);
+	List<Achievement> getAchievementListBySubDepartment(PagingRequestMsg msg);
+	List<Achievement> getAchievementByName(PagingRequestMsg msg);
 	Integer submit(Long aId);
 	Integer precheck(Long aId);
 	Integer approve(Long aId);
@@ -21,5 +21,4 @@ public interface AchievementService {
 	Integer submitedWithdraw(Long aId);
 	Achievement getNextAchievementId(Integer state);
 	Achievement getNextAchievementIdOfType(Achievement achievement);
-	Integer getCount();
 }

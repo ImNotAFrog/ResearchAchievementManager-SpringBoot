@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.News;
 import edu.swjtuhc.model.Patent;
-import edu.swjtuhc.model.RequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.service.NewsService;
 import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONArray;
@@ -195,7 +195,7 @@ public class NewsController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/getAll", method = RequestMethod.POST)
-	public String getAll(HttpServletRequest request, @RequestBody RequestMsg msg){
+	public String getAll(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		JSONObject result = new JSONObject();
 		
 		try {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.swjtuhc.mapper.NewsMapper;
 import edu.swjtuhc.model.News;
-import edu.swjtuhc.model.RequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.service.NewsService;
 import edu.swjtuhc.utils.IdWorker;
 @Service
@@ -52,7 +52,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public List<News> getNewsList(RequestMsg msg) {
+	public List<News> getNewsList(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
 		msg.setStart((msg.getPage()-1)*msg.getLimit());
 		return newsMapper.getNewsList(msg);
