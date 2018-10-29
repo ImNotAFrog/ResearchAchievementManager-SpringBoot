@@ -47,7 +47,8 @@ public class AchievementController {
 		try {
 			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
 			msg.setStart((msg.getPage()-1)*msg.getLimit());
-			List<Achievement> pageList = list.subList(msg.getStart(), msg.getStart()+msg.getLimit());
+			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
+			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
 			JSONArray jList = JSONArray.fromObject(pageList);
 			result.put("code", 0);
 			result.put("msg","请求成功");
@@ -68,7 +69,10 @@ public class AchievementController {
 		
 		try {
 			List<Achievement> list = achievementService.getAchievementList(msg);
-			JSONArray jList = JSONArray.fromObject(list);
+			msg.setStart((msg.getPage()-1)*msg.getLimit());
+			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
+			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
+			JSONArray jList = JSONArray.fromObject(pageList);
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
@@ -98,7 +102,10 @@ public class AchievementController {
 		msg.setSubDepartment(subDepartment);
 		try {
 			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
-			JSONArray jList = JSONArray.fromObject(list);
+			msg.setStart((msg.getPage()-1)*msg.getLimit());
+			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
+			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
+			JSONArray jList = JSONArray.fromObject(pageList);
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
