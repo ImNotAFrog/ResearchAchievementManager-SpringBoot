@@ -46,10 +46,17 @@ public class AchievementController {
 		JSONObject result = new JSONObject();
 		try {
 			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
-			msg.setStart((msg.getPage()-1)*msg.getLimit());
-			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
-			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
-			JSONArray jList = JSONArray.fromObject(pageList);
+			JSONArray jList=null;
+			if(list.size()>0) {
+				msg.setStart((msg.getPage()-1)*msg.getLimit());
+				Integer toIndex = ((msg.getStart()+msg.getLimit())<list.size())?(msg.getStart()+msg.getLimit()):list.size();
+				System.out.println(toIndex);
+				List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
+				jList = JSONArray.fromObject(pageList);
+			}else {
+				jList = JSONArray.fromObject(list);
+			}
+			
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
@@ -58,6 +65,7 @@ public class AchievementController {
 		} catch (Exception e) {
 			result.put("state", -1);
 			result.put("msg", e);
+			e.printStackTrace();
 			return result.toString();
 		}
 	}
@@ -69,10 +77,16 @@ public class AchievementController {
 		
 		try {
 			List<Achievement> list = achievementService.getAchievementList(msg);
-			msg.setStart((msg.getPage()-1)*msg.getLimit());
-			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
-			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
-			JSONArray jList = JSONArray.fromObject(pageList);
+			JSONArray jList=null;
+			if(list.size()>0) {
+				msg.setStart((msg.getPage()-1)*msg.getLimit());
+				Integer toIndex = ((msg.getStart()+msg.getLimit())<list.size())?(msg.getStart()+msg.getLimit()):list.size();
+				System.out.println(toIndex);
+				List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
+				jList = JSONArray.fromObject(pageList);
+			}else {
+				jList = JSONArray.fromObject(list);
+			}
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
@@ -102,10 +116,16 @@ public class AchievementController {
 		msg.setSubDepartment(subDepartment);
 		try {
 			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
-			msg.setStart((msg.getPage()-1)*msg.getLimit());
-			Integer toIndex = ((msg.getStart()+msg.getLimit())>list.size())?(msg.getStart()+msg.getLimit()):list.size();
-			List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
-			JSONArray jList = JSONArray.fromObject(pageList);
+			JSONArray jList=null;
+			if(list.size()>0) {
+				msg.setStart((msg.getPage()-1)*msg.getLimit());
+				Integer toIndex = ((msg.getStart()+msg.getLimit())<list.size())?(msg.getStart()+msg.getLimit()):list.size();
+				System.out.println(toIndex);
+				List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
+				jList = JSONArray.fromObject(pageList);
+			}else {
+				jList = JSONArray.fromObject(list);
+			}
 			result.put("code", 0);
 			result.put("msg","请求成功");
 			result.put("count",list.size());
