@@ -180,14 +180,14 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
                         layer.closeAll();
-                        $("#btnSubmit").attr({ "disabled": "true" });
+                        $("#btnSubmit").removeAttr("disabled");
                     });
                 }
             },
             error:function(){
                 layer.alert("上传成果失败", { icon: 5 }, function () {
                     layer.closeAll();
-                    $("#btnSubmit").attr({ "disabled": "true" });
+                    $("#btnSubmit").removeAttr("disabled");
                 });
             }
         });

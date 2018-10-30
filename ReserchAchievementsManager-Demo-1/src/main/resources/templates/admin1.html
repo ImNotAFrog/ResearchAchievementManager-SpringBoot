@@ -78,7 +78,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="_state4" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--已通过-->
@@ -109,12 +109,12 @@
 						</div>
 
 					</div>
-					<div id="_state3" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--待审核-->
 						<div class="examing">
-							<div class="toolbar flex7 table">
+							<div class="toolbar flex7 table3">
 								<label>按类别查看</label>
 								<div class="flex5" style="width: 100%;">
 										<select class="form-control optType">
@@ -128,8 +128,8 @@
 										</select>
 										<div class="flex5">
 												<input class="form-control keyword" type="text" placeholder="关键字..">
-												<button type="button" state="2" class="btn searchBtn btn-default">搜索</button>
-												<button type="button" state="2" class="btn  btn-default refresh">刷新</button>
+												<button type="button" state="3" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="3" class="btn  btn-default refresh">刷新</button>
 										</div>
 							</div>
 						</div>
@@ -140,7 +140,7 @@
 						</div>
 
 					</div>
-					<div id="_state-1" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--已驳回-->
@@ -166,8 +166,7 @@
 						</div>
 						<table class="layui-hide" id="table-1" lay-filter="t4"></table>
 						<script type="text/html" id="toolBar-1">
-								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-								<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+							<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>					
 						</script>
 						</div>
 					</div>
@@ -201,8 +200,6 @@
 
 	<div th:replace="footer::html"></div>
 </body>
-<script type="text/javascript" src="/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/admin1.js"></script>
 

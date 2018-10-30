@@ -299,16 +299,19 @@ a.edit:hover{
         border-radius: 2px;
         box-sizing: border-box;
    }
-    #wating4 ._edit,#wating-1 ._edit{
-        display: none !important;
-    }
-    #wating3 ._see{
-        display: none !important;
+    .optType{
+        width: 200px !important;
     }
 
-.search{
-    width: 30px;    
-}
+    .keyword{
+        width: 120px !important;    
+    }
+
+    .searchBtn{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
 
 
 

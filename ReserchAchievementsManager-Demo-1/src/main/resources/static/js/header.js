@@ -243,7 +243,7 @@ jQuery(function ($) {
 	};
 	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 });
-
+/* 
 //通过ID获取元素值
 function getValById(idName) {
 	return $('#' + idName).val();
@@ -372,6 +372,7 @@ function checkState(value) {
 			break;
 	}
 }
+*/
 
 
 // 查询成果中文名称
@@ -402,6 +403,15 @@ function checkType(value) {
 	}
 }
 
+
+//将时间戳转换为日期
+function timestampToTime(timestamp) {
+	var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var Y = date.getFullYear() + '-';
+	var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+	var D = date.getDate() + ' ';
+	return Y + M + D;
+}
 
 
 

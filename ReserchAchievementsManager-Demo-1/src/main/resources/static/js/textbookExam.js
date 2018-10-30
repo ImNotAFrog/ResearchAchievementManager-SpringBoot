@@ -40,9 +40,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                      layer.alert('上报成果成功',{icon:1},function(){
-                        location.href="/admin2.do?active=sh";
-                      })
+                        successOpt("上报成果成功");
                     } else {
                         layer.alert('上报成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -67,14 +65,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                    layer.alert('驳回成果成功',{icon:1},function(){
-                        if(checkAuth()==1){
-                            location.href="/admin1.do?active=sh";
-                        }else{
-                            location.href="/admin2.do?active=sh";
-                        }
-                       
-                    })
+                        successOpt('驳回成果成功');
                     } else {
                         layer.alert('驳回成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -106,7 +97,8 @@ layui.use(['layer', 'element','laydate'], function () {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('撤回成果成功',{icon:1},function(){
-                        location.href="/admin2.do";
+                        layer.closeAll();
+                        closeIframe();
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -138,7 +130,8 @@ layui.use(['layer', 'element','laydate'], function () {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('撤回成果成功',{icon:1},function(){
-                        location.href="/admin1.do";
+                        layer.closeAll();
+                        closeIframe();
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -169,9 +162,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                    layer.alert('复审通过',{icon:1},function(){
-                        location.href="/admin1.do";
-                    })
+                        successOpt("复审通过");
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -202,7 +193,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 $(".Withdraw").removeClass('hidden');
                 approvedWithdraw();
             }
-        }else if((state==1 ||state==-1) && action==null){
+        }else if((state==1 ||state==-1) && action!="see"){
             if(state!=-1){
                 $('.submit').removeClass('hidden');
             }
@@ -220,7 +211,7 @@ layui.use(['layer', 'element','laydate'], function () {
             console.log('高级管理员');
         }else{
                 layer.alert('请求不合法',{icon:5},function () { 
-                    location.href='/teacher.do?active=Cg';
+                    closeIframe();
                 })
         }
 
@@ -243,6 +234,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 $('#ISBN').val(res.textbook.ISBN); 
                 $('#involvement').val(res.textbook.involvement); 
                 $('#uploader').val(res.textbook.uploader); 
+                $('#score').val(res.textbook.score); 
                 if(res.textbook.publishDate){
                     var publishDate=res.textbook.publishDate.time+"";
                     console.log(publishDate)
@@ -286,7 +278,7 @@ layui.use(['layer', 'element','laydate'], function () {
                 if((state==2 ||state==3) && checkAuth()==2){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
@@ -332,8 +324,7 @@ layui.use(['layer', 'element','laydate'], function () {
             } else {
 
                 layer.alert(res.msg,{icon:5},function(){
-                    layer.closeAll();
-                    location.href='/teacher.do?active=cg';
+                    closeIframe();
                 });
             }
         }
@@ -350,9 +341,9 @@ layui.use(['layer', 'element','laydate'], function () {
             },
             success: function (res) {
                 res = JSON.parse(res);
-                if (res.state == 'success') {
+                if (res.code == 0) {
                     var tm=$('#tm');
-                    $.each(res.achievement, function (index, item) { 
+                    $.each(res.data, function (index, item) { 
                         if(item==""){
                           return true;
                         }
@@ -360,13 +351,20 @@ layui.use(['layer', 'element','laydate'], function () {
                             '<td>'+item.name+'</td>'+
                            ' <td>'+checkType(item.type)+'</td>'+
                            ' <td>'+item.uploaderName+'</td>'+
-                           ' <td>'+'未设置'+'</td>'+
+                           ' <td>'+checkIsempty(item.score)+'</td>'+
                            '<td>'+
-                           '<button type="button"  class="layui-btn layui-btn-warm layui-btn-xs filename">详情</button>'+
+                           '<button type="button" a_type="'+item.type+'" aId="'+item.aId+'" state="'+item.state+'"  class="layui-btn layui-btn-warm detils layui-btn-xs filename">详情</button>'+
                             '</td>'+
                            '</tr>';
                         tm.append(tr);
                     });
+                    $(".detils").click(function (e) { 
+                        var state= $(this).attr('state');
+                        var aId= $(this).attr('aId');
+                        var type= $(this).attr('a_type');
+                        location.href=  "/"+type+"/exam.do?aId="+aId+"&state="+state+"&action=see";
+
+                     });
                 }else{
                     layer.msg('获取同名成果失败');
                 }
@@ -412,6 +410,34 @@ layui.use(['layer', 'element','laydate'], function () {
 
     });
 
+    //跳转到下一页
+    window.jumpNext=function(type=null){
+        var data={};
+        if(type!=null){
+           data={
+               type:type
+           }
+        }
+        var load=layer.load();
+        ajax_request({
+             type: 'POST',
+             url: '/achievement/getNextAchievementId',
+             data: data,
+             success: function (res) {
+                res = JSON.parse(res);
+                if (res.state == 'success') {
+                    layer.close(load);
+                    location.href="/"+res.type+"/exam.do?aId="+res.aId+"&state="+state+"&action="+action;
+                } else {
+                    layer.close(load);
+                        var alert=alert=layer.alert(res.msg,{icon:5},function() {
+                            layer.close(alert);
+                      });
+                }
+             }
+        })
+
+    }
 
 
 

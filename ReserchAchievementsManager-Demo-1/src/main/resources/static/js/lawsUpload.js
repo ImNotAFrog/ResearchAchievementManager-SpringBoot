@@ -147,7 +147,7 @@ layui.use(['layer', 'element','upload'], function(){
         $("#btnSubmit").attr({ "disabled": "true" });
         if (lId == null) {
             layer.alert("获取成果ID失败,无法保存。", { icon: 5 }, function () {
-                $("#btnSubmit").attr({ "disabled": "false" });
+                $("#btnSubmit").removeAttr("disabled");
                 layer.closeAll();
             })
             return false;
@@ -156,7 +156,7 @@ layui.use(['layer', 'element','upload'], function(){
         dataList.lId = lId;
         dataList.uploader = account;
         if(!checkIsInt(dataList.wordsCount)){
-            $("#btnSubmit").attr({ "disabled": "false" });
+            $("#btnSubmit").removeAttr("disabled");
             layer.alert('字数请输入正整数',{icon:5},function(){
                  layer.closeAll();
             })
@@ -178,7 +178,7 @@ layui.use(['layer', 'element','upload'], function(){
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
                         layer.closeAll();
-                        $("#btnSubmit").attr({ "disabled": "true" });
+                        $("#btnSubmit").removeAttr("disabled");
                     });
                 }
             }

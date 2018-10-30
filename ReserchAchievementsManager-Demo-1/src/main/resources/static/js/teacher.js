@@ -1,17 +1,45 @@
-layui.use(['layer',], function () {
-	var layer = layui.layer;
-})
+
 var departmentList
 var department
 
-// var active=GetQueryString('active');
-// if(active!=null){
-// 	console.log();
-// 	setTimeout(() => {
-// 		$('#'+active).click();	
-// 	}, 1000);
-// }
-// console.log(active)
+// 检查成果状态
+function checkState(value) {
+	switch (value) {
+		case -1:
+			return '驳回';
+			break;
+		case 1:
+			return '未提交';
+			break;
+		case 2:
+			return '待初审';
+			break;
+		case 3:
+			return '待复审';
+			break;
+		case 4:
+			return '已通过';
+			break;
+		default:
+			return '参数错误'
+			break;
+	}
+}
+
+//打开iframe
+function openIframe(type,aid,state,action=null){
+	var height=$(window).height()-50;
+	console.log("/"+type+"/edit.do?aId="+aid+"&state="+state+"&action="+action);
+	layer.open({
+	type: 2,
+	area: ['800px', height+'px'],
+	content: "/"+type+"/edit.do?aId="+aid+"&state="+state+"&action="+action,
+	scrollbar:true,
+	end: function () {
+		$(".layui-laypage-btn").click();  //重新点击分页页面
+	  }  
+  });
+}
 
 $(function () {
 	if (token == null) {
@@ -139,103 +167,85 @@ var goToUpload = function (page) {
 	}
 }
 
+layui.use([ 'layer', 'table', 'element'], function(){
+	layer = layui.layer //弹层
+	,table = layui.table //表格
+	,element = layui.element //元素操作
+	var table_=table.render({
+		elem: '#table_'
+		,url: '/achievement/getListByAccount' //数据接口
+		,method:"POST" 
+		,initSort: {
+			field: 'aId' //排序字段，对应 cols 设定的各字段名
+			,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+		  }
+		,page: true //开启分页
+		,headers: { Authorization: 'Bearer ' + token }
+		,contentType: 'application/json'
+		,cols: [[ //表头
+		{field: 'name',width:200, title: '成果名称' ,sort: true, fixed: 'left'}
+		,{field: 'aId',width:170, title: '成果编号' ,sort: true, fixed: 'left'}
+		,{field: 'type', title: '类型',width:150,templet: function(d){
+			return checkType(d.type);
+			}}
+		,{field: 'state', title: '审核状态',templet: function(d){
+			return checkState(d.state)
+			}}
+		,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar'}
+		]]
+	});
 
-
-window.operateEvents = {
-	'click .RoleOfA': function (e, value, row, index) {
-		 var height=$(window).height();
-		var edit=layer.open({
-			//title:'查看'+data.user+'的信息',
-			type: 2,
-			area: ['500px', height+'px'],
-			content: "/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state+"&action=see",
-			scrollbar:true,
-			end: function () {
-				$(".layui-laypage-btn").click();  //重新点击分页页面
-			  }  
-		  });
-
-		//location.href=;
-	},
-	'click .RoleOfB': function (e, value, row, index) {
-		if(row.state==4){
-			layer.alert('通过的成果只能查看',{icon:5},function(){
-				 layer.closeAll();
-			})
-			return false;
-		}
-		location.href="/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state;
-	}
-}
-
-
-
-function operateFormatter(value, row, index) {
-	return [
-		'<button type="button" class="RoleOfA btn btn-primary  btn-sm" style="margin-right:15px;">查看</button>',
-		'<button type="button" class="RoleOfB btn btn-success  btn-sm" style="margin-right:15px;">编辑</button>',
-	].join('');
-}
-
-
-$(function () {
-	$.ajax({
-		type: "GET",
-		url: "/achievement/getListByAccount",
-		contentType: 'application/json',
-		headers: { Authorization: 'Bearer ' + token },
-		success: function (res) {
-			res = JSON.parse(res);
-			console.log(res.achievement);
-			if (res.state == "success") {
-				$('#wating').bootstrapTable('load', res.achievement);
-			} else {
-				layer.alert("获取成果列表失败", { icon: 5 }, function () {
-					layer.closeAll();
-				});
-			}
-		},
-		error: function (pa) {
-			layer.msg("获取成果列表失败")
+	table.on('tool(t)', function(obj){ 
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		if(layEvent === 'detail'){ //查看
+				openIframe(data.type,data.aId,data.state,'see')		
+		}else{
+			openIframe(data.type,data.aId,data.state);		
 		}
 	});
+
+
+	$('.searchBtn').click(function (e) { 
+		var type=$(".optType").val();
+		var keyword=$(".keyword").val();
+		console.log("查询的类型:"+type);
+		console.log("查询的关键字:"+keyword);
+		var conditions={
+			where: {
+				type: type,
+				keyword:keyword
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+			table_.reload(conditions);
+	});
+
+	$('.refresh').click(function (e) { 
+		$(".optType").val("");
+		$(".keyword").val('');
+		var conditions={
+			where: {
+				type: "",
+				keyword:""
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+		  table_.reload(conditions);
+		
+	});
+
+
+
+
 })
 
 
-
-$('#wating').bootstrapTable({
-	columns: [
-		{
-			field: 'name',
-			title: '成果名称'
-		}, {
-			field: 'aId',
-			title: '成果编号',
-			sortable:true,
-			order:'asc'
-		}, {
-			field: 'type',
-			title: '类型',
-			formatter: function (value, row, index) {
-				return checkType(value)
-
-			}
-		}, {
-			field: 'state',
-			title: '审核状态',
-			formatter: function (value, row, index) {
-				return checkState(value);
-			}
-		}, {
-			field: 'operate',
-			title: '操作',
-			align: 'center',
-			events: operateEvents,
-			formatter: operateFormatter
-		}
-	],
-	data: []
-});
 
 $(document).ready(function () {
 	if (getItem('active')) {

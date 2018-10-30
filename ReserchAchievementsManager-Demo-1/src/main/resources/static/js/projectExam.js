@@ -65,9 +65,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                    layer.alert('驳回成果成功',{icon:1},function(){
-
-                    })
+                       successOpt('驳回成功');
                     } else {
                         layer.alert('驳回成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -86,7 +84,6 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
     //初级管理员撤回成果事件
     function preCheckedWithdraw(){
         $('.Withdraw').click(function (e) { 
-            console.log('初级撤回');
             layer.load();
             ajax_request({
                 type: 'POST',
@@ -97,7 +94,11 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                        successOpt('撤回成功')
+                        layer.alert('撤回成功',{icon:1},function(){
+                            layer.closeAll();
+                            closeIframe();
+                        })
+                    
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
                             layer.closeAll();
@@ -128,7 +129,8 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
                     layer.alert('撤回成果成功',{icon:1},function(){
-                        
+                        layer.closeAll();
+                        closeIframe();
                     })
                     } else {
                         layer.alert('撤回成果失败',{icon:5},function(){
@@ -159,11 +161,9 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                    layer.alert('复审通过',{icon:1},function(){
-                        
-                    })
+                        successOpt("复审通过");
                     } else {
-                        layer.alert('撤回成果失败',{icon:5},function(){
+                        layer.alert('审核成果失败',{icon:5},function(){
                             layer.closeAll();
                         })
                     
@@ -192,7 +192,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 $(".Withdraw").removeClass('hidden');
                 approvedWithdraw();
             }
-        }else if((state==1 ||state==-1) && action==null){
+        }else if((state==1 ||state==-1) && action!="see"){
             if(state!=-1){
                 $('.submit').removeClass('hidden');
             }
@@ -231,6 +231,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 $('#pName').val(res.project.pName);
                 $('#subject').val(res.project.subject); 
                 $('#uploader').val(res.project.uploader); 
+                $('#score').val(res.project.score); 
                 if(res.project.projectDate){
                     var projectDate=res.project.projectDate.time+"";
                     $('#projectDate').val(timestampToTime(projectDate.substring(0,10)));
@@ -325,8 +326,6 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
             }
         }
     })
-
-    
     //获取同名成果列表
     function getTm(name){
         ajax_request({
@@ -347,13 +346,22 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                             '<td>'+item.name+'</td>'+
                            ' <td>'+checkType(item.type)+'</td>'+
                            ' <td>'+item.uploaderName+'</td>'+
-                           ' <td>'+'未设置'+'</td>'+
+                           ' <td>'+checkIsempty(item.score)+'</td>'+
                            '<td>'+
-                           '<button type="button"  class="layui-btn layui-btn-warm layui-btn-xs filename">详情</button>'+
+                           '<button type="button" a_type="'+item.type+'"  aId="'+item.aId+'" state="'+item.state+'"  class="layui-btn layui-btn-warm detils layui-btn-xs filename">详情</button>'+
                             '</td>'+
                            '</tr>';
                         tm.append(tr);
                     });
+                    $(".detils").click(function (e) { 
+                        var state= $(this).attr('state');
+                        var aId= $(this).attr('aId');
+                        var type= $(this).attr('a_type');
+                        console.log(state);
+                        location.href=  "/"+type+"/exam.do?aId="+aId+"&state="+state+"&action=see";
+                     });
+                }else{
+                    layer.msg('获取同名成果失败');
                 }
             }
         })
@@ -381,7 +389,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
                         layer.closeAll();
-                            location.reload();
+                         location.reload();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
@@ -398,14 +406,9 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
 
     });
 
-    $(".goback").click(function (e) { 
-        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-       parent.layer.close(index)
-    });
-
     //跳转到下一页
     window.jumpNext=function(type=null){
-        var data=null;
+        var data={};
         if(type!=null){
            data={
                type:type
@@ -420,7 +423,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 res = JSON.parse(res);
                 if (res.state == 'success') {
                     layer.close(load);
-                    location.href="/type="+res.type+"/exam.do?aId="+res.aId+"&state="+state;
+                    location.href="/"+res.type+"/exam.do?aId="+res.aId+"&state="+state+"&action="+action;
                 } else {
                     layer.close(load);
                         var alert=alert=layer.alert(res.msg,{icon:5},function() {
@@ -431,7 +434,4 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
         })
 
     }
-
-
-
 });

@@ -1,9 +1,4 @@
-/*
- * @Author: MaiBenBen
- * @Date:   2018-01-27 23:11:28
- * @Last Modified by:   MaiBenBen
- * @Last Modified time: 2018-02-13 18:09:29
- */
+
 
  //设置本地储存
 function setItem(key,val){
@@ -20,22 +15,6 @@ function removeItem(key){
 	localStorage.removeItem(key);
 }
 
-
-class Header {
-	static logout() {
-		$.get({
-			url: '/auth/logout',
-			success: function () {
-				TokenHelper.deleteLocalToken(token)
-				window.location.href = '/'
-			},
-			error: function () {
-				console.log('logout error')
-			}
-		})
-		removeItem('active');
-	}
-}
 var token = TokenHelper.getLocalToken()
 var role = TokenHelper.getRoleFromToken(token)
 var exp = TokenHelper.getExpirationDateFromToken(token)
@@ -51,11 +30,6 @@ window.onload = function () {
 };
 
 
-function confirmLogout() {
-	if (confirm("确认退出?")) {
-		Header.logout()
-	}
-}
 jQuery(function ($) {
 	$.datepicker.regional['zh-CN'] = {
 		clearText: '清除',
@@ -114,9 +88,10 @@ function GetQueryString(name) {
 	var r = window.location.search.substr(1).match(reg);
 	if (r != null) return unescape(r[2]); return null;
 }
+
 //将时间戳转换为日期
 function timestampToTime(timestamp) {
-	var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var date = new Date(timestamp*1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var Y = date.getFullYear() + '-';
 	var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
 	var D = date.getDate() + ' ';
@@ -252,13 +227,24 @@ function checkType(value) {
 }
 //显示成功后的选项
 function successOpt(msg){
-	$('#tips').val(msg)
-	layer.open({
+	$('#tips').text(msg)
+	layer.open({	
 		type: 1,
-		area: ['440px', '170px'],
-		scrollbar: false,
+		closeBtn: 0,
+		area: ['400px', '180px'],
 		content: $('#result-msg')
 	  });
 }
+//关闭Iframe层
+function closeIframe(){
+	var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+	parent.layer.close(index)
+}
 
+function checkIsempty(val){
+	if(val){
+		return val;
+	}
+	return "空";
+}
 

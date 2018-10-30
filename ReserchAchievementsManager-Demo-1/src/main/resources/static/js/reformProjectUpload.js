@@ -154,7 +154,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
         $("#btnSubmit").attr({ "disabled": "true" });
         if (rpId == null) {
             layer.alert("获取成果ID失败,无法保存。", { icon: 5 }, function () {
-                $("#btnSubmit").attr({ "disabled": "false" });
+                $("#btnSubmit").removeAttr("disabled");
                 layer.closeAll();
             })
             return false;
@@ -179,7 +179,7 @@ layui.use(['layer', 'element','laydate','upload'], function(){
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
                         layer.closeAll();
-                        $("#btnSubmit").attr({ "disabled": "true" });
+                        $("#btnSubmit").removeAttr("disabled");
                     });
                 }
             }
