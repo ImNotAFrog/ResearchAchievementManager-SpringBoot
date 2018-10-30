@@ -42,7 +42,11 @@ public class AchievementController {
 	public String getListByAccount(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
-		msg.setAccount(account);
+		
+		if(request.isUserInRole("ROLE_ADMIN_01")&&msg.getAccount()!=null) {			
+		}else {
+			msg.setAccount(account);
+		}
 		JSONObject result = new JSONObject();
 		try {
 			List<Achievement> list = achievementService.getAchievementListByAccount(msg);
@@ -113,7 +117,11 @@ public class AchievementController {
 			result.put("msg", "未设置科室");
 			return result.toString();
 		}
-		msg.setSubDepartment(subDepartment);
+		if(request.isUserInRole("ROLE_ADMIN_01")&&msg.getAccount()!=null) {
+			
+		}else {
+			msg.setSubDepartment(subDepartment);
+		}
 		try {
 			List<Achievement> list = achievementService.getAchievementListBySubDepartment(msg);
 			JSONArray jList=null;
