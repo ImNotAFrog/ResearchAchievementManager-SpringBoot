@@ -82,6 +82,7 @@ public class ThesisServiceImpl implements ThesisService{
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setName(t.gettName());
 		achievement.setState(1);
+		achievement.setValidDate(t.getPublishDate());
 		int i = updateThesis(t, achievement);		
 		return i;
 	}
@@ -109,6 +110,7 @@ public class ThesisServiceImpl implements ThesisService{
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setUploader(t.getUploader());
+		achievement.setValidDate(t.getPublishDate());
 		int i = updateThesis(t, achievement);
 		return i;
 	}

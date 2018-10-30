@@ -16,7 +16,7 @@ public class Laws {
 	private Float maxScore;
 	private String department;
 	private String subDepartment;
-	
+	private Date publishDate;
 	public Long getlId() {
 		return lId;
 	}
@@ -94,6 +94,12 @@ public class Laws {
 	}
 	public void setSubDepartment(String subDepartment) {
 		this.subDepartment = subDepartment;
+	}
+	public Date getPublishDate() {
+		return publishDate;
+	}
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
 	}
 	
 	

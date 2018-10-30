@@ -82,6 +82,7 @@ public class LawsServiceImpl implements LawsService {
 		achievement.setUploadDate(l.getUploadDate());
 		achievement.setName(l.getlName());
 		achievement.setState(1);
+		achievement.setValidDate(l.getPublishDate());
 		int i = updateLaws(l, achievement);
 		
 		return i;
@@ -110,6 +111,7 @@ public class LawsServiceImpl implements LawsService {
 		achievement.setSubDepartment(l.getSubDepartment());
 		achievement.setUploadDate(l.getUploadDate());
 		achievement.setUploader(l.getUploader());
+		achievement.setValidDate(l.getPublishDate());
 		int i = updateLaws(l, achievement);
 		return i;
 	}

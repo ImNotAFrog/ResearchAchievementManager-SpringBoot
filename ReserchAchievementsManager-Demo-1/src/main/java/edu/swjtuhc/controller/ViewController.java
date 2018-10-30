@@ -144,4 +144,9 @@ public class ViewController {
 	public String news() {
 		return "/news";
 	}
+	
+	@RequestMapping(value="/rank.do",method=RequestMethod.GET)
+	public String rank() {
+		return "/rank.html";
+	}
 }

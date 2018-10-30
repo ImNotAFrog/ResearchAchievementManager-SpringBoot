@@ -22,9 +22,9 @@
 			jdbcType="VARCHAR" />	
 		<result column="upload_date"
 			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
-			<result column="score" property="score"
+		<result column="score" property="score"
 			jdbcType="FLOAT" />
-			<result column="max_score" property="maxScore"
+		<result column="max_score" property="maxScore"
 			jdbcType="FLOAT" />			
 		<result column="department" property="department"
 			jdbcType="VARCHAR" />

@@ -82,6 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
 		achievement.setUploadDate(p.getUploadDate());
 		achievement.setName(p.getpName());
 		achievement.setState(1);
+		achievement.setValidDate(p.getProjectDate());
 		int i = updateProject(p, achievement);
 		
 		return i;
@@ -110,6 +111,7 @@ public class ProjectServiceImpl implements ProjectService {
 		achievement.setSubDepartment(p.getSubDepartment());
 		achievement.setUploadDate(p.getUploadDate());
 		achievement.setUploader(p.getUploader());
+		achievement.setValidDate(p.getProjectDate());
 		int i = updateProject(p, achievement);
 		return i;
 	}

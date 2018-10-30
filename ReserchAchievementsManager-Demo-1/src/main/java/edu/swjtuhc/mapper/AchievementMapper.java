@@ -21,5 +21,5 @@ public interface AchievementMapper {
 	Integer deleteAchievement(Long aId);
 	Achievement getNextAchievementId(Integer state);
 	Achievement getNextAchievementIdOfType(Achievement achievement);
-	List<Achievement> getIndividualRanking(RankingRequestMsg msg);
+	List<Achievement> getAchievementDuring(RankingRequestMsg msg);
 }

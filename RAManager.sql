@@ -28,10 +28,14 @@ CREATE TABLE `achievement` (
   `type` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
-  `upload_date` datetime DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
   `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`a_id`)
+  `valid_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  PRIMARY KEY (`a_id`),
+  FULLTEXT KEY `idx_achievement_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,8 +45,174 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (6349463433691136,NULL,'thesis','20170001',0,'2018-10-17 09:06:04','TRAINNING',NULL),(6354790182993920,NULL,'thesis','20170001',0,'2018-10-18 08:34:10','TRAINNING',NULL),(6357891568812032,NULL,'thesis','20170001',0,'2018-10-18 09:09:30','TRAINNING',NULL),(6358278426247168,NULL,'thesis','20170001',0,'2018-10-18 09:10:31','TRAINNING',NULL),(6359320601739264,NULL,'thesis','20170001',0,'2018-10-18 09:24:11','TRAINNING',NULL),(6360465852252160,NULL,'thesis','20170001',0,'2018-10-17 09:34:50','TRAINNING',NULL);
+INSERT INTO `achievement` VALUES (12453241234,'a a a ',NULL,'20170001',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13451345346,'cccc',NULL,'20170001',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(234523452345,'dddd',NULL,'20170001',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(523452345345234,'bbbb',NULL,'20170001',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `laws`
+--
+
+DROP TABLE IF EXISTS `laws`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `laws` (
+  `l_id` bigint(20) NOT NULL,
+  `l_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `l_num` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `involvement` int(11) DEFAULT NULL,
+  `words_count` int(11) DEFAULT NULL,
+  `attachment` varchar(10000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `publish_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`l_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `laws`
+--
+
+LOCK TABLES `laws` WRITE;
+/*!40000 ALTER TABLE `laws` DISABLE KEYS */;
+/*!40000 ALTER TABLE `laws` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `news`
+--
+
+DROP TABLE IF EXISTS `news`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `news` (
+  `n_id` bigint(20) NOT NULL,
+  `title` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  PRIMARY KEY (`n_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `news`
+--
+
+LOCK TABLES `news` WRITE;
+/*!40000 ALTER TABLE `news` DISABLE KEYS */;
+INSERT INTO `news` VALUES (10552489379819520,NULL,NULL,'2018-10-28 15:12:22','admin001',1),(10552996064325632,NULL,NULL,'2018-10-28 15:47:04','admin001',2);
+/*!40000 ALTER TABLE `news` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patent`
+--
+
+DROP TABLE IF EXISTS `patent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `patent` (
+  `pa_id` bigint(20) NOT NULL,
+  `pa_name` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `author_rank` int(11) DEFAULT NULL,
+  `pa_num` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pa_owner` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `publish_date` timestamp NULL DEFAULT NULL,
+  `attachment` varchar(10000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`pa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patent`
+--
+
+LOCK TABLES `patent` WRITE;
+/*!40000 ALTER TABLE `patent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `project`
+--
+
+DROP TABLE IF EXISTS `project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `project` (
+  `p_id` bigint(20) NOT NULL,
+  `involvement` int(11) DEFAULT NULL,
+  `p_name` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `subject` int(11) DEFAULT NULL,
+  `attachment` varchar(10000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `project_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`p_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project`
+--
+
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reform_project`
+--
+
+DROP TABLE IF EXISTS `reform_project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `reform_project` (
+  `r_p_id` bigint(20) NOT NULL,
+  `involvement` int(11) DEFAULT NULL,
+  `r_p_name` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `attachment` varchar(10000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`r_p_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reform_project`
+--
+
+LOCK TABLES `reform_project` WRITE;
+/*!40000 ALTER TABLE `reform_project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reform_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -69,8 +239,43 @@ CREATE TABLE `sys_user` (
 
 LOCK TABLES `sys_user` WRITE;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
-INSERT INTO `sys_user` VALUES (658294259580928,'huangkeli','$2a$10$Y/l8XdKtU6w3JbdlDCKyGu2dcJBlKBp628mAAZJrOVtLcFtxzh2xi','ROLE_TEACHER','2018-10-01 15:56:22'),(658366133174272,'admin001','$2a$10$PcpaSJn.n.jVeUwagJ1Ngeb51l31YxgmajMCajdAmE2/CccoJ4xY.','ROLE_ADMIN_01','2018-10-01 15:56:40'),(658394549583872,'admin002','$2a$10$qkKUF1Gn1cPtcnlApCr.8OvFGnXvDKYaVDXzxI6cwXH9PmNkjceVO','ROLE_ADMIN_02','2018-10-01 15:56:46'),(658460563734528,'20170001','$2a$10$3MMeoeTawYKwbQl9vjyozudqwW99c0/oa2l3.qBpATnAWk0P9Qim6','ROLE_TEACHER','2018-10-01 15:57:02');
+INSERT INTO `sys_user` VALUES (658294259580928,'huangkeli','$2a$10$Y/l8XdKtU6w3JbdlDCKyGu2dcJBlKBp628mAAZJrOVtLcFtxzh2xi','ROLE_TEACHER','2018-10-01 15:56:22'),(658366133174272,'admin001','$2a$10$PcpaSJn.n.jVeUwagJ1Ngeb51l31YxgmajMCajdAmE2/CccoJ4xY.','ROLE_ADMIN_01','2018-10-01 15:56:40'),(658394549583872,'admin002','$2a$10$qkKUF1Gn1cPtcnlApCr.8OvFGnXvDKYaVDXzxI6cwXH9PmNkjceVO','ROLE_ADMIN_02','2018-10-01 15:56:46'),(658460563734528,'20170001','$2a$10$3MMeoeTawYKwbQl9vjyozudqwW99c0/oa2l3.qBpATnAWk0P9Qim6','ROLE_TEACHER','2018-10-01 15:57:02'),(10752887944642560,'20170002','$2a$10$KKout9DOwyAiNT/gAAeL2ugx8ZifLr9tIz8rkw9xOXdF2PkHvuTw6','ROLE_TEACHER','2018-10-29 12:28:41'),(10752924980346880,'20170003','$2a$10$PCa6UHFJAWmUfNihik0ipebCvJ7JmqIY/FtZ6pnemIN5tyHIbEdMq','ROLE_TEACHER','2018-10-29 12:28:50'),(10752949173092352,'20170004','$2a$10$jMZB.ALPUYYRc4XDZ1z9UuNFUn2ooz9TOzHIxVPilUk16I5XY/cIy','ROLE_TEACHER','2018-10-29 12:28:56'),(10752997764104192,'20170011','$2a$10$R3UZVz1Z8KAPfVVzAQrdwuGHt9UoumEGemF29U8YY24pKFpL0rVtK','ROLE_TEACHER','2018-10-29 12:29:07'),(10753041670078464,'20170023','$2a$10$YrZ/HzIGhkflRBvY9yAbcejZXWCSz9pTKpWkBUCl2B.p3XpbJ2ZR.','ROLE_TEACHER','2018-10-29 12:29:18'),(10753129922428928,'20170076','$2a$10$nSNyfnJpHcFPC6YSSTiEDOUjNi0VGJ47dbkbkf8r4IaNcQ6naNXvO','ROLE_TEACHER','2018-10-29 12:29:39'),(10753167348203520,'20170132','$2a$10$MOgT5H3gmLRYr67shKGN1eIupRgA6efC3NIRcsf5yWuz3TVYX4Yjq','ROLE_TEACHER','2018-10-29 12:29:48');
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `textbook`
+--
+
+DROP TABLE IF EXISTS `textbook`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `textbook` (
+  `tb_id` bigint(20) NOT NULL,
+  `tb_name` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `involvement` int(11) DEFAULT NULL,
+  `publisher` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ISBN` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `publish_date` timestamp NULL DEFAULT NULL,
+  `attachment` varchar(10000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `upload_date` timestamp NULL DEFAULT NULL,
+  `score` float DEFAULT NULL,
+  `max_score` float DEFAULT NULL,
+  `department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_department` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`tb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `textbook`
+--
+
+LOCK TABLES `textbook` WRITE;
+/*!40000 ALTER TABLE `textbook` DISABLE KEYS */;
+/*!40000 ALTER TABLE `textbook` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -84,7 +289,7 @@ CREATE TABLE `thesis` (
   `t_id` bigint(20) NOT NULL,
   `t_name` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `journal_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `journal_level` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `journal_level` int(11) DEFAULT NULL,
   `journal_id` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `attachment` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uploader` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -104,7 +309,6 @@ CREATE TABLE `thesis` (
 
 LOCK TABLES `thesis` WRITE;
 /*!40000 ALTER TABLE `thesis` DISABLE KEYS */;
-INSERT INTO `thesis` VALUES (1,'啊啊啊',NULL,NULL,NULL,NULL,'20170001',NULL,'2018-10-16 16:11:58',50,NULL,'TRAINNING',NULL),(6349463433691136,NULL,NULL,NULL,NULL,'null|1539737892712-1.mp4|1539737991244-1.mp4|1539738363503-2.jpg','20170001',NULL,'2018-10-17 09:06:04',NULL,NULL,'TRAINNING',NULL),(6354790182993920,NULL,NULL,NULL,NULL,'null','20170001',NULL,'2018-10-18 08:34:10',NULL,NULL,'TRAINNING',NULL),(6357891568812032,NULL,NULL,NULL,NULL,'null','20170001',NULL,'2018-10-18 09:09:30',NULL,NULL,'TRAINNING',NULL),(6358278426247168,NULL,NULL,NULL,NULL,'null','20170001',NULL,'2018-10-18 09:10:31',NULL,NULL,'TRAINNING',NULL),(6359320601739264,NULL,NULL,NULL,NULL,'null','20170001',NULL,'2018-10-18 09:24:11',NULL,NULL,'TRAINNING',NULL),(6360465852252160,NULL,NULL,NULL,NULL,'null|1539740089804-5.jpg','20170001',NULL,'2018-10-17 09:34:50',NULL,NULL,'TRAINNING',NULL);
 /*!40000 ALTER TABLE `thesis` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,7 +337,7 @@ CREATE TABLE `user_profile` (
 
 LOCK TABLES `user_profile` WRITE;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
-INSERT INTO `user_profile` VALUES ('20170001','孙俊龙',NULL,NULL,NULL,'TRAINNING',NULL),('huangkeli','黄科力','副主任','讲师','连长','TRAINNING','RESEARCH');
+INSERT INTO `user_profile` VALUES ('20170001','孙俊龙',NULL,NULL,NULL,'TRAINNING',NULL),('admin001','admin',NULL,NULL,NULL,'TRAINNING','RESEARCH'),('admin002','admin',NULL,NULL,NULL,'TRAINNING','RESEARCH'),('huangkeli','黄科力','副主任','讲师','连长','TRAINNING','RESEARCH');
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -146,4 +350,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-18 16:37:48
+-- Dump completed on 2018-10-30 15:58:08

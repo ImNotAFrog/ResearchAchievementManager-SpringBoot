@@ -17,16 +17,22 @@
 			jdbcType="VARCHAR" />
 		<result column="sub_department" property="subDepartment"
 			jdbcType="VARCHAR" />
+		<result column="valid_date" property="validDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="score" property="score"
+			jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore"
+			jdbcType="FLOAT" />	
 		<association property="uploaderName" column="uploader"
 			javaType="java.lang.String">
 			<result property="uploaderName" column="u.name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
-		a_id,name,type,uploader,state,upload_date,department,sub_department
+		a_id,name,type,uploader,state,upload_date,department,sub_department,valid_date,score,max_score
 	</sql>
 	<sql id="Association_Userprofile">
-		a.a_id,a.name,a.type,a.uploader,a.state,a.upload_date,a.department,a.sub_department,u.name
+		a.a_id,a.name,a.type,a.uploader,a.state,a.upload_date,a.department,a.sub_department,a.valid_date,a.score,a.max_score,u.name
 	</sql>
 	<insert id="createAchievement"
 		parameterType="edu.swjtuhc.model.Achievement">
@@ -36,7 +42,7 @@
 		<include refid="Base_Column_List"></include>
 		)
 		values
-		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
+		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment},#{validDate},#{score},#{maxScore})
 	</insert>
 	<select id="getAchievementListByAccount"
 		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
@@ -152,7 +158,7 @@
 		name = #{name},type=
 		#{type},uploader= #{uploader},state= #{state},upload_date=
 		#{uploadDate},department= #{department},sub_department=
-		#{subDepartment}
+		#{subDepartment},valid_date=#{validDate},score=#{score},max_score=#{maxScore}
 		WHERE
 		a_id = #{aId}
 	</update>
@@ -172,9 +178,10 @@
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where 
-		
-		FROM
-		achievement
+		a.valid_date between #{startDate} and #{endDate}		
+		<if test='null!=subDepartment and ""!=subDepartment'>
+			and a.sub_department=#{subDepartment}
+		</if>
 	</select>
 	
 </mapper> 

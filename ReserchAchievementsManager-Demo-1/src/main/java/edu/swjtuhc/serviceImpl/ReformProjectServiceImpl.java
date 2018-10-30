@@ -82,6 +82,7 @@ public class ReformProjectServiceImpl implements ReformProjectService {
 		achievement.setUploadDate(rp.getUploadDate());
 		achievement.setName(rp.getRpName());
 		achievement.setState(1);
+		achievement.setValidDate(rp.getProjectDate());
 		int i = updateReformProject(rp, achievement);
 		
 		return i;
@@ -110,6 +111,7 @@ public class ReformProjectServiceImpl implements ReformProjectService {
 		achievement.setSubDepartment(rp.getSubDepartment());
 		achievement.setUploadDate(rp.getUploadDate());
 		achievement.setUploader(rp.getUploader());
+		achievement.setValidDate(rp.getProjectDate());
 		int i = updateReformProject(rp, achievement);
 		return i;
 	}
