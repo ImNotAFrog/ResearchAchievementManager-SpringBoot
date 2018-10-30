@@ -145,8 +145,12 @@ public class ViewController {
 		return "/news";
 	}
 	
-	@RequestMapping(value="/rank.do",method=RequestMethod.GET)
+	@RequestMapping(value="/rank/individual.do",method=RequestMethod.GET)
 	public String rank() {
-		return "/rank.html";
+		return "/rank/individual.html";
+	}
+	@RequestMapping(value="/rank/department.do",method=RequestMethod.GET)
+	public String rankDetail() {
+		return "/rank/department.html";
 	}
 }
