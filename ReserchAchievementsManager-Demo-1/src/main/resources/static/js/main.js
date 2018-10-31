@@ -1,9 +1,4 @@
-/*
- * @Author: MaiBenBen
- * @Date:   2018-01-27 23:11:28
- * @Last Modified by:   MaiBenBen
- * @Last Modified time: 2018-02-13 18:09:29
- */
+
 
  //设置本地储存
 function setItem(key,val){
@@ -20,22 +15,6 @@ function removeItem(key){
 	localStorage.removeItem(key);
 }
 
-
-class Header {
-	static logout() {
-		$.get({
-			url: '/auth/logout',
-			success: function () {
-				TokenHelper.deleteLocalToken(token)
-				window.location.href = '/'
-			},
-			error: function () {
-				console.log('logout error')
-			}
-		})
-		removeItem('active');
-	}
-}
 var token = TokenHelper.getLocalToken()
 var role = TokenHelper.getRoleFromToken(token)
 var exp = TokenHelper.getExpirationDateFromToken(token)
@@ -51,11 +30,6 @@ window.onload = function () {
 };
 
 
-function confirmLogout() {
-	if (confirm("确认退出?")) {
-		Header.logout()
-	}
-}
 jQuery(function ($) {
 	$.datepicker.regional['zh-CN'] = {
 		clearText: '清除',
@@ -114,9 +88,10 @@ function GetQueryString(name) {
 	var r = window.location.search.substr(1).match(reg);
 	if (r != null) return unescape(r[2]); return null;
 }
+
 //将时间戳转换为日期
 function timestampToTime(timestamp) {
-	var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	var date = new Date(timestamp*1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var Y = date.getFullYear() + '-';
 	var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
 	var D = date.getDate() + ' ';
@@ -223,42 +198,89 @@ function checkState(value) {
 }
 
 
-// 查询成果中文名称
-function checkType(value) {
-	value = value.toLowerCase();
-	switch (value) {
-		case "thesis":
-			return '论文类';
-			break;
-		case "project":
-			return '课题项目类';
-			break;
-		case "textbook":
-			return '论著、教材类';
-			break;
-		case "patent":
-			return '专利';
-			break;
-		case "reformproject":
-			return '教学改革项目类';
-			break;
-		case "laws":
-			return '法律、法规类';
-			break;
-		default:
-			return '不存在的类型';
-			break;
+//查找部门和科室  这个函数只针对接口
+function checkDep(departmentList,department,subDeps){
+	var arr1=departmentList.filter(items=>{
+		if(items.index==department){
+			return items;
+		}
+	})
+	var data={
+		dep:arr1[0].name,
+		subDeps:null
 	}
-}
-//显示成功后的选项
-function successOpt(msg){
-	$('#tips').val(msg)
-	layer.open({
-		type: 1,
-		area: ['440px', '170px'],
-		scrollbar: false,
-		content: $('#result-msg')
-	  });
+	if(arr1[0].subDeps.length>0){
+		//console.log(arr1[0].subDeps)
+		var arr2=arr1[0].subDeps.filter(items=>{
+			if(items.index==subDeps){
+				return items;
+			}
+		})
+		if(arr2.length>0){
+			data.subDeps=arr2[0].name;
+		}else{
+			data.subDeps="";
+		}
+	
+	}else{
+		data.subDeps="";
+	}
+	return data;
 }
 
+// 查询成果中文名称
+function checkType(value) {
+	if (value) {
+		value = value.toLowerCase();
+		switch (value) {
+			case "thesis":
+				return '论文类';
+				break;
+			case "project":
+				return '课题项目类';
+				break;
+			case "textbook":
+				return '论著、教材类';
+				break;
+			case "patent":
+				return '专利';
+				break;
+			case "reformproject":
+				return '教学改革项目类';
+				break;
+			case "laws":
+				return '法律、法规类';
+				break;
+			default:
+				return '不存在的类型';
+				break;
+		}
+	}
+}
+
+//显示成功后的选项
+function successOpt(msg){
+	$('#tips').text(msg)
+	layer.open({	
+		type: 1,
+		title: false, 
+		area: ['400px', '140px'],
+		content: $('#result-msg'),
+		cancel: function(){
+			closeIframe();
+		  }
+	  });
+}
+//关闭Iframe层
+function closeIframe(){
+	var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+	parent.layer.close(index)
+}
+
+function checkIsempty(val){
+	if(val){
+		return val;
+	}
+	return "空";
+}
 

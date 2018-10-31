@@ -29,14 +29,14 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                         res=JSON.parse(res);
                     if (res.state == "success") {
                         layer.alert(res.msg, { icon: 1 }, function () {
+                            closeIframe();
                             layer.closeAll();
-                            window.location.href = "/teacher.do?active=myCg";
                         });
                     } else {
                         layer.alert(res.msg, { icon: 5 }, function () {
                             layer.closeAll();
                         });
-                        $("#btnSubmit").attr({"disabled":"false"});
+                        $("#btnSubmit").removeAttr("disabled");
                     }
                     }
             })
@@ -46,7 +46,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     });
                 console.log(checkState(state))
                 $('#state').val(checkState(state));
-                if((state==1 ||state==-1) && action==null){
+                if((state==1 ||state==-1) && action!="see"){
                     if(state!=-1){
                         $('.submit').removeClass('hidden');
                         $('.submit').click(function (e) { 
@@ -61,7 +61,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                     res = JSON.parse(res);
                                     if (res.state == 'success') {
                                     layer.alert('送审成功',{icon:1},function(){
-                                        location.href='/teacher.do?active=Cg';
+                                        closeIframe();
                                     })
                                     } else {
                                         layer.alert('送审失败',{icon:5},function(){
@@ -73,7 +73,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                             })
                         });
                     }
-                }else if((state==2 ||state==3) && action==null){
+                }else if((state==2 ||state==3) && action!="see"){
                     $('.submitedWithdraw').removeClass('hidden');
                     $('form input').attr('readonly','readonly');
                     $('.disable-eidt').hide();
@@ -102,12 +102,11 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
 
                 }else{
                     if(action=="see"){
-                        console.log('查看模式')
                         $('form input').attr('readonly','readonly');
                         $('.see').hide();
                     }else{
                         layer.alert('参数不合法',{icon:5},function () { 
-                            location.href='/teacher.do?active=Cg';
+                            closeIframe();
                          })
                     }
                    
@@ -284,7 +283,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 if(state==2 ||state==3){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
@@ -333,7 +332,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
-                    location.href='/teacher.do?active=cg';
+                    closeIframe();
                 });
             }
         }
@@ -362,11 +361,12 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
-                        window.location.href = "/teacher.do?active=myCg";
+                        layer.closeAll();
+                        closeIframe();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
-                        $("#btnSubmit").attr({"disabled":"false"});
+                        $("#btnSubmit").removeAttr("disabled");
                         layer.closeAll();
                     });
                   
@@ -376,8 +376,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         return false;
 
     });
-
-
 
 
 });

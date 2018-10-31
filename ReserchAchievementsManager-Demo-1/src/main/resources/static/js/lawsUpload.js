@@ -1,9 +1,17 @@
-layui.use(['layer', 'element','upload'], function(){
+layui.use(['layer','laydate', 'element','upload'], function(){
 	var layer = layui.layer;
-	var element = layui.element;
+    var element = layui.element;
+    var laydate=layui.laydate;
     var upload = layui.upload;
     var lId=null;
     var flist=[];
+
+     //日期时间选择器
+     laydate.render({
+        elem: '#publishDate'
+            ,type: 'date'
+        });
+
 		 //多文件列表示例
     var demoListView = $('#fileList')
         , uploadListIns = upload.render({
@@ -147,16 +155,18 @@ layui.use(['layer', 'element','upload'], function(){
         $("#btnSubmit").attr({ "disabled": "true" });
         if (lId == null) {
             layer.alert("获取成果ID失败,无法保存。", { icon: 5 }, function () {
-                $("#btnSubmit").attr({ "disabled": "false" });
+                $("#btnSubmit").removeAttr("disabled");
                 layer.closeAll();
             })
             return false;
         }
         var dataList=$('#fileupload').serializeObject();
+        console.log(dataList);
+        //return false;
         dataList.lId = lId;
         dataList.uploader = account;
         if(!checkIsInt(dataList.wordsCount)){
-            $("#btnSubmit").attr({ "disabled": "false" });
+            $("#btnSubmit").removeAttr("disabled");
             layer.alert('字数请输入正整数',{icon:5},function(){
                  layer.closeAll();
             })
@@ -178,7 +188,7 @@ layui.use(['layer', 'element','upload'], function(){
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
                         layer.closeAll();
-                        $("#btnSubmit").attr({ "disabled": "true" });
+                        $("#btnSubmit").removeAttr("disabled");
                     });
                 }
             }

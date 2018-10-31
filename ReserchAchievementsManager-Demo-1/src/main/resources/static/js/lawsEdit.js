@@ -1,7 +1,13 @@
-layui.use(['layer', 'element','upload'], function () {
+layui.use(['layer','laydate', 'element','upload'], function () {
+    var laydate = layui.laydate;    
     var layer = layui.layer;
     var element = layui.element;
     var upload = layui.upload;
+     //日期时间选择器
+     laydate.render({
+        elem: '#publishDate'
+            ,type: 'date'
+        });
     var flist = [];
     var lId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
@@ -22,14 +28,14 @@ layui.use(['layer', 'element','upload'], function () {
                         res=JSON.parse(res);
                     if (res.state == "success") {
                         layer.alert(res.msg, { icon: 1 }, function () {
+                            closeIframe();
                             layer.closeAll();
-                            window.location.href = "/teacher.do?active=myCg";
                         });
                     } else {
                         layer.alert(res.msg, { icon: 5 }, function () {
                             layer.closeAll();
                         });
-                        $("#btnSubmit").attr({"disabled":"false"});
+                        $("#btnSubmit").removeAttr("disabled");
                     }
                     }
             })
@@ -38,7 +44,7 @@ layui.use(['layer', 'element','upload'], function () {
 
     });
                 $('#state').val(checkState(state));
-                if((state==1 ||state==-1) && action==null){
+                if((state==1 ||state==-1) && action!="see"){
                     if(state!=-1){
                         $('.submit').removeClass('hidden');
                         $('.submit').click(function (e) { 
@@ -53,8 +59,7 @@ layui.use(['layer', 'element','upload'], function () {
                                     res = JSON.parse(res);
                                     if (res.state == 'success') {
                                     layer.alert('送审成功',{icon:1},function(){
-                                        location.href='/teacher.do?active=Cg';
-                                    })
+                                        closeIframe();                                       })
                                     } else {
                                         layer.alert('送审失败',{icon:5},function(){
                                             layer.closeAll();
@@ -65,7 +70,7 @@ layui.use(['layer', 'element','upload'], function () {
                             })
                         });
                     }
-                }else if((state==2 ||state==3) && action==null){
+                }else if((state==2 ||state==3) && action!="see"){
                     $('.submitedWithdraw').removeClass('hidden');
                     $('form input').attr('readonly','readonly');
                     $('.disable-eidt').hide();
@@ -94,12 +99,11 @@ layui.use(['layer', 'element','upload'], function () {
 
                 }else{
                     if(action=="see"){
-                        console.log('查看模式')
                         $('form input').attr('readonly','readonly');
                         $('.see').hide();
                     }else{
                         layer.alert('参数不合法',{icon:5},function () { 
-                            location.href='/teacher.do?active=Cg';
+                            closeIframe();
                          })
                     }
                    
@@ -239,6 +243,10 @@ layui.use(['layer', 'element','upload'], function () {
                 $('#level').val(res.laws.level);
                 $('#involvement').val(res.laws.involvement);
                 $('#wordsCount').val(res.laws.wordsCount); 
+                if(res.laws.publishDate){
+                    var publishDate=res.laws.publishDate.time+"";
+                    $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
+                }
                 var fileUploaded=$('#fileUploaded');
                 if(res.laws.attachment){
                     var fileData=res.laws.attachment+"";
@@ -270,7 +278,7 @@ layui.use(['layer', 'element','upload'], function () {
                 if(state==2 ||state==3){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
@@ -353,7 +361,8 @@ layui.use(['layer', 'element','upload'], function () {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
-                        window.location.href = "/teacher.do?active=myCg";
+                        layer.closeAll();
+                        closeIframe();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {

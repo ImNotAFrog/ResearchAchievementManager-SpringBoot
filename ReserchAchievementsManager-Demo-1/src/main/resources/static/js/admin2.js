@@ -137,41 +137,6 @@ var goToUpload = function (page) {
 
 
 
-window.operateEvents = {
-	'click .RoleOfA': function (e, value, row, index) {
-		console.log(e)
-		console.log(row)
-		console.log(value)
-		console.log(index)
-	//location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state+"&action=see";
-	},
-	'click .RoleOfB': function (e, value, row, index) {
-		console.log(e)
-		console.log(row)
-		console.log(value)
-		console.log(index)
-
-		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state;
-	}
-}
-
-
-
-function operateFormatter(value, row, index) {
-	return [
-		'<button type="button" class="RoleOfA btn btn-primary  btn-sm _see" style="margin-right:15px;">查看</button>',
-		'<button type="button" class="RoleOfB btn btn-success  btn-sm _edit" style="margin-right:15px;">审核</button>',
-	].join('');
-}
-
-//筛选符合状态的成果
-function stateSiftArray(arr,state){
-	return arr.filter(item=>{
-		if(item.state==state){
-			return item
-		}
-	})
-}
 
 
 	layui.use([ 'layer', 'table', 'element'], function(){
@@ -182,12 +147,11 @@ function stateSiftArray(arr,state){
 
 
 
-		function openIframe(type,aid,state,action=null){
+		function openIframe(type,aid,state,name,action=null){
 			var height=$(window).height()-50;
 			console.log("/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action);
-			//return false;
 			layer.open({
-			//title:'查看'+data.user+'的信息',
+			title:name+"的成果信息",
 			type: 2,
 			area: ['800px', height+'px'],
 			content: "/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action,
@@ -200,7 +164,6 @@ function stateSiftArray(arr,state){
 
 			var table4=table.render({
 				elem: '#table4'
-				,height: 312
 				,url: '/achievement/getListBySubDepartment' //数据接口
 				,method:"POST"
 				,where:{
@@ -210,12 +173,12 @@ function stateSiftArray(arr,state){
 				,headers: { Authorization: 'Bearer ' + token }
 				,contentType: 'application/json'
 				,cols: [[ //表头
-				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-				,{field: 'type', title: '类型',templet: function(d){
+				{field: 'name', title: '成果名称',width:300 ,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',width:150,templet: function(d){
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'score', title: '成果得分'}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar4'}
 				]]
 			});
@@ -226,7 +189,7 @@ function stateSiftArray(arr,state){
 			var tr = obj.tr; //获得当前行 tr 的DOM对象
 			if(layEvent === 'detail'){ //查看
 					console.log(data.state)
-					openIframe(data.type,data.aId,data.state,'see')
+					openIframe(data.type,data.aId,data.state,data.uploader,'see')
 			}
 			});
 			
@@ -235,7 +198,6 @@ function stateSiftArray(arr,state){
 			//执行一个 table 实例
 			var table2=table.render({
 				elem: '#table2'
-				,height: 312
 				,url: '/achievement/getListBySubDepartment' //数据接口
 				,method:"POST"
 				,where:{
@@ -245,12 +207,12 @@ function stateSiftArray(arr,state){
 				,headers: { Authorization: 'Bearer ' + token }
 				,contentType: 'application/json'
 				,cols: [[ //表头
-				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-				,{field: 'type', title: '类型',templet: function(d){
+				{field: 'name', title: '成果名称' ,width:300,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',width:150,templet: function(d){
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'score', title: '成果得分'}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar2'}
 				]]
 			});
@@ -263,13 +225,12 @@ function stateSiftArray(arr,state){
 				active="see";
 			}
 			console.log(active)
-			openIframe(data.type,data.aId,data.state,active);
+			openIframe(data.type,data.aId,data.state,data.uploader,active);
 			});
 
 			//执行一个 table 实例
 			var table3=table.render({
 				elem: '#table3'
-				,height: 312
 				,url: '/achievement/getListBySubDepartment' //数据接口
 				,page: true //开启分页
 				,method:"POST"
@@ -279,12 +240,12 @@ function stateSiftArray(arr,state){
 				,headers: { Authorization: 'Bearer ' + token }
 				,contentType: 'application/json'
 				,cols: [[ //表头
-				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-				,{field: 'type', title: '类型',templet: function(d){
+				{field: 'name', title: '成果名称' ,width:250,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',width:150,templet: function(d){
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'score', title: '成果得分'}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar3'}
 				]]
 			});
@@ -295,7 +256,7 @@ function stateSiftArray(arr,state){
 			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 			var tr = obj.tr; //获得当前行 tr 的DOM对象
 			if(layEvent === 'detail'){ //查看
-					openIframe(data.type,data.aId,data.state,'see')
+					openIframe(data.type,data.aId,data.state,data.uploader,'see')
 			}
 			})
 
@@ -303,7 +264,6 @@ function stateSiftArray(arr,state){
 			//执行一个 table 实例
 			var table_1=table.render({
 				elem: '#table-1'
-				,height: 312
 				,url: '/achievement/getListBySubDepartment' //数据接口
 				,page: true //开启分页
 				,method:"POST"
@@ -313,12 +273,12 @@ function stateSiftArray(arr,state){
 				,headers: { Authorization: 'Bearer ' + token }
 				,contentType: 'application/json'
 				,cols: [[ //表头
-				{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-				,{field: 'type', title: '类型',templet: function(d){
+				{field: 'name', title: '成果名称' ,width:300,sort: true, fixed: 'left'}
+				,{field: 'type', title: '类型',width:150,templet: function(d){
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'score', title: '成果得分'}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-1'}
 				]]
 			});
@@ -329,7 +289,7 @@ function stateSiftArray(arr,state){
 				var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 				var tr = obj.tr; //获得当前行 tr 的DOM对象
 				if(layEvent === 'detail'){ //查看
-						openIframe(data.type,data.aId,data.state,'see')
+						openIframe(data.type,data.aId,data.state,data.uploader,'see')
 				}
 				})
 	
@@ -374,6 +334,8 @@ function stateSiftArray(arr,state){
 			var conditions={
 				where: {
 					state: parseInt(state),
+					type:"",
+					keyword:""
 				}
 				,page: {
 				  curr: 1 

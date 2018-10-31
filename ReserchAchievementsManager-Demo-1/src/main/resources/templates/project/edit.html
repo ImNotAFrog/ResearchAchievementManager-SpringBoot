@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>课题项目信息上传</title>
+<title>课题项目信息查看、编辑</title>
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
 <link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/header.css">
 
 </head>
 <body>
@@ -23,7 +22,6 @@
 				<div class="re-item">
 
 					<h3>课题项目信息</h3>
-					<a href="javascript:Header.home()" class="moco-modal-close"></a>
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
 						<div class="form-item">
@@ -140,14 +138,11 @@
 						</div>
 
 						<input type="hidden" value="" name="pId" id="pId">
-
-						
 						<div class="col-md-offset-2" style="margin-top: 5px;">
 							<button id="btnSubmit" type="submit" class="btn see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
 							<button class="btn btn-default btn-warning see disable-eidt" type="reset">重置</button>
 							<button type="button" class="btn btn-info see submit hidden disable-eidt">提交送审</button>
 							<button type="button" class="btn btn-info see hidden submitedWithdraw">撤销送审</button>
-							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
 							<button type="button" class="btn btn-danger see pull-right delproject">删除课题项目</button>
 						</div>
 					</form>
@@ -155,16 +150,13 @@
 			</div>
 		</div>
 	</div>
-
-	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/jquery.base64.js"></script>
 <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/custom-alert.js"></script>
 <script type="text/javascript" src="/js/tokenhelper.js"></script>
-<script type="text/javascript" src="/js/header.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 <script src="/js/projectEdit.js"></script>
 </html>

@@ -1,6 +1,4 @@
-layui.use(['layer',], function () {
-	var layer = layui.layer;
-})
+
 var departmentList
 var department
 
@@ -34,12 +32,26 @@ var getDepartmentList = function () {
 			var result = JSON.parse(data)
 			if (result.state == "success") {
 				departmentList = result.dep
+				rankingDep(departmentList)
 				console.log(departmentList)
 				getUserProfileByAccount(account, token)
 			}
 
 		}
 	});
+}
+
+//向下拉框中追加部门
+function rankingDep(DepArr){
+	var obj=$('#_department');
+	if(DepArr){
+		var opt=null;
+		$.each(DepArr, function (index, item) { 
+			opt=$("<option>").val(item.index).text(item.name);
+			obj.append(opt);
+		});
+		
+	}
 }
 function getUserProfileByAccount(account, token) {
 	$.ajax({
@@ -146,15 +158,6 @@ var goToUpload = function (page) {
 
 
 
-window.operateEvents = {
-	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state+"&action=see";
-	},
-	'click .RoleOfB': function (e, value, row, index) {
-		location.href="/"+row.type+"/exam.do?aId="+row.aId+"&state="+row.state;
-	}
-}
-
 
 
 function operateFormatter(value, row, index) {
@@ -173,61 +176,30 @@ function stateSiftArray(arr,state){
 	})
 }
 
-//高级管理员获取成果
-/* $(function () {
-	$.ajax({
-		type: "GET",
-		url: "/achievement/getAll",
-		contentType: 'application/json',
-		headers: { Authorization: 'Bearer ' + token },
-		success: function (res) {
-			res = JSON.parse(res);
-			console.log(res.achievement);
-			if (res.state == "success") {
-				var dataList=res.achievement;
-				$.each(dataList, function (index, value) { 
-					dataList[index].intime=value.uploadDate.time;
-				});
-				//已通过的表
-				$('#wating4').bootstrapTable('load',stateSiftArray(dataList,4));
-				//待审核的表
-				$('#wating3').bootstrapTable('load',stateSiftArray(dataList,3));
-				//已驳回的表
-				console.log(stateSiftArray(dataList,-1))
-				$('#wating-1').bootstrapTable('load',stateSiftArray(dataList,-1));
-				$('#wating-1,#wating3,#wating4').bootstrapTable('hideColumn',"intime"); //隐藏排序的列
-
-			} else {
-				layer.alert("获取成果列表失败", { icon: 5 }, function () {
-					location.href="/index.do"
-					layer.closeAll();
-				});
-			}
-		},
-		error: function (pa) {
-			layer.alert("请求数据失败", { icon: 5 }, function () {
-				location.href="/index.do"
-				layer.closeAll();
-			});
-		}
-	});
-}) */
 
 
-layui.use([ 'layer', 'table', 'element'], function(){
+
+layui.use([ 'layer','laydate', 'table', 'element'], function(){
 	layer = layui.layer //弹层
 	,table = layui.table //表格
 	,element = layui.element //元素操作
+	var laydate = layui.laydate;
 	//执行一个 table 实例
 
+	//日期范围
+	laydate.render({
+		elem: '#rangeTime',
+		range:true
+	  });
 
 
-	function openIframe(type,aid,state,action=null){
+
+	function openIframe(type,aid,state,name,action=null){
 		var height=$(window).height()-50;
 		console.log("/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action);
 		//return false;
 		layer.open({
-		//title:'查看'+data.user+'的信息',
+		title:name+'的成果信息',
 		type: 2,
 		area: ['800px', height+'px'],
 		content: "/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action,
@@ -238,9 +210,9 @@ layui.use([ 'layer', 'table', 'element'], function(){
 	  });
 	}
 
+	//已通过
 		var table4=table.render({
 			elem: '#table4'
-			,height: 312
 			,url: '/achievement/getListBySubDepartment' //数据接口
 			,method:"POST"
 			,where:{
@@ -250,32 +222,30 @@ layui.use([ 'layer', 'table', 'element'], function(){
 			,headers: { Authorization: 'Bearer ' + token }
 			,contentType: 'application/json'
 			,cols: [[ //表头
-			{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-			,{field: 'type', title: '类型',templet: function(d){
+			{field: 'name',width:300, title: '成果名称' ,sort: true, fixed: 'left'}
+			,{field: 'type', title: '类型',width:150,templet: function(d){
 				return checkType(d.type);
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
-			,{field: 'score', title: '成果得分'}
+			,{field: 'uploadDate', title: '提交时间',templet: function(d){
+				return timestampToTime(d.uploadDate.time)
+			  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar4'}
 			]]
 		});
-		//监听工具条
 		table.on('tool(t4)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
 		var data = obj.data; //获得当前行数据
 		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		if(layEvent === 'detail'){ //查看
-				console.log(data.state)
-				openIframe(data.type,data.aId,data.state,'see')
-				
+				openIframe(data.type,data.aId,data.state,data.uploader,'see')		
 		}
 		});
 		
 
-		//执行一个 table 实例
+		//待审核
 		var table3=table.render({
 			elem: '#table3'
-			,height: 312
 			,url: '/achievement/getListBySubDepartment' //数据接口
 			,page: true //开启分页
 			,method:"POST"
@@ -285,12 +255,12 @@ layui.use([ 'layer', 'table', 'element'], function(){
 			,headers: { Authorization: 'Bearer ' + token }
 			,contentType: 'application/json'
 			,cols: [[ //表头
-			{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-			,{field: 'type', title: '类型',templet: function(d){
+			{field: 'name',width:300, title: '成果名称' ,sort: true, fixed: 'left'}
+			,{field: 'type', title: '类型',width:150,templet: function(d){
 				return checkType(d.type);
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
-			,{field: 'score', title: '成果得分'}
+			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar3'}
 			]]
 		});
@@ -298,18 +268,19 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		table.on('tool(t3)', function(obj){
 			var data = obj.data; //获得当前行数据
 			var layEvent = obj.event;
-			var active=null;
-			if(layEvent != 'detail'){ //审核模式
-				active="see";
+			var action=null;
+			console.log(layEvent);
+			if(layEvent == 'detail'){ //审核模式
+				console.log(5313)
+				action="see";
 			}
-			openIframe(data.type,data.aId,data.state,active);
+			openIframe(data.type,data.aId,data.state,data.uploader,action);
 			});
 
 
 		//执行一个 table 实例
 		var table_1=table.render({
 			elem: '#table-1'
-			,height: 312
 			,url: '/achievement/getListBySubDepartment' //数据接口
 			,page: true //开启分页
 			,method:"POST"
@@ -319,17 +290,25 @@ layui.use([ 'layer', 'table', 'element'], function(){
 			,headers: { Authorization: 'Bearer ' + token }
 			,contentType: 'application/json'
 			,cols: [[ //表头
-			{field: 'name', title: '成果名称' ,sort: true, fixed: 'left'}
-			,{field: 'type', title: '类型',templet: function(d){
+			{field: 'name',width:300, title: '成果名称' ,sort: true, fixed: 'left'}
+			,{field: 'type', title: '类型',width:150,templet: function(d){
 				return checkType(d.type);
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
-			,{field: 'score', title: '成果得分'}
+			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-1'}
 			]]
 		});
+		table.on('tool(t-1)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		if(layEvent === 'detail'){ //查看
+				openIframe(data.type,data.aId,data.state,data.uploader,'see')		
+		}
+		});
 
-
+	//搜索表格
 	$('.searchBtn').click(function (e) { 
 		var state=$(this).attr('state');
 		var type=$(".table"+state+" .optType").val();
@@ -349,8 +328,6 @@ layui.use([ 'layer', 'table', 'element'], function(){
 
 		if(state==4){
 			table4.reload(conditions);
-		}else if(state==2){
-			table2.reload(conditions);
 		}else if(state==3){
 			table3.reload(conditions);
 		}else if(state==-1){
@@ -358,16 +335,16 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		}
 	});
 
-
+	//刷新表格
 	$('.refresh').click(function (e) { 
-		console.log(state);
 		var state=$(this).attr('state');
-		console.log(state);
 		$(".table"+state+" .optType").val("");
 		$(".table"+state+" .keyword").val('');
 		var conditions={
 			where: {
 				state: parseInt(state),
+				type:"",
+				keyword:""
 			}
 			,page: {
 			  curr: 1 
@@ -375,17 +352,32 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		  }
 		if(state==4){
 			table4.reload(conditions);
-		}else if(state==2){
-			table2.reload(conditions);
 		}else if(state==3){
 			table3.reload(conditions);
 		}else if(state==-1){
 			table_1.reload(conditions);
 		}
 	});
+	//查看成果评比
 
-
-
+	$(".lookRankBtn").click(function(e){
+		var type=$(this).attr('_type');
+		var rangeTime=$('#rangeTime').val();
+		if(rangeTime==""){
+			layer.msg("评审的时间范围不能为空",{time:1500});
+			return false;
+		}
+		var startDate=rangeTime.substring(0,10);
+		var endDate=rangeTime.substring(13,23);
+		var department=$('#_department').val();
+		if(type==1){
+			type="individual";
+		}else{
+			type="department";
+		}
+		console.log("/ranking/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department)
+		location.href="/ranking/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department;
+	})
 })	
 
 

@@ -299,6 +299,19 @@ a.edit:hover{
         border-radius: 2px;
         box-sizing: border-box;
    }
+
+   .optType{
+    width: 200px !important;
+    }
+
+    .keyword{
+        width: 120px !important;    
+    }
+
+    .searchBtn{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
     /*椤圭洰琛ㄥ崟缁撴潫*/
 /*涓婁紶鎴愭灉缁撴潫*/
 

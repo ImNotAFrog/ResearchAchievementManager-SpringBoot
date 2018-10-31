@@ -10,11 +10,30 @@
 	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
 	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
 	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/header.css">
+	<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.base64.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/tokenhelper.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
 
 </head>
+<div id="result-msg" style="display: none">
+	<div>
+	   <img src="/img/success.png" alt="">
+	   <span id="tips"></span>
+   </div>
+   <div class="btn-opt">
+	   <button  class="layui-btn" onclick="closeIframe()">返回</button>
+	   <button  class="layui-btn next1" onclick="jumpNext()">下一项成果</a>
+	   <button  class="layui-btn next2" onclick="jumpNext('patent')" >下一项同类成果</button>
+   </div>
+</div>
 
 <body>
-	<div th:replace="header::html"></div>
 	<div class="container upload">
 		<div class="row">
 			<div class="col-md-9 col-md-offset-2 ">
@@ -22,7 +41,6 @@
 				<!--论文-->
 				<div class="re-item">
 						<h3>论著、教材类</h3>  
-					<a href="javascript:Header.home()" class="moco-modal-close"></a>
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
 						<div class="form-item">
@@ -86,6 +104,14 @@
 							</div>
 						</div>
 
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="score" class="moco-control-label">成果得分:</label>
+							<div class="moco-control-input">
+								<input type="text" name="score" id="score" autocomplete="off" class="moco-form-control">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+
 						<div class="form-item" id="yc" style="margin-top: 12px;">
 							<label for="" class="moco-control-label">已上传附件:</label>
 							<div class="moco-control-input">
@@ -126,7 +152,6 @@
 							<button type="button" class="btn btn-primary see preCheck hidden">上报</button>
 							<button type="button" class="btn btn-primary see approve hidden">通过</button>
 							<button type="button" class="btn btn-info see hidden reject">驳回</button>
-							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
 							<button type="button" class="btn btn-danger Withdraw hidden pull-right delthesis">撤回成果</button>
 						</div>
 
@@ -137,8 +162,6 @@
 			</div>
 		</div>
 	</div>
-
-	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script src="/js/patentExam.js"></script>

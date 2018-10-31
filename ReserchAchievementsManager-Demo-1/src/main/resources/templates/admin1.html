@@ -17,24 +17,24 @@
 		<div class="container clearfix">
 			<div class="left">
 				<ul>
-					<li><a class="" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
+					<li><a  class="active" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state4"> <span>已通过成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state1"> <span>已通过成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state3"> <span>待审核成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state2"> <span>待审核成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>已驳回成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state3"> <span>已驳回成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>成果评比</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state4"> <span>成果评比</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>成果导出</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state5"> <span>成果导出</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>新闻列表</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state6"> <span>新闻列表</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>调研活动</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state7"> <span>调研活动</span> <span class="icon">&gt;</span>
 						</a></li>
 
-					<li><a href="#" id="state-1"> <span>其他学术活动</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state8"> <span>其他学术活动</span> <span class="icon">&gt;</span>
 						</a></li>
 
 				</ul>
@@ -78,7 +78,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="_state4" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--已通过-->
@@ -109,12 +109,12 @@
 						</div>
 
 					</div>
-					<div id="_state3" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--待审核-->
 						<div class="examing">
-							<div class="toolbar flex7 table">
+							<div class="toolbar flex7 table3">
 								<label>按类别查看</label>
 								<div class="flex5" style="width: 100%;">
 										<select class="form-control optType">
@@ -128,8 +128,8 @@
 										</select>
 										<div class="flex5">
 												<input class="form-control keyword" type="text" placeholder="关键字..">
-												<button type="button" state="2" class="btn searchBtn btn-default">搜索</button>
-												<button type="button" state="2" class="btn  btn-default refresh">刷新</button>
+												<button type="button" state="3" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="3" class="btn  btn-default refresh">刷新</button>
 										</div>
 							</div>
 						</div>
@@ -140,7 +140,7 @@
 						</div>
 
 					</div>
-					<div id="_state-1" class="content-item">
+					<div id="" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
 						<!--已驳回-->
@@ -166,14 +166,37 @@
 						</div>
 						<table class="layui-hide" id="table-1" lay-filter="t4"></table>
 						<script type="text/html" id="toolBar-1">
-								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-								<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+							<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>					
 						</script>
 						</div>
 					</div>
 					<div id="research" class="content-item">
-						成果评比
+						<div class="nav">
+								<div class="common-title">查询成果评比</div>
+								<div class="line"></div>
+							<div class="col-md-12 mar-top20">
+								<div class="form-item">
+									<label for="rangeTime" class="pull-left">起止日期:</label>
+									<div class="moco-control-input">
+										<input type="text" name="rangeTime" id="rangeTime" placeholder="请选择时间范围" autocomplete="off" class="moco-form-control" value="">
+										<div class="rlf-tip-wrap errorHint color-red"></div>
+									</div>
+								</div>
 
+								<div class="form-item">
+										<label for="rangeTime" class="pull-left">请选择评比部门:</label>
+										<div class="moco-control-input">
+												<select name="_department" id="_department" class="form-control">
+													<option value="" selected></option>
+												</select>
+										</div>
+								</div>
+								<div class="form-item lookRank">
+									<button type="button"  _type="1"  class="btn  btn-primary lookRankBtn" >查看个人成果评比排名列表</button>
+									<button type="button" _type="2" class="btn  btn-warning lookRankBtn"  >查看集体成果评比排名列表</button>
+							  </div>
+							</div>
+						</div>
 					</div>
 
 
@@ -201,8 +224,6 @@
 
 	<div th:replace="footer::html"></div>
 </body>
-<script type="text/javascript" src="/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/admin1.js"></script>
 

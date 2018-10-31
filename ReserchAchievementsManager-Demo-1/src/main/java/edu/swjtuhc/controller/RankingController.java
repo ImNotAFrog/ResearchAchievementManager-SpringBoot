@@ -18,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,10 @@ public class RankingController {
 
 	@Autowired
 	RankingService rankingService;
-
+	
+	@Value("${attachemnt.path}")
+	private String attachmentPath;
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/individual", method = RequestMethod.POST)
 	public String individual(HttpServletRequest request, @RequestBody RankingRequestMsg msg) {
@@ -127,15 +131,14 @@ public class RankingController {
 				row.createCell((short) 4).setCellValue(rank.getDepartment());
 				row.createCell((short) 5).setCellValue(rank.getSubDepartment());
 			}
-			String p = AppConfigs.class.getResource("/").getPath();
-			String myDir = p.substring(1, p.indexOf("classes"));
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
             String startDateString = formatter.format(msg.getStartDate()); 
             String endDateString = formatter.format(msg.getEndDate()); 
-			String deskPath = myDir + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
+			String deskPath = attachmentPath + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
 			FileOutputStream fout = new FileOutputStream(new File(deskPath));
 			wb.write(fout);
 			fout.close();
+			System.out.println(deskPath);
 			response.setContentType(request.getServletContext().getMimeType(deskPath));
 			response.setHeader("Content-Disposition", "attachment;filename=" +startDateString+"-"+endDateString+"Ranking.xlsx");
 			// out.print("<script
@@ -255,12 +258,11 @@ public class RankingController {
 				row.createCell((short) 5).setCellValue(a.getValidDate());
 				
 			}
-			String p = AppConfigs.class.getResource("/").getPath();
-			String myDir = p.substring(1, p.indexOf("classes"));
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
             String startDateString = formatter.format(msg.getStartDate()); 
             String endDateString = formatter.format(msg.getEndDate()); 
-			String deskPath = myDir + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
+			String deskPath = attachmentPath + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
+			System.out.println(deskPath);
 			FileOutputStream fout = new FileOutputStream(new File(deskPath));
 			wb.write(fout);
 			fout.close();

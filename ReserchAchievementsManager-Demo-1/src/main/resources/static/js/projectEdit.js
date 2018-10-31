@@ -32,7 +32,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                     if (res.state == "success") {
                         layer.alert(res.msg, { icon: 1 }, function () {
                             layer.closeAll();
-                           Header.home();
+                            closeIframe();
                         });
                     } else {
                         layer.alert(res.msg, { icon: 5 }, function () {
@@ -48,7 +48,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
     });
                 console.log(checkState(state))
                 $('#state').val(checkState(state));
-                if((state==1 ||state==-1) && action==null){
+                if((state==1 ||state==-1) && action!="see"){
                     if(state!=-1){
                         $('.submit').removeClass('hidden');
                         $('.submit').click(function (e) { 
@@ -63,7 +63,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                                     res = JSON.parse(res);
                                     if (res.state == 'success') {
                                     layer.alert('送审成功',{icon:1},function(){
-                                       Header.home();
+                                      closeIframe();
                                     })
                                     } else {
                                         layer.alert('送审失败',{icon:5},function(){
@@ -75,7 +75,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                             })
                         });
                     }
-                }else if((state==2 ||state==3) && action==null){
+                }else if((state==2 ||state==3) && action!=null){
                     $('.submitedWithdraw').removeClass('hidden');
                     $('form input').attr('readonly','readonly');
                     $('.disable-eidt').hide();
@@ -107,9 +107,10 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                         console.log('查看模式')
                         $('form input').attr('readonly','readonly');
                         $('.see').hide();
+                     
                     }else{
                         layer.alert('参数不合法',{icon:5},function () { 
-                            Header.home();
+                            closeIframe();
                          })
                     }
                    
@@ -217,8 +218,6 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                                 }, function () {
                                 });
                             });
-
-
                     return delete this.files[index]; //删除文件队列已经上传成功的文件    
                 }
                 this.error(index, upload);
@@ -284,7 +283,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 if(state==2 ||state==3){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
@@ -333,7 +332,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
-                    Header.home();
+                    closeIframe();
                 });
             }
         }
@@ -360,7 +359,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                 res = JSON.parse(res);
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
-                       Header.home();
+                      closeIframe();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {

@@ -10,20 +10,19 @@
 	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
 	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
 	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 
 </head>
 
 <body>
-	<div th:replace="header::html"></div>
 	<div class="container upload">
 		<div class="row">
 			<div class="col-md-9 col-md-offset-2 ">
 
 				<!--论文-->
 				<div class="re-item">
-						<h3>论文信息</h3>  
-					<a href="javascript:Header.home()" class="moco-modal-close"></a>
-					
+						<h3>论文信息</h3>  					
 					<div class="form-item">
 						<label>当前状态:</label>
 						<div class="moco-control-input">
@@ -123,12 +122,13 @@
 
 
 						<div class="col-md-offset-2" style="margin-top: 5px;">
-							<button id="btnSubmit" type="submit" class="btn see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
-							<button class="btn btn-default btn-warning see disable-eidt" type="reset">重置</button>
-							<button type="button" class="btn btn-info see submit hidden disable-eidt">提交送审</button>
-							<button type="button" class="btn btn-info see hidden submitedWithdraw">撤销送审</button>
-							<button type="button" class="btn btn-default " onclick="Header.home()">返回</button>
-							<button type="button" class="btn btn-danger see pull-right delthesis">删除论文</button>
+							<div class="col-md-offset-2" style="margin-top: 5px;">
+									<button id="btnSubmit" type="submit" class="btn see btn-primary disable-eidt" style="opacity: 0.75">保存</button>
+									<button class="btn btn-default btn-warning see disable-eidt" type="reset">重置</button>
+									<button type="button" class="btn btn-info see submit hidden disable-eidt">提交送审</button>
+									<button type="button" class="btn btn-info see hidden submitedWithdraw">撤销送审</button>
+									<button type="button" class="btn btn-danger see pull-right delthesis">删除论文</button>
+								</div>
 						</div>
 						<input type="hidden" value="" name="tId" id="tId">
 					</form>
@@ -136,10 +136,14 @@
 			</div>
 		</div>
 	</div>
-
-	<div th:replace="footer::html"></div>
 </body>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.base64.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/tokenhelper.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 <script src="/js/thesisEdit.js"></script>
 
 </html>

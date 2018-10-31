@@ -13,8 +13,8 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     var tId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
-    console.log(action)
-    //删除已上传文件
+    console.log(tId)
+    //删除已上传论文
     $('.delthesis').click(function (e) { 
         $(".delthesis").attr({"disabled":"true"});
         layer.confirm('确定要此论文吗？', {
@@ -31,14 +31,14 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                         res=JSON.parse(res);
                     if (res.state == "success") {
                         layer.alert(res.msg, { icon: 1 }, function () {
+                            closeIframe();
                             layer.closeAll();
-                            window.location.href = "/teacher.do?active=myCg";
                         });
                     } else {
                         layer.alert(res.msg, { icon: 5 }, function () {
                             layer.closeAll();
                         });
-                        $("#btnSubmit").attr({"disabled":"false"});
+                        $("#btnSubmit").removeAttr("disabled");
                     }
                     }
             })
@@ -48,7 +48,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     });
                 console.log(checkState(state))
                 $('#state').val(checkState(state));
-                if((state==1 ||state==-1) && action==null){
+                if((state==1 ||state==-1) && action!="see"){
                     if(state!=-1){
                         $('.submit').removeClass('hidden');
                         $('.submit').click(function (e) { 
@@ -63,7 +63,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                     res = JSON.parse(res);
                                     if (res.state == 'success') {
                                     layer.alert('送审成功',{icon:1},function(){
-                                        location.href='/teacher.do?active=Cg';
+                                        closeIframe();
                                     })
                                     } else {
                                         layer.alert('送审失败',{icon:5},function(){
@@ -75,7 +75,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                             })
                         });
                     }
-                }else if((state==2 ||state==3) && action==null){
+                }else if((state==2 ||state==3) && action!="see"){
                     $('.submitedWithdraw').removeClass('hidden');
                     $('form input').attr('readonly','readonly');
                     $('.disable-eidt').hide();
@@ -91,10 +91,10 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                                 res = JSON.parse(res);
                                 if (res.state == 'success') {
                                   layer.alert('撤回成果成功',{icon:1},function(){
-                                    location.href='/thesis/edit.do?tId='+tId+"&state=1";
+                                    location.href='/thesis/edit.do?aId='+tId+"&state=1";
                                   })
                                 } else {
-                                    layer.alert('撤回成果失败',{icon:5},function(){
+                                    layer.alert(res.msg,{icon:5},function(){
                                         layer.closeAll();
                                       })
                                    
@@ -110,7 +110,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                         $('.see').hide();
                     }else{
                         layer.alert('参数不合法',{icon:5},function () { 
-                            location.href='/teacher.do?active=Cg';
+                            closeIframe();
                          })
                     }
                    
@@ -121,7 +121,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     var demoListView = $('#fileList')
         , uploadListIns = upload.render({
             elem: '#select'
-            //,url: 'http://www.demo.com/admin/file/upFile'   
             , url: "/attachment/upload"
             , accept: 'file'
             , multiple: true
@@ -286,7 +285,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 if(state==2 ||state==3){
                     $('.disable-eidt').hide();
                 }
-                if(action!=null){
+                if(action=="see"){
                     $('.see').hide();
                 }
                 //console.log(JSON.stringify(fileData))
@@ -339,7 +338,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
             } else {
                 layer.alert(res.msg,{icon:5},function(){
                     layer.closeAll();
-                    location.href='/teacher.do?active=cg';
+                    closeIframe();
                 });
             }
         }
@@ -352,7 +351,7 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
         console.log(dataList);
         dataList.uploader=account;
-    
+        layer.load();
         if (tId == null) {
             layer.alert("获取论文ID失败,不是提交", { icon: 5 }, function () {
                 layer.closeAll();
@@ -368,11 +367,11 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
                 if (res.state == "success") {
                     layer.alert(res.msg, { icon: 1 }, function () {
                         layer.closeAll();
-                        window.location.href = "/teacher.do?active=myCg";
+                        closeIframe();
                     });
                 } else {
                     layer.alert(res.msg, { icon: 5 }, function () {
-                        $("#btnSubmit").attr({"disabled":"false"});
+                        $("#btnSubmit").removeAttr("disabled");
                         layer.closeAll();
                     });
                   
