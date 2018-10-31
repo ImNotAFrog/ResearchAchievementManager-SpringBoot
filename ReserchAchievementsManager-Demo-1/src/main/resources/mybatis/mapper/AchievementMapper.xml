@@ -180,8 +180,8 @@
 		where 
 		a.valid_date between #{startDate} and #{endDate}
 		and state = 4		
-		<if test='null!=subDepartment and ""!=subDepartment'>
-			and a.sub_department=#{subDepartment}
+		<if test='null!=department and ""!=department'>
+			and a.department=#{department}
 		</if>
 	</select>
 	
