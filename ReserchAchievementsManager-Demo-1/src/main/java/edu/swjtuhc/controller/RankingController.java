@@ -129,13 +129,15 @@ public class RankingController {
 			}
 			String p = AppConfigs.class.getResource("/").getPath();
 			String myDir = p.substring(1, p.indexOf("classes"));
-
-			String deskPath = myDir + "/rankExport/"+msg.getStartDate()+"-"+msg.getEndDate()+"Ranking.xlsx";
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
+            String startDateString = formatter.format(msg.getStartDate()); 
+            String endDateString = formatter.format(msg.getEndDate()); 
+			String deskPath = myDir + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
 			FileOutputStream fout = new FileOutputStream(new File(deskPath));
 			wb.write(fout);
 			fout.close();
 			response.setContentType(request.getServletContext().getMimeType(deskPath));
-			response.setHeader("Content-Disposition", "attachment;filename=" +msg.getStartDate()+"-"+msg.getEndDate()+"Ranking.xlsx");
+			response.setHeader("Content-Disposition", "attachment;filename=" +startDateString+"-"+endDateString+"Ranking.xlsx");
 			// out.print("<script
 			// type='text/javascript'charset='utf-8'>alert('下载')</script>");
 			FileInputStream fin = new FileInputStream(deskPath);
@@ -255,13 +257,15 @@ public class RankingController {
 			}
 			String p = AppConfigs.class.getResource("/").getPath();
 			String myDir = p.substring(1, p.indexOf("classes"));
-
-			String deskPath = myDir + "/rankExport/Ranking" +msg.getStartDate()+"-"+msg.getEndDate()+"Ranking.xlsx";
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
+            String startDateString = formatter.format(msg.getStartDate()); 
+            String endDateString = formatter.format(msg.getEndDate()); 
+			String deskPath = myDir + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
 			FileOutputStream fout = new FileOutputStream(new File(deskPath));
 			wb.write(fout);
 			fout.close();
 			response.setContentType(request.getServletContext().getMimeType(deskPath));
-			response.setHeader("Content-Disposition", "attachment;filename="+msg.getStartDate()+"-"+msg.getEndDate()+"Ranking.xlsx");
+			response.setHeader("Content-Disposition", "attachment;filename="+startDateString+"-"+endDateString+"Ranking.xlsx");
 			// out.print("<script
 			// type='text/javascript'charset='utf-8'>alert('下载')</script>");
 			FileInputStream fin = new FileInputStream(deskPath);
