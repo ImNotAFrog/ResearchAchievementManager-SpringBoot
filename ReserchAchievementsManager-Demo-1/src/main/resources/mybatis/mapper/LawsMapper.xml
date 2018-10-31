@@ -22,6 +22,8 @@
 			jdbcType="VARCHAR" />	
 		<result column="upload_date"
 			property="uploadDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
+		<result column="publish_date"
+			property="publishDate" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />	
 		<result column="score" property="score"
 			jdbcType="FLOAT" />
 		<result column="max_score" property="maxScore"
@@ -32,7 +34,7 @@
 			jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		l_id,l_name,l_num,level,involvement,words_count,attachment,uploader,upload_date,score,max_score,department,sub_department
+		l_id,l_name,l_num,level,involvement,words_count,attachment,uploader,upload_date,score,max_score,department,sub_department,publish_date
 	</sql>
 	<select id="getLawsById" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
@@ -47,13 +49,13 @@
 		laws
 		(<include refid="Base_Column_List"></include>)
 		values
-		(#{lId},#{lName},#{lNum},#{level},#{involvement},#{wordsCount},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
+		(#{lId},#{lName},#{lNum},#{level},#{involvement},#{wordsCount},#{attachment},#{uploader},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment},#{publishDate})
 	</insert>
 	<update id="updateLaws" parameterType="edu.swjtuhc.model.Laws">
 		UPDATE
 		laws
 		SET
-		l_name = #{lName},l_num = #{lNum},level=#{level},involvement=#{involvement},words_count=#{wordsCount},attachment=#{attachment},uploader=#{uploader},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
+		l_name = #{lName},l_num = #{lNum},level=#{level},involvement=#{involvement},words_count=#{wordsCount},attachment=#{attachment},uploader=#{uploader},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment},publish_date=#{publishDate}
 		WHERE
 		l_id = #{lId}
 	</update>
