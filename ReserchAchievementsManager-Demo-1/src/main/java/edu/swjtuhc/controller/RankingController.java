@@ -1,8 +1,10 @@
 package edu.swjtuhc.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -39,10 +41,10 @@ public class RankingController {
 
 	@Autowired
 	RankingService rankingService;
-	
+
 	@Value("${attachemnt.path}")
 	private String attachmentPath;
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/individual", method = RequestMethod.POST)
 	public String individual(HttpServletRequest request, @RequestBody RankingRequestMsg msg) {
@@ -143,12 +145,17 @@ public class RankingController {
 			response.setHeader("Content-Disposition", "attachment;filename=" +startDateString+"-"+endDateString+"Ranking.xlsx");
 			// out.print("<script
 			// type='text/javascript'charset='utf-8'>alert('下载')</script>");
-			FileInputStream fin = new FileInputStream(deskPath);
-			int b;
-			while ((b = fin.read()) != -1) {
-				response.getWriter().write(b);
+			byte[] buff = new byte[1024];
+			BufferedInputStream bis = null;
+			OutputStream os = null;			
+			os = response.getOutputStream();
+			bis = new BufferedInputStream(new FileInputStream(deskPath));
+			int i = bis.read(buff);
+			while (i != -1) {
+				os.write(buff, 0, buff.length);
+				os.flush();
+				i = bis.read(buff);
 			}
-			fin.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			result = new JSONObject();
@@ -158,12 +165,13 @@ public class RankingController {
 		}
 		return result.toString();
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/download/individualDetail", method = RequestMethod.POST)
 	public String downloadIndividualDetail(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody RankingRequestMsg msg) {
 		JSONObject result = new JSONObject();
-		if(msg.getAccount()==null) {
+		if (msg.getAccount() == null) {
 			result.put("state", "fail");
 			result.put("msg", "未指定导出用户");
 			return result.toString();
@@ -182,73 +190,73 @@ public class RankingController {
 
 			XSSFCell cell = row.createCell((short) 0);
 
-			wb = new XSSFWorkbook();  
-	        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet 
-	        sheet = wb.createSheet("导出个人成果明细");  
-	        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
-	        row = sheet.createRow((int) 0);  
-	        // 第四步，创建单元格，并设置值表头 设置表头居中  
-	        style = wb.createCellStyle(); 
-	        cell = row.createCell((short) 0);  
-	        cell.setCellValue("姓名");  
-	        cell.setCellStyle(style);  
-	        
-	        cell = row.createCell((short) 1);  
-	        cell.setCellValue("成果名称");  
-	        cell.setCellStyle(style);  
-	  
-	        cell = row.createCell((short) 2);  
-	        cell.setCellValue("类型");  
-	        cell.setCellStyle(style);  
-	  
-	        cell = row.createCell((short) 3);  
-	        cell.setCellValue("得分");  
-	        cell.setCellStyle(style);  
-	  
-	        cell = row.createCell((short) 4);  
-	        cell.setCellValue("所属部门");  
-	        cell.setCellStyle(style);  
-	        
-	        cell = row.createCell((short) 5);  
-	        cell.setCellValue("所属科室");  
-	        cell.setCellStyle(style); 
-	        
-	        cell = row.createCell((short) 6);  
-	        cell.setCellValue("日期");  
-	        cell.setCellStyle(style); 
-	        IndividualRank rank = null;
-	        for (int i = 0; i < list.size(); i++) {
+			wb = new XSSFWorkbook();
+			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+			sheet = wb.createSheet("导出个人成果明细");
+			// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			row = sheet.createRow((int) 0);
+			// 第四步，创建单元格，并设置值表头 设置表头居中
+			style = wb.createCellStyle();
+			cell = row.createCell((short) 0);
+			cell.setCellValue("姓名");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 1);
+			cell.setCellValue("成果名称");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 2);
+			cell.setCellValue("类型");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 3);
+			cell.setCellValue("得分");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 4);
+			cell.setCellValue("所属部门");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 5);
+			cell.setCellValue("所属科室");
+			cell.setCellStyle(style);
+
+			cell = row.createCell((short) 6);
+			cell.setCellValue("日期");
+			cell.setCellStyle(style);
+			IndividualRank rank = null;
+			for (int i = 0; i < list.size(); i++) {
 				rank = list.get(i);
-				if(rank.getAccount().equals(msg.getAccount())) {
+				if (rank.getAccount().equals(msg.getAccount())) {
 					break;
 				}
 			}
-	        List<Achievement> al = rank.getAchievementList();
+			List<Achievement> al = rank.getAchievementList();
 			for (int i = 0; i < al.size(); i++) {
 				row = sheet.createRow((int) i + 1);
 				Achievement a = al.get(i);
 				// 第四步，创建单元格，并设置值
 				String cate;
-	            switch(a.getType()){
-	            	case "thesis":
-	            		cate = "论文";
-	            		break;
-	            	case "eduProject":
-	            		cate = "课题项目";
-	            		break;
-	            	case "textbook":
-	            		cate = "教材、论著";
-	            		break;
-	            	case "patent":
-	            		cate = "专利";
-	            		break;
-	            	case "laws":
-	            		cate = "法律、法规";
-	            		break;
-	            		default:
-	            			cate = "教改项目";
-	            			break;
-	            }
+				switch (a.getType()) {
+				case "thesis":
+					cate = "论文";
+					break;
+				case "eduProject":
+					cate = "课题项目";
+					break;
+				case "textbook":
+					cate = "教材、论著";
+					break;
+				case "patent":
+					cate = "专利";
+					break;
+				case "laws":
+					cate = "法律、法规";
+					break;
+				default:
+					cate = "教改项目";
+					break;
+				}
 				row.createCell((short) 0).setCellValue(a.getUploaderName());
 				row.createCell((short) 1).setCellValue(a.getName());
 				row.createCell((short) 2).setCellValue(cate);
@@ -256,26 +264,32 @@ public class RankingController {
 				row.createCell((short) 4).setCellValue(a.getDepartment());
 				row.createCell((short) 5).setCellValue(a.getSubDepartment());
 				row.createCell((short) 5).setCellValue(a.getValidDate());
-				
+
 			}
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
-            String startDateString = formatter.format(msg.getStartDate()); 
-            String endDateString = formatter.format(msg.getEndDate()); 
-			String deskPath = attachmentPath + "/rankExport/"+startDateString+"-"+endDateString+"Ranking.xlsx";
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+			String startDateString = formatter.format(msg.getStartDate());
+			String endDateString = formatter.format(msg.getEndDate());
+			String deskPath = attachmentPath + "/rankExport/" + startDateString + "-" + endDateString + "Ranking.xlsx";
 			System.out.println(deskPath);
 			FileOutputStream fout = new FileOutputStream(new File(deskPath));
 			wb.write(fout);
 			fout.close();
 			response.setContentType(request.getServletContext().getMimeType(deskPath));
-			response.setHeader("Content-Disposition", "attachment;filename="+startDateString+"-"+endDateString+"Ranking.xlsx");
+			response.setHeader("Content-Disposition",
+					"attachment;filename=" + startDateString + "-" + endDateString + "Ranking.xlsx");
 			// out.print("<script
 			// type='text/javascript'charset='utf-8'>alert('下载')</script>");
-			FileInputStream fin = new FileInputStream(deskPath);
-			int b;
-			while ((b = fin.read()) != -1) {
-				response.getWriter().write(b);
+			byte[] buff = new byte[1024];
+			BufferedInputStream bis = null;
+			OutputStream os = null;			
+			os = response.getOutputStream();
+			bis = new BufferedInputStream(new FileInputStream(deskPath));
+			int i = bis.read(buff);
+			while (i != -1) {
+				os.write(buff, 0, buff.length);
+				os.flush();
+				i = bis.read(buff);
 			}
-			fin.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			result = new JSONObject();
