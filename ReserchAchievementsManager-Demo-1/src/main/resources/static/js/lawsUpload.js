@@ -1,9 +1,17 @@
-layui.use(['layer', 'element','upload'], function(){
+layui.use(['layer','laydate', 'element','upload'], function(){
 	var layer = layui.layer;
-	var element = layui.element;
+    var element = layui.element;
+    var laydate=layui.laydate;
     var upload = layui.upload;
     var lId=null;
     var flist=[];
+
+     //日期时间选择器
+     laydate.render({
+        elem: '#publishDate'
+            ,type: 'date'
+        });
+
 		 //多文件列表示例
     var demoListView = $('#fileList')
         , uploadListIns = upload.render({
@@ -153,6 +161,8 @@ layui.use(['layer', 'element','upload'], function(){
             return false;
         }
         var dataList=$('#fileupload').serializeObject();
+        console.log(dataList);
+        //return false;
         dataList.lId = lId;
         dataList.uploader = account;
         if(!checkIsInt(dataList.wordsCount)){

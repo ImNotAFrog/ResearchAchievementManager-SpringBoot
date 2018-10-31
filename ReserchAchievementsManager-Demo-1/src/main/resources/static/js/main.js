@@ -198,33 +198,42 @@ function checkState(value) {
 }
 
 
-// 查询成果中文名称
-function checkType(value) {
-	value = value.toLowerCase();
-	switch (value) {
-		case "thesis":
-			return '论文类';
-			break;
-		case "project":
-			return '课题项目类';
-			break;
-		case "textbook":
-			return '论著、教材类';
-			break;
-		case "patent":
-			return '专利';
-			break;
-		case "reformproject":
-			return '教学改革项目类';
-			break;
-		case "laws":
-			return '法律、法规类';
-			break;
-		default:
-			return '不存在的类型';
-			break;
+//查找部门和科室  这个函数只针对接口
+function checkDep(departmentList,department,subDeps){
+	var arr1=departmentList.filter(items=>{
+		if(items.index==department){
+			return items;
+		}
+	})
+	var data={
+		dep:arr1[0].name,
+		subDeps:null
 	}
+	if(arr1[0].subDeps.length>0){
+		//console.log(arr1[0].subDeps)
+		var arr2=arr1[0].subDeps.filter(items=>{
+			if(items.index==subDeps){
+				return items;
+			}
+		})
+		if(arr2.length>0){
+			data.subDeps=arr2[0].name;
+		}else{
+			data.subDeps="";
+		}
+	
+	}else{
+		data.subDeps="";
+	}
+	return data;
 }
+
+function changeTableHeight() {  
+var obj=$("#layui-table");
+obj.css("height","800px");
+}
+
+
 //显示成功后的选项
 function successOpt(msg){
 	$('#tips').text(msg)

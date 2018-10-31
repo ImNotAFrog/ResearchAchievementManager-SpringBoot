@@ -1,7 +1,14 @@
-layui.use(['layer', 'element'], function () {
+layui.use(['layer','laydate', 'element'], function () {
     var layer = layui.layer;
     var element = layui.element;
+    var laydate = layui.laydate;   
+     //日期时间选择器
+     laydate.render({
+        elem: '#publishDate'
+            ,type: 'date'
+        });
     var flist = [];
+
     var lId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
     var action=GetQueryString('action');
@@ -232,7 +239,6 @@ layui.use(['layer', 'element'], function () {
                 $('#score').val(res.laws.score); 
                 if(res.laws.publishDate){
                     var publishDate=res.laws.publishDate.time+"";
-                    console.log(publishDate)
                     $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
                 }
                 getTm(res.laws.lName);//获取同名结果

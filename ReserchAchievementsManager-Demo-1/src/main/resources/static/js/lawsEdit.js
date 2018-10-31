@@ -1,7 +1,13 @@
-layui.use(['layer', 'element','upload'], function () {
+layui.use(['layer','laydate', 'element','upload'], function () {
+    var laydate = layui.laydate;    
     var layer = layui.layer;
     var element = layui.element;
     var upload = layui.upload;
+     //日期时间选择器
+     laydate.render({
+        elem: '#publishDate'
+            ,type: 'date'
+        });
     var flist = [];
     var lId = GetQueryString('aId');
     var state=parseInt(GetQueryString('state'));
@@ -237,6 +243,10 @@ layui.use(['layer', 'element','upload'], function () {
                 $('#level').val(res.laws.level);
                 $('#involvement').val(res.laws.involvement);
                 $('#wordsCount').val(res.laws.wordsCount); 
+                if(res.laws.publishDate){
+                    var publishDate=res.laws.publishDate.time+"";
+                    $('#publishDate').val(timestampToTime(publishDate.substring(0,10)));
+                }
                 var fileUploaded=$('#fileUploaded');
                 if(res.laws.attachment){
                     var fileData=res.laws.attachment+"";

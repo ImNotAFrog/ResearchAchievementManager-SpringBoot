@@ -312,6 +312,21 @@ a.edit:hover{
         margin-right: 5px;
     }
 
+    #rangeTime,#_department{
+        width: 200px;
+    }
+
+    .lookRank{
+        margin-top: 20px;
+        padding-bottom: 300px;
+    }
+
+    .mar-top20{
+        margin-top: 20px;
+    }
+
+
+
 
 
 

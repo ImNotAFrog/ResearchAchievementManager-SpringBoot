@@ -17,24 +17,24 @@
 		<div class="container clearfix">
 			<div class="left">
 				<ul>
-					<li><a class="" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
+					<li><a  class="active" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state4"> <span>已通过成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state1"> <span>已通过成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state3"> <span>待审核成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state2"> <span>待审核成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>已驳回成果</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state3"> <span>已驳回成果</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>成果评比</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state4"> <span>成果评比</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>成果导出</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state5"> <span>成果导出</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>新闻列表</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state6"> <span>新闻列表</span> <span class="icon">&gt;</span>
 						</a></li>
-					<li><a href="#" id="state-1"> <span>调研活动</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state7"> <span>调研活动</span> <span class="icon">&gt;</span>
 						</a></li>
 
-					<li><a href="#" id="state-1"> <span>其他学术活动</span> <span class="icon">&gt;</span>
+					<li><a href="#" id="state8"> <span>其他学术活动</span> <span class="icon">&gt;</span>
 						</a></li>
 
 				</ul>
@@ -171,8 +171,32 @@
 						</div>
 					</div>
 					<div id="research" class="content-item">
-						成果评比
+						<div class="nav">
+								<div class="common-title">查询成果评比</div>
+								<div class="line"></div>
+							<div class="col-md-12 mar-top20">
+								<div class="form-item">
+									<label for="rangeTime" class="pull-left">起止日期:</label>
+									<div class="moco-control-input">
+										<input type="text" name="rangeTime" id="rangeTime" placeholder="请选择时间范围" autocomplete="off" class="moco-form-control" value="">
+										<div class="rlf-tip-wrap errorHint color-red"></div>
+									</div>
+								</div>
 
+								<div class="form-item">
+										<label for="rangeTime" class="pull-left">请选择评比部门:</label>
+										<div class="moco-control-input">
+												<select name="_department" id="_department" class="form-control">
+													<option value="" selected></option>
+												</select>
+										</div>
+								</div>
+								<div class="form-item lookRank">
+									<button type="button"  _type="1"  class="btn  btn-primary lookRankBtn" >查看个人成果评比排名列表</button>
+									<button type="button" _type="2" class="btn  btn-warning lookRankBtn"  >查看集体成果评比排名列表</button>
+							  </div>
+							</div>
+						</div>
 					</div>
 
 

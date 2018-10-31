@@ -1,6 +1,4 @@
-layui.use(['layer',], function () {
-	var layer = layui.layer;
-})
+
 var departmentList
 var department
 
@@ -34,12 +32,26 @@ var getDepartmentList = function () {
 			var result = JSON.parse(data)
 			if (result.state == "success") {
 				departmentList = result.dep
+				rankingDep(departmentList)
 				console.log(departmentList)
 				getUserProfileByAccount(account, token)
 			}
 
 		}
 	});
+}
+
+//向下拉框中追加部门
+function rankingDep(DepArr){
+	var obj=$('#_department');
+	if(DepArr){
+		var opt=null;
+		$.each(DepArr, function (index, item) { 
+			opt=$("<option>").val(item.index).text(item.name);
+			obj.append(opt);
+		});
+		
+	}
 }
 function getUserProfileByAccount(account, token) {
 	$.ajax({
@@ -167,11 +179,18 @@ function stateSiftArray(arr,state){
 
 
 
-layui.use([ 'layer', 'table', 'element'], function(){
+layui.use([ 'layer','laydate', 'table', 'element'], function(){
 	layer = layui.layer //弹层
 	,table = layui.table //表格
 	,element = layui.element //元素操作
+	var laydate = layui.laydate;
 	//执行一个 table 实例
+
+	//日期范围
+	laydate.render({
+		elem: '#rangeTime',
+		range:true
+	  });
 
 
 
@@ -289,7 +308,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		}
 		});
 
-
+	//搜索表格
 	$('.searchBtn').click(function (e) { 
 		var state=$(this).attr('state');
 		var type=$(".table"+state+" .optType").val();
@@ -316,7 +335,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		}
 	});
 
-
+	//刷新表格
 	$('.refresh').click(function (e) { 
 		var state=$(this).attr('state');
 		$(".table"+state+" .optType").val("");
@@ -339,9 +358,30 @@ layui.use([ 'layer', 'table', 'element'], function(){
 			table_1.reload(conditions);
 		}
 	});
+	//查看成果评比
 
-
-
+	$(".lookRankBtn").click(function(e){
+		var type=$(this).attr('_type');
+		var rangeTime=$('#rangeTime').val();
+		if(rangeTime==""){
+			layer.msg("评审的时间范围不能为空",{time:1500});
+			return false;
+		}
+		var startDate=rangeTime.substring(0,10);
+		var endDate=rangeTime.substring(13,23);
+		var department=$('#_department').val();
+/* 		console.log(startDate);
+		console.log(endDate);
+		console.log(type);
+		console.log(department); */
+		if(type==1){
+			type="individual";
+		}else{
+			type="department";
+		}
+		console.log("/rank/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department)
+		location.href="/rank/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department;
+	})
 })	
 
 
