@@ -145,12 +145,21 @@ public class ViewController {
 		return "/news";
 	}
 	
-	@RequestMapping(value="/rank/individual.do",method=RequestMethod.GET)
-	public String rank() {
-		return "/rank/individual.html";
+	@RequestMapping(value="/ranking/individual.do",method=RequestMethod.GET)
+	public String individual() {
+		return "/ranking/individual.html";
 	}
-	@RequestMapping(value="/rank/department.do",method=RequestMethod.GET)
-	public String rankDetail() {
-		return "/rank/department.html";
+	@RequestMapping(value="/ranking/department.do",method=RequestMethod.GET)
+	public String department() {
+		return "/ranking/department.html";
+	}
+	
+	@RequestMapping(value="/ranking/individualDetail.do",method=RequestMethod.GET)
+	public String individualDetail() {
+		return "/ranking/individualDetail.html";
+	}
+	@RequestMapping(value="/ranking/departmentDetail.do",method=RequestMethod.GET)
+	public String departmentDetail() {
+		return "/ranking/departmentDetail.html";
 	}
 }
