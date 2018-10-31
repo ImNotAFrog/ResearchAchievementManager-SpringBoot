@@ -1,6 +1,7 @@
 package edu.swjtuhc.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class DepartmentRank {
 	private String department;
@@ -8,6 +9,22 @@ public class DepartmentRank {
 	private Float score;
 	private List<Achievement> achievementList;
 	private Integer rank;
+	private Integer count;
+	private Map<String, Float> maxScore;
+	
+	
+	public Map<String, Float> getMaxScore() {
+		return maxScore;
+	}
+	public void setMaxScore(Map<String, Float> maxScore) {
+		this.maxScore = maxScore;
+	}
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
 	public String getDepartment() {
 		return department;
 	}

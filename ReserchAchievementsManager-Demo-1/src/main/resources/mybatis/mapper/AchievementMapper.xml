@@ -178,7 +178,8 @@
 		JOIN user_profile u
 		ON a.uploader=u.account
 		where 
-		a.valid_date between #{startDate} and #{endDate}		
+		a.valid_date between #{startDate} and #{endDate}
+		and state = 4		
 		<if test='null!=subDepartment and ""!=subDepartment'>
 			and a.sub_department=#{subDepartment}
 		</if>

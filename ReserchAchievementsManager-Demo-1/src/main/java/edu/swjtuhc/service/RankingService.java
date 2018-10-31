@@ -10,4 +10,5 @@ import edu.swjtuhc.model.RankingRequestMsg;
 public interface RankingService {
 	List<IndividualRank> individual(RankingRequestMsg msg);
 	List<DepartmentRank> department(RankingRequestMsg msg);
+	
 }
