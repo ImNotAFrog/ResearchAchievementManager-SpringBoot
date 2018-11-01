@@ -2,10 +2,12 @@ package edu.swjtuhc.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.ExportRequestMsg;
 import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.model.RankingRequestMsg;
 
@@ -22,4 +24,5 @@ public interface AchievementMapper {
 	Achievement getNextAchievementId(Integer state);
 	Achievement getNextAchievementIdOfType(Achievement achievement);
 	List<Achievement> getAchievementDuring(RankingRequestMsg msg);
+	List<Map<String,Object>> getExportAchievement(ExportRequestMsg msg);
 }

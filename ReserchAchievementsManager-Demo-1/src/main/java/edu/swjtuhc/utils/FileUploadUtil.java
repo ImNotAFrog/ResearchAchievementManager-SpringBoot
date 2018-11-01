@@ -93,7 +93,7 @@ public class FileUploadUtil {
 				return null;
 			}
 		}
-		return "/attachment/get?filename=" + fileName;
+		return "/attachment/get/img?nId="+id+"&filename=" + fileName;
 		
     }
     public static JSONObject saveLocalFile(MultipartFile uploadFile,JSONObject result,String attachmentPath,String account) {

@@ -31,6 +31,7 @@ import edu.swjtuhc.model.Textbook;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.LawsService;
+import edu.swjtuhc.service.NewsService;
 import edu.swjtuhc.service.PatentService;
 import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.service.ReformProjectService;
@@ -73,6 +74,9 @@ public class AttachmentController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private NewsService newsService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -253,13 +257,49 @@ public class AttachmentController {
 			}
 		}
 	}
+	@RequestMapping(value = "/get/img", method = RequestMethod.GET)
+	public void getImg(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("filename") String filename,@RequestParam("nId") String id)
+			throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Description", "File Transfer");
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+		File file = new File(attachmentPath + "news/"+id+"/" + filename);
+		response.setHeader("Cache-Control", "public");
+		response.setContentLengthLong(file.length());
+		byte[] buff = new byte[1024];
+		BufferedInputStream bis = null;
+		OutputStream os = null;
+		try {
+			os = response.getOutputStream();
+			bis = new BufferedInputStream(new FileInputStream(file));
+			int i = bis.read(buff);
+			while (i != -1) {
+				os.write(buff, 0, buff.length);
+				os.flush();
+				i = bis.read(buff);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
 	@RequestMapping(value="imgUpload",method=RequestMethod.POST)
 	public String imgUpload(HttpServletRequest request){
 		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
 		MultipartFile uploadImg = params.getFile("img");
 		Long id = Long.parseLong(params.getParameter("newsId"));
-		News news= null;
+		News news= newsService.getNewsById(id);
 		JSONObject result = new JSONObject();
 		if(id==null || news==null || uploadImg==null) {
 			result.put("errno", 1);

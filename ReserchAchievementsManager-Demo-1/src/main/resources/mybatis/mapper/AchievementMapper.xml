@@ -19,10 +19,8 @@
 			jdbcType="VARCHAR" />
 		<result column="valid_date" property="validDate"
 			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
-		<result column="score" property="score"
-			jdbcType="FLOAT" />
-		<result column="max_score" property="maxScore"
-			jdbcType="FLOAT" />	
+		<result column="score" property="score" jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore" jdbcType="FLOAT" />
 		<association property="uploaderName" column="uploader"
 			javaType="java.lang.String">
 			<result property="uploaderName" column="u.name" />
@@ -45,13 +43,15 @@
 		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment},#{validDate},#{score},#{maxScore})
 	</insert>
 	<select id="getAchievementListByAccount"
-		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.uploader = #{account}
+		where
+		a.uploader = #{account}
 		<if test='null!=type and ""!=type'>
 			and a.type=#{type}
 		</if>
@@ -63,13 +63,15 @@
 		</if>
 	</select>
 	<select id="getAchievementByName"
-		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.name = #{name}
+		where
+		a.name = #{name}
 		<if test='null!=type and ""!=type'>
 			and a.type=#{type}
 		</if>
@@ -81,13 +83,15 @@
 		</if>
 	</select>
 	<select id="getAchievementListBySubDepartment"
-		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.sub_department =
+		where
+		a.sub_department =
 		#{subDepartment}
 		<if test='null!=type and ""!=type'>
 			and a.type=#{type}
@@ -101,7 +105,8 @@
 	</select>
 
 	<select id="getAchievementList"
-		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
 		from achievement a
@@ -125,7 +130,8 @@
 		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.a_id = #{aId}
+		where
+		a.a_id = #{aId}
 	</select>
 
 	<select id="getNextAchievementId"
@@ -146,7 +152,8 @@
 		a_id as aId,type
 		from achievement
 		where
-		state=#{state} and type=#{type}
+		state=#{state}
+		and type=#{type}
 		limit 1
 	</select>
 
@@ -169,20 +176,54 @@
 		WHERE
 		a_id=#{aId}
 	</delete>
-	
-	<select id="getAchievementDuring" parameterType="edu.swjtuhc.model.RankingRequestMsg"
-		 resultMap="BaseResultMap">
-		SELECT 
+
+	<select id="getAchievementDuring"
+		parameterType="edu.swjtuhc.model.RankingRequestMsg"
+		resultMap="BaseResultMap">
+		SELECT
 		<include refid="Association_Userprofile"></include>
 		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where 
+		where
 		a.valid_date between #{startDate} and #{endDate}
-		and state = 4		
+		and state = 4
 		<if test='null!=department and ""!=department'>
 			and a.department=#{department}
 		</if>
 	</select>
-	
+	<select id="getExportAchievement"
+		parameterType="edu.swjtuhc.model.ExportRequestMsg"
+		resultType="java.util.Map">
+		SELECT
+		<if test='null!=type and ""!=type'>
+			t.*
+			from ${type} t
+			join achievement a
+			on t.${idName}=a.a_id
+		</if>
+		<if test='null==type || ""==type'>			
+			a.*, 
+			(ifnull(t.journal_level,0)+ifnull(p.level,0)+ifnull(tb.level,0)+ifnull(pa.type,0)+ifnull(l.level,0)) as level 
+			FROM achievement a 
+			left join thesis t on a.a_id=t.t_id 
+			left join project p on a.a_id=p.p_id
+			left join textbook tb on a.a_id=tb.tb_id
+			left join patent pa on a.a_id=pa.pa_id
+			left join laws l on a.a_id=l.l_id
+		</if>
+		where 1
+		<if test='null!=department and ""!=department'>
+			and a.department=#{department}
+		</if>
+		<if test='null!=subDepartment and ""!=subDepartment'>
+			and a.sub_department=#{subDepartment}
+		</if>
+		<if test='null!=startDate'>
+			and a.valid_date &gt;= #{startDate}
+		</if>
+		<if test='null!=endDate'>
+			and a.valid_date &lt; #{endDate}
+		</if>
+	</select>
 </mapper> 

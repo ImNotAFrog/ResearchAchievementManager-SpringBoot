@@ -22,15 +22,15 @@
 </head>
 
 
-<div id="result-msg" style="">
+<div id="result-msg" style="display: none">
 	<div>
 	   <img src="/img/success.png" alt="">
 	   <span id="tips"></span>
    </div>
    <div class="btn-opt">
-	   <a href="#" class="layui-btn goback">返回</a>
-	   <a href="#" class="layui-btn next1" onclick="jumpNext()">下一项成果</a>
-	   <a href="#" class="layui-btn next2" onclick="jumpNext('project')" >下一项同类成果</a>
+	   <button  class="layui-btn" onclick="closeIframe()">返回</button>
+	   <button  class="layui-btn next1" onclick="jumpNext()">下一项成果</a>
+	   <button  class="layui-btn next2" onclick="jumpNext('project')" >下一项同类成果</button>
    </div>
 </div>
 
@@ -114,6 +114,13 @@
 							<div class="moco-control-input">
 								<input type="text" name="projectDate" id="projectDate" 
 									autocomplete="off" class="moco-form-control">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item" style="margin-top: 12px;">
+							<label for="score" class="moco-control-label">成果得分:</label>
+							<div class="moco-control-input">
+								<input type="text" name="score" id="score" autocomplete="off" class="moco-form-control">
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>

@@ -1,8 +1,11 @@
 package edu.swjtuhc.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.ExportRequestMsg;
 import edu.swjtuhc.model.PagingRequestMsg;
 
 public interface AchievementService {
@@ -21,4 +24,5 @@ public interface AchievementService {
 	Integer submitedWithdraw(Long aId);
 	Achievement getNextAchievementId(Integer state);
 	Achievement getNextAchievementIdOfType(Achievement achievement);
+	List<Map<String,Object>> getExportAchievementList(ExportRequestMsg msg);
 }
