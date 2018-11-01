@@ -162,4 +162,9 @@ public class ViewController {
 	public String departmentDetail() {
 		return "/ranking/departmentDetail.html";
 	}
+	
+	@RequestMapping(value="/achievementExport.do",method=RequestMethod.GET)
+	public String achievementExport() {
+		return "/achievementExport.html";
+	}
 }
