@@ -298,7 +298,7 @@ public class AttachmentController {
 	public String imgUpload(HttpServletRequest request){
 		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
 		MultipartFile uploadImg = params.getFile("img");
-		Long id = Long.parseLong(params.getParameter("newsId"));
+		Long id = Long.parseLong(params.getParameter("nId"));
 		News news= newsService.getNewsById(id);
 		JSONObject result = new JSONObject();
 		if(id==null || news==null || uploadImg==null) {

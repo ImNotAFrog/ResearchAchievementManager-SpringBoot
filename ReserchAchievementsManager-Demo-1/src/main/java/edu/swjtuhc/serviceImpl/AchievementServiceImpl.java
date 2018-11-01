@@ -1,5 +1,7 @@
 package edu.swjtuhc.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import edu.swjtuhc.model.Achievement;
 import edu.swjtuhc.model.ExportRequestMsg;
 import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.service.AchievementService;
+import net.sf.ezmorph.object.SwitchingMorpher;
 
 @Service
 public class AchievementServiceImpl implements AchievementService {
@@ -162,10 +165,53 @@ public class AchievementServiceImpl implements AchievementService {
 	}
 
 	@Override
-	public List<Map<String,Object>> getExportAchievementList(ExportRequestMsg msg) {
+	public List<Map<String, Object>> getExportAchievementList(ExportRequestMsg msg) {
 		// TODO Auto-generated method stub
-		List<Map<String,Object>> list = achievementMapper.getExportAchievement(msg);
+		List<Map<String, Object>> list = achievementMapper.getExportAchievement(msg);
+		List<Map<String, Object>> result = new ArrayList<>();
+		Map<String, String> nameMap = new HashMap<String, String>();
+		nameMap.put("thesis", "journal_level");
+		nameMap.put("textbook", "level");
+		nameMap.put("project", "level");
+		nameMap.put("patent", "type");
+		nameMap.put("laws", "level");
 		
+		if (msg.getSubject() != null && msg.getType().equals("project")) {
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).get("subject") != null && list.get(i).get("subject").equals(msg.getSubject())) {
+					result.add(list.get(i));
+				}
+			}
+			
+			if(msg.getLevel()!=null) {
+				String level = nameMap.get(msg.getType());
+				if (level == null) {
+					return null;
+				}
+				List<Map<String, Object>> result2 = new ArrayList<>();
+				for (int i = 0; i < result.size(); i++) {
+					if (result.get(i).get(level) != null && result.get(i).get(level).equals(msg.getLevel())) {
+						result2.add(result.get(i));
+					}
+				}
+				return result2;
+			}			
+			return result;
+		}
+		if (msg.getType() != null && msg.getLevel() != null) {
+			String level = nameMap.get(msg.getType());
+			if (level == null) {
+				return null;
+			}
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).get(level) != null && list.get(i).get(level).equals(msg.getLevel())) {
+					result.add(list.get(i));
+				}
+			}
+
+			return result;
+		}
+
 		return list;
 	}
 
