@@ -192,22 +192,53 @@ public class NewsController {
 		}
 		return result.toString();
 	}
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
-	@RequestMapping(value="/getAll", method = RequestMethod.POST)
-	public String getAll(HttpServletRequest request, @RequestBody PagingRequestMsg msg){
+	@RequestMapping(value = "/getAll", method = RequestMethod.POST)
+	public String getAll(HttpServletRequest request, @RequestBody PagingRequestMsg msg) {
 		JSONObject result = new JSONObject();
-		
+
 		try {
 			List<News> list = newsService.getNewsList(msg);
-			JSONArray jList = JSONArray.fromObject(list);
+			JSONArray jList = null;
+			if (list.size() > 0) {
+				msg.setStart((msg.getPage() - 1) * msg.getLimit());
+				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
+						: list.size();
+				System.out.println(toIndex);
+				List<News> pageList = list.subList(msg.getStart(), toIndex);
+				jList = JSONArray.fromObject(pageList);
+			} else {
+				jList = JSONArray.fromObject(list);
+			}
 			result.put("code", 0);
-			result.put("msg","请求成功");
-			result.put("count",list.size());
+			result.put("msg", "请求成功");
+			result.put("count", list.size());
 			result.put("data", jList);
 			return result.toString();
 		} catch (Exception e) {
 			result.put("state", -1);
+			result.put("msg", e);
+			e.printStackTrace();
+			return result.toString();
+		}
+	}
+
+	@RequestMapping(value = "/getById", method = RequestMethod.POST)
+	public String getById(HttpServletRequest request, @RequestBody Long nId) {
+		JSONObject result = new JSONObject();
+		try {
+			News news = newsService.getNewsById(nId);
+			if (news == null) {
+				result.put("state", "fail");
+				result.put("msg", "新闻ID不存在");
+				return result.toString();
+			}
+			result.put("state", "success");
+			result.put("news", news);
+			return result.toString();
+		} catch (Exception e) {
+			result.put("state", "fail");
 			result.put("msg", e);
 			e.printStackTrace();
 			return result.toString();

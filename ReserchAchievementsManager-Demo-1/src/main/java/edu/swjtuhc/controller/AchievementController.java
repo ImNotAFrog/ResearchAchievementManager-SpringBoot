@@ -60,7 +60,6 @@ public class AchievementController {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
-				System.out.println(toIndex);
 				List<Achievement> pageList = list.subList(msg.getStart(), toIndex);
 				jList = JSONArray.fromObject(pageList);
 			} else {

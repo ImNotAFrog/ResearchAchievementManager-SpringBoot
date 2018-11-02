@@ -40,7 +40,7 @@
 	<select id="getNewsList"
 		parameterType="edu.swjtuhc.model.PagingRequestMsg" resultMap="BaseResultMap">
 		select
-		<include refid="Association_Userprofile"></include>
+		n.n_id,n.title,n.uploader,n.upload_date,n.state,u.name
 		from news n
 		LEFT JOIN user_profile u
 		ON n.uploader=u.account		
@@ -50,7 +50,6 @@
 		<if test='null!=keyword and ""!=keyword'>
 			and n.title like CONCAT('%',#{keyword},'%')
 		</if>
-		limit #{start},#{limit}
 	</select>
 
 	<select id="getNewsById" parameterType="java.lang.Long"
@@ -79,9 +78,4 @@
 		WHERE
 		n_id=#{nId}
 	</delete>
-
-	<select id="getCount" resultType="java.lang.Integer">
-		SELECT count(a_id) FROM 
-		achievement
-	</select>
 </mapper> 
