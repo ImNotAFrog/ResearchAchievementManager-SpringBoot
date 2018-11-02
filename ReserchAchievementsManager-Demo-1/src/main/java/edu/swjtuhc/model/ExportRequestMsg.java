@@ -56,7 +56,7 @@ public class ExportRequestMsg {
 		case "project":
 			this.idName="p_id";
 			break;
-		case "reformProject":
+		case "reform_project":
 			this.idName="r_p_id";
 			break;
 		case "patent":
