@@ -36,7 +36,7 @@
 		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,u.name
 	</sql>
 	<insert id="createReserchActivity"
-		parameterType="edu.swjtuhc.model.ReserchActivity">
+		parameterType="edu.swjtuhc.model.ResearchActivity">
 		INSERT INTO
 		reserch_activity
 		(
@@ -73,7 +73,7 @@
 		ON
 		a.applicant=u.account
 	</select>
-	
+
 	<update id="updateResearchActivity"
 		parameterType="edu.swjtuhc.model.ResearchActivity">
 		UPDATE
@@ -87,7 +87,8 @@
 		act_id = #{actId}
 	</update>
 
-	<delete id="deleteResearchActivity" parameterType="java.lang.Long">
+	<delete id="deleteResearchActivity"
+		parameterType="java.lang.Long">
 		DELETE FROM
 		research_activity
 		WHERE

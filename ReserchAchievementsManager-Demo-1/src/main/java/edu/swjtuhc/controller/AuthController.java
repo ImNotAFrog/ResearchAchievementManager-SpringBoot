@@ -44,11 +44,6 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Integer register(@RequestBody SysUser addedUser) throws AuthenticationException{
-        addedUser.setId(authService.getNextId());
-    	return authService.register(addedUser);
-    }
     
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public void logout(HttpServletRequest request) throws AuthenticationException{
