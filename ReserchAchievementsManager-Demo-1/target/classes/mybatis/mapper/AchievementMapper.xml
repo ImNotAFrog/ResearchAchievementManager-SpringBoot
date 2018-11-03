@@ -112,6 +112,7 @@
 		from achievement a
 		LEFT JOIN user_profile u
 		ON a.uploader=u.account
+		where 1=1
 		<if test='null!=type and ""!=type'>
 			and a.type=#{type}
 		</if>

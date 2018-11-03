@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.swjtuhc.mapper.ResearchActivityMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.swjtuhc.model.ResearchActivity">
+		<id column="act_id" property="actId" jdbcType="BIGINT" />
+		<result column="group_name" property="groupName"
+			jdbcType="VARCHAR" />
+		<result column="context" property="context" jdbcType="VARCHAR" />
+		<result column="members" property="members" jdbcType="VARCHAR" />
+		<result column="person_times" property="personTimes"
+			jdbcType="INTEGER" />
+		<result column="start_date" property="startDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="end_date" property="endDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="location" property="location"
+			jdbcType="VARCHAR" />
+		<result column="comments" property="comments"
+			jdbcType="VARCHAR" />
+		<result column="applicant" property="applicant"
+			jdbcType="VARCHAR" />
+		<result column="attachment" property="attachment"
+			jdbcType="VARCHAR" />
+		<association property="applicantName" column="applicant"
+			javaType="java.lang.String">
+			<result property="applicantName" column="u.name" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		act_id,group_name,context,members,person_times,start_date,end_date,location,comments,applicant,attachment
+	</sql>
+	<sql id="Association_Userprofile">
+		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,u.name
+	</sql>
+	<insert id="createReserchActivity"
+		parameterType="edu.swjtuhc.model.ReserchActivity">
+		INSERT INTO
+		reserch_activity
+		(
+		<include refid="Base_Column_List"></include>
+		)
+		values
+		(#{actId},#{groupName},#{context},#{members},#{personTimes},#{startDate},#{endDate},#{location},#{comments},#{applicant},#{attachment})
+	</insert>
+	<select id="getResearchActivityByAccount"
+		parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Association_Userprofile"></include>
+		from research_activity a
+		JOIN user_profile u
+		ON a.applicant=u.account
+		where
+		a.applicant = #{account}
+	</select>
+	<select id="getResearchActivityById"
+		parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from research_activity
+		where act_id = #{actId}
+	</select>
+
+	<select id="getResearchActivityList"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Association_Userprofile"></include>
+		from research_activity a
+		LEFT JOIN user_profile u
+		ON
+		a.applicant=u.account
+	</select>
+	
+	<update id="updateResearchActivity"
+		parameterType="edu.swjtuhc.model.ResearchActivity">
+		UPDATE
+		research_activity
+		SET
+		group_name=
+		#{groupName},context= #{context},members= #{members},person_times=
+		#{personTimes},start_date= #{startDate},end_date=
+		#{endDate},location=#{location},comments=#{comments},applicant=#{applicant},attachment=#{attachment}
+		WHERE
+		act_id = #{actId}
+	</update>
+
+	<delete id="deleteResearchActivity" parameterType="java.lang.Long">
+		DELETE FROM
+		research_activity
+		WHERE
+		act_id = #{actId}
+	</delete>
+
+	<select id="getResearchActivityDuring"
+		parameterType="edu.swjtuhc.model.RankingRequestMsg"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Association_Userprofile"></include>
+		from research_activity a
+		JOIN user_profile u
+		ON a.applicant=u.account
+		where
+		a.start_date between #{startDate} and #{endDate}
+	</select>
+</mapper> 

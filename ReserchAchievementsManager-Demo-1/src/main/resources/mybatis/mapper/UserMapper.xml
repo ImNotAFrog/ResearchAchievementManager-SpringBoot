@@ -17,6 +17,9 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		u_id,account,password,roles,last_password_reset_date
+	</sql>	
+	<sql id="UserInfo_List">
+		a.u_id,a.account,a.password,a.roles,b.name
 	</sql>
 	<select id="getUserByAccount" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
@@ -28,10 +31,13 @@
 
 	<select id="getUserList" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List"></include>
-		from sys_user
+		<include refid="UserInfo_List"></include>
+		from sys_user a 
+		JOIN user_profile b
+		ON a.account=b.account
 	</select>
-	<insert id="insertUser"
+	
+	<insert id="createUser"
 		parameterType="edu.swjtuhc.model.SysUser">
 		INSERT INTO 
 		sys_user
@@ -39,7 +45,7 @@
 		values
 		(#{id},#{account},#{password},#{lastPasswordResetDate},#{roles,jdbcType=VARCHAR,typeHandler=edu.swjtuhc.handler.StringListHandler})
 	</insert>
-		<update id="changePassword" parameterType="java.lang.String">
+	<update id="changePassword" parameterType="java.lang.String">
 		UPDATE
 		sys_user
 		SET
@@ -47,5 +53,11 @@
 		WHERE
 		account = #{account}
 	</update>
+	<delete id="deleteUser" parameterType="java.lang.String">
+		DELETE FROM
+		sys_user
+		Where
+		u_id = #{uId}
+	</delete>
 
 </mapper> 

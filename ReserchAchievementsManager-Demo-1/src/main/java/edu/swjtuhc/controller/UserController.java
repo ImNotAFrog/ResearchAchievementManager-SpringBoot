@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import edu.swjtuhc.mapper.UserMapper;
 import edu.swjtuhc.model.SysUser;
+import edu.swjtuhc.model.UserInfo;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.JwtTokenUtil;
@@ -38,7 +41,7 @@ public class UserController {
 
     	JSONObject result = new JSONObject();
     	try {
-    		List<SysUser> list =userService.getUserList();
+    		List<UserInfo> list =userService.getUserList();
         	result.put("state", "success");
         	result.put("users", list);
             return result.toString();
@@ -91,13 +94,12 @@ public class UserController {
 		}   	
     }
     
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02','ROLE_TEACHER')")
     @RequestMapping(value="/updateUserProfile",method = RequestMethod.POST)
     public ResponseEntity<?> updateUserProfile(@RequestBody UserProfile userProfile) {
     	
     	return ResponseEntity.ok(userService.updateUserProfile(userProfile));    	
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN_01','ROLE_ADMIN_02','ROLE_TEACHER')")
+
     @RequestMapping(value="/changePassword",method = RequestMethod.POST)
     public ResponseEntity<?> changePassword(HttpServletRequest request,@RequestBody JSONObject param) {
     	String token = request.getHeader(tokenHeader).substring(tokenHead.length());
@@ -115,4 +117,47 @@ public class UserController {
     		return ResponseEntity.badRequest().body(null);
     	} 
     }
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN_01')") 
+    @RequestMapping(value="/createUser",method = RequestMethod.POST)
+    public String createUser(HttpServletRequest request,@RequestBody UserInfo userInfo) {
+    	Integer i = userService.createUser(userInfo);
+    	JSONObject result = new JSONObject();
+    	if(i==1) {
+    		result.put("state", "success");
+    	}else {
+    		result.put("state", "fail");
+    		result.put("msg", "请检查账户名是否唯一");
+    	}
+    	return result.toString();
+    }
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN_01')") 
+    @RequestMapping(value="/deleteUser",method = RequestMethod.POST)
+    public String deleteUser(HttpServletRequest request,@RequestBody Long uId) {
+    	Integer i = userService.deleteUser(uId);
+    	JSONObject result = new JSONObject();
+    	if(i==1) {
+    		result.put("state", "success");
+    	}else {
+    		result.put("state", "fail");
+    		result.put("msg", "请检查Id是否正确");
+    	}
+    	return result.toString();
+    }
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN_01')") 
+    @RequestMapping(value="/updateUser",method = RequestMethod.POST)
+    public String deleteUser(HttpServletRequest request,@RequestBody UserInfo userInfo) {
+    	Integer i = userService.updateUser(userInfo);
+    	JSONObject result = new JSONObject();
+    	if(i==1) {
+    		result.put("state", "success");
+    	}else {
+    		result.put("state", "fail");
+    		result.put("msg", "参数错误");
+    	}
+    	return result.toString();
+    }
+    
 }
