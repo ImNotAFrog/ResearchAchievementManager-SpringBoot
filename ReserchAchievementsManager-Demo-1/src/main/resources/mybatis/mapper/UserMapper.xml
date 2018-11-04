@@ -74,7 +74,7 @@
 		WHERE
 		account = #{account}
 	</update>
-	<delete id="deleteUser" parameterType="java.lang.String">
+	<delete id="deleteUser" parameterType="java.lang.Long">
 		DELETE FROM
 		sys_user
 		Where

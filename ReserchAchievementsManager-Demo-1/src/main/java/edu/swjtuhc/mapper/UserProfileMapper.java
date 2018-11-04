@@ -9,5 +9,5 @@ public interface UserProfileMapper {
 	Integer insertUserProfile(UserProfile userProfile);
 	Integer updateUserProfile(UserProfile userProfile);
 	UserProfile getUserProfileByAccount(String account);
-	Integer deleteUserProfile(Long uId);
+	Integer deleteUserProfile(String account);
 }

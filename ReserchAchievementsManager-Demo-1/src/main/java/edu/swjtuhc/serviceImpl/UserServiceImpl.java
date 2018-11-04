@@ -108,7 +108,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Integer deleteUser(Long uId) {
 		// TODO Auto-generated method stub
-		return deleteUserAndProfile(uId);
+		SysUser u = userMapper.getUserById(uId);
+		if(u==null) {
+			return 0;
+		}
+		return deleteUserAndProfile(uId,u.getAccount());
 	}
 	
 	@Override
@@ -147,10 +151,10 @@ public class UserServiceImpl implements UserService{
 		return i;
     }
     @Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
-    private synchronized Integer deleteUserAndProfile(Long uId) {
+    private synchronized Integer deleteUserAndProfile(Long uId,String account) {
     	int i=0;
 		if(userMapper.deleteUser(uId)==1) {
-			if(userProfileMapper.deleteUserProfile(uId)==1) {
+			if(userProfileMapper.deleteUserProfile(account)==1) {
 				i=1;
 			}			
 		}

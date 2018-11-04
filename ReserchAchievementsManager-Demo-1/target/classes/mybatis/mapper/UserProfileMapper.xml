@@ -46,11 +46,11 @@
 		WHERE
 		account = #{account}
 	</update>
-	<delete id="deleteUserProfile" parameterType="java.lang.Long">
+	<delete id="deleteUserProfile" parameterType="java.lang.String">
 		DELETE FROM
 		user_profile
 		WHERE
-		u_id = #{uId}
+		account = #{account}
 	</delete>
 
 </mapper> 
