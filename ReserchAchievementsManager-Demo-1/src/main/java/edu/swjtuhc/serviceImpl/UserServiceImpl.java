@@ -83,7 +83,14 @@ public class UserServiceImpl implements UserService{
 		UserProfile profile = new UserProfile();
 		profile.setAccount(userInfo.getAccount());
 		profile.setName(userInfo.getUsername());
-		Integer i =createUser(user,profile);
+		Integer i =0;
+		try {
+			i=createUser(user,profile);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
 		return i;
 	}
 
@@ -101,7 +108,14 @@ public class UserServiceImpl implements UserService{
 		user.setRoles(userInfo.getRoles());
 		UserProfile profile = userProfileMapper.getUserProfileByAccount(userInfo.getAccount());
 		profile.setName(userInfo.getUsername());
-		Integer i =updateUser(user,profile);
+		Integer i =0;
+		try {
+			i =updateUser(user,profile);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
 		return i;
 	}
 
