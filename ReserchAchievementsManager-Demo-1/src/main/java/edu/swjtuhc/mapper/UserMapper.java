@@ -15,4 +15,5 @@ public interface UserMapper {
 	Integer changePassword(String account, String password);
 	Integer updateUser(SysUser sysUser);
 	Integer deleteUser(Long uId);
+	SysUser getUserById(Long uId);
 }

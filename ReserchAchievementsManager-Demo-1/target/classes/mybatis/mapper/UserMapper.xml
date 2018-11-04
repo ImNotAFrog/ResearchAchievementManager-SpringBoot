@@ -41,6 +41,14 @@
 		from sys_user
 		where account = #{account}
 	</select>
+	
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from sys_user
+		where u_id = #{uId}
+	</select>
 
 	<select id="getUserList" resultMap="UserInfoResultMap">
 		select

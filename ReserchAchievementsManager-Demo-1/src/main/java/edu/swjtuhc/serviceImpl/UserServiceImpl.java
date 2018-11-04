@@ -110,7 +110,21 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return deleteUserAndProfile(uId);
 	}
-    
+	
+	@Override
+	public UserInfo getUserById(Long uId) {
+		// TODO Auto-generated method stub	
+		UserInfo userInfo = new UserInfo();
+		SysUser user = userMapper.getUserById(uId);
+		UserProfile profile = userProfileMapper.getUserProfileByAccount(user.getAccount());
+		userInfo.setAccount(user.getAccount());
+		userInfo.setRoles(user.getRoles());
+		userInfo.setuId(user.getId());
+		userInfo.setUsername(profile.getName());
+		return userInfo;
+	}
+	
+	
     @Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
     private synchronized Integer createUser(SysUser user,UserProfile profile) {
     	int i=0;
@@ -142,4 +156,6 @@ public class UserServiceImpl implements UserService{
 		}
 		return i;
     }
+
+
 }

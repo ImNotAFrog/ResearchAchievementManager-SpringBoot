@@ -16,4 +16,5 @@ public interface UserService {
 	Integer createUser(UserInfo userInfo);
 	Integer updateUser(UserInfo userInfo);
 	Integer deleteUser(Long uId);
+	UserInfo getUserById(Long uId);
 }

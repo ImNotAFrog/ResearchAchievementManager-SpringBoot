@@ -53,6 +53,23 @@ public class UserController {
 		}
     	
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN_01')")
+    @RequestMapping(value="/getUserById",method = RequestMethod.POST)
+    public String getUserById(@RequestBody UserInfo userInfo) {
+    	JSONObject result = new JSONObject();
+    	try {
+        	UserInfo u = userService.getUserById(userInfo.getuId());
+        	result.put("state", "success");
+        	result.put("user", u);
+            return result.toString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("state", "fail");
+        	result.put("msg", e);
+            return result.toString();
+		}
+    	
+    }
     
     @RequestMapping(value="/getUserProfileByAccount",method = RequestMethod.GET)
     public String getUserProfileByAccount(HttpServletRequest request) {
@@ -134,8 +151,8 @@ public class UserController {
     
     @PreAuthorize("hasRole('ROLE_ADMIN_01')") 
     @RequestMapping(value="/deleteUser",method = RequestMethod.POST)
-    public String deleteUser(HttpServletRequest request,@RequestBody Long uId) {
-    	Integer i = userService.deleteUser(uId);
+    public String deleteUser(HttpServletRequest request,@RequestBody UserInfo userInfo) {
+    	Integer i = userService.deleteUser(userInfo.getuId());
     	JSONObject result = new JSONObject();
     	if(i==1) {
     		result.put("state", "success");
@@ -148,7 +165,7 @@ public class UserController {
     
     @PreAuthorize("hasRole('ROLE_ADMIN_01')") 
     @RequestMapping(value="/updateUser",method = RequestMethod.POST)
-    public String deleteUser(HttpServletRequest request,@RequestBody UserInfo userInfo) {
+    public String updateUser(HttpServletRequest request,@RequestBody UserInfo userInfo) {
     	Integer i = userService.updateUser(userInfo);
     	JSONObject result = new JSONObject();
     	if(i==1) {

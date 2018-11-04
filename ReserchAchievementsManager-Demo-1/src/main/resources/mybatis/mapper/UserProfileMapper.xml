@@ -29,6 +29,7 @@
 		from user_profile
 		where account = #{account}
 	</select>
+	
 	<insert id="insertUserProfile"
 		parameterType="edu.swjtuhc.model.UserProfile">
 		INSERT INTO 
