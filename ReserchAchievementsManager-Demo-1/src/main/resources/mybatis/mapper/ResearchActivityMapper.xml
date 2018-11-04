@@ -24,16 +24,20 @@
 			jdbcType="VARCHAR" />
 		<result column="attachment" property="attachment"
 			jdbcType="VARCHAR" />
+		<result column="state" property="state"
+			jdbcType="INTEGER" />
+		<result column="upload_date" property="uploadDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
 		<association property="applicantName" column="applicant"
 			javaType="java.lang.String">
 			<result property="applicantName" column="u.name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
-		act_id,group_name,context,members,person_times,start_date,end_date,location,comments,applicant,attachment
+		act_id,group_name,context,members,person_times,start_date,end_date,location,comments,applicant,attachment,state,upload_date
 	</sql>
 	<sql id="Association_Userprofile">
-		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,u.name
+		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,a.state,a.upload_date,u.name
 	</sql>
 	<insert id="createReserchActivity"
 		parameterType="edu.swjtuhc.model.ResearchActivity">
@@ -43,7 +47,7 @@
 		<include refid="Base_Column_List"></include>
 		)
 		values
-		(#{actId},#{groupName},#{context},#{members},#{personTimes},#{startDate},#{endDate},#{location},#{comments},#{applicant},#{attachment})
+		(#{actId},#{groupName},#{context},#{members},#{personTimes},#{startDate},#{endDate},#{location},#{comments},#{applicant},#{attachment},#{state},#{uploadDate})
 	</insert>
 	<select id="getResearchActivityByAccount"
 		parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -73,6 +77,18 @@
 		ON
 		a.applicant=u.account
 	</select>
+	
+	<select id="getPublishedResearchActivityList"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Association_Userprofile"></include>
+		from research_activity a
+		LEFT JOIN user_profile u
+		ON
+		a.applicant=u.account
+		WHERE state=3
+	</select>
 
 	<update id="updateResearchActivity"
 		parameterType="edu.swjtuhc.model.ResearchActivity">
@@ -83,6 +99,7 @@
 		#{groupName},context= #{context},members= #{members},person_times=
 		#{personTimes},start_date= #{startDate},end_date=
 		#{endDate},location=#{location},comments=#{comments},applicant=#{applicant},attachment=#{attachment}
+		,state=#{state},upload_date=#{uploadDate}
 		WHERE
 		act_id = #{actId}
 	</update>

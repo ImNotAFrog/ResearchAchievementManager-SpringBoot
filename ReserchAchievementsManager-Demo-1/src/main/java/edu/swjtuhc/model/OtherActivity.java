@@ -13,6 +13,22 @@ public class OtherActivity {
 	private String applicant;
 	private String applicantName;
 	private String attachment;
+	private Integer state;
+	private Date uploadDate;
+	
+	
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Long getActId() {
 		return actId;
 	}

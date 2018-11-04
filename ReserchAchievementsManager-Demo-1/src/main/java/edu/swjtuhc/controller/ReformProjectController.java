@@ -29,13 +29,13 @@ public class ReformProjectController {
 	private String tokenHead;
 
 	@Autowired
+	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+
+	@Autowired
 	private ReformProjectService reformProjectService;
 	
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
 	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)

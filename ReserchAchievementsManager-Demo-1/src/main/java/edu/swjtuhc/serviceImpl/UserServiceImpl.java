@@ -36,7 +36,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<UserInfo> getUserList() {
 		// TODO Auto-generated method stub
-		return userMapper.getUserList();
+		List<UserInfo> list = userMapper.getUserList();
+		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setPassword(null);
+		}
+		return list;
 	}
 
 	@Override
