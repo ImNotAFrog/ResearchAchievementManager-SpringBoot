@@ -58,6 +58,12 @@
 		ON a.applicant=u.account
 		where
 		a.applicant = #{account}
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.context like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
 	<select id="getResearchActivityById"
 		parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -76,6 +82,13 @@
 		LEFT JOIN user_profile u
 		ON
 		a.applicant=u.account
+		WHERE 1=1		
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.context like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
 	
 	<select id="getPublishedResearchActivityList"
@@ -87,7 +100,11 @@
 		LEFT JOIN user_profile u
 		ON
 		a.applicant=u.account
-		WHERE state=3
+		WHERE 
+		state=3
+		<if test='null!=keyword and ""!=keyword'>
+			and a.context like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
 
 	<update id="updateResearchActivity"
@@ -122,5 +139,8 @@
 		ON a.applicant=u.account
 		where
 		a.start_date between #{startDate} and #{endDate}
+		<if test='null!=keyword and ""!=keyword'>
+			and a.context like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
 </mapper> 

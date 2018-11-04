@@ -2,6 +2,8 @@ package edu.swjtuhc.service;
 
 import java.util.List;
 
+import edu.swjtuhc.model.PagingRequestMsg;
+import edu.swjtuhc.model.ReformProject;
 import edu.swjtuhc.model.ResearchActivity;
 
 public interface ResearchActivityService {
@@ -14,8 +16,9 @@ public interface ResearchActivityService {
 	Integer rejectResearchActivity(Long actId);
 	Integer deleteResearchActivity(Long actId);
 	ResearchActivity getResearchActivityById(Long actId);
-	List<ResearchActivity> getResearchActivityList();
-	List<ResearchActivity> getResearchActivityByAccount(String account);
-	List<ResearchActivity> getPublishedResearchActivityList();
-
+	List<ResearchActivity> getResearchActivityList(PagingRequestMsg msg);
+	List<ResearchActivity> getResearchActivityByAccount(PagingRequestMsg msg);
+	List<ResearchActivity> getPublishedResearchActivityList(PagingRequestMsg msg);
+	Integer appendAttachment(ResearchActivity ra);
+	Integer removeAttachment(ResearchActivity ra);
 }

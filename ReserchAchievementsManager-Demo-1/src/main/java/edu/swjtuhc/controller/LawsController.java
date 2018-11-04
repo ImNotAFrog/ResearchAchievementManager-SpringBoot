@@ -145,7 +145,7 @@ public class LawsController {
 		}
 		else if(l.getUploader().equals(account)) {
 			result.put("state", "success");
-			result.put("laws", JSONObject.fromObject(l).toString());
+			result.put("laws", l);
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "用户权限错误");

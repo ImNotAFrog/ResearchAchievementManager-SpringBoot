@@ -65,9 +65,7 @@ public class UserServiceImpl implements UserService{
 	public Integer changePassword(String account,String oldPassword,String newPassword) {
 		// TODO Auto-generated method stub
 		authService.verifyPassword(account, oldPassword);
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
 		return userMapper.changePassword(account, encoder.encode(newPassword));
 	}
 
@@ -76,7 +74,9 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		SysUser user = new SysUser();
 		user.setAccount(userInfo.getAccount());
-		user.setPassword(userInfo.getPassword());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        final String rawPassword = userInfo.getPassword();
+        user.setPassword(encoder.encode(rawPassword));
 		user.setLastPasswordResetDate(new Date());
 		user.setRoles(userInfo.getRoles());
 		user.setId(IdWorker.getInstance().nextId());
@@ -92,7 +92,11 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		
 		SysUser user = userMapper.getUserByAccount(userInfo.getAccount());
-		user.setPassword(userInfo.getPassword());
+        final String rawPassword = userInfo.getPassword();
+		if(rawPassword!=null&&rawPassword!="") {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	        user.setPassword(encoder.encode(rawPassword));
+		}		
 		user.setLastPasswordResetDate(new Date());
 		user.setRoles(userInfo.getRoles());
 		UserProfile profile = userProfileMapper.getUserProfileByAccount(userInfo.getAccount());

@@ -5,8 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.swjtuhc.mapper.ResearchActivityMapper;
+import edu.swjtuhc.model.PagingRequestMsg;
+import edu.swjtuhc.model.ReformProject;
 import edu.swjtuhc.model.ResearchActivity;
 import edu.swjtuhc.service.ResearchActivityService;
 import edu.swjtuhc.utils.IdWorker;
@@ -137,21 +142,56 @@ public class ResearchActivityServiceImpl implements ResearchActivityService {
 	}
 
 	@Override
-	public List<ResearchActivity> getResearchActivityList() {
+	public List<ResearchActivity> getResearchActivityList(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
-		return researchActivityMapper.getResearchActivityList();
+		
+		return researchActivityMapper.getResearchActivityList(msg);
 	}
 
 	@Override
-	public List<ResearchActivity> getPublishedResearchActivityList() {
+	public List<ResearchActivity> getPublishedResearchActivityList(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
-		return researchActivityMapper.getPublishedResearchActivityList();
+		return researchActivityMapper.getPublishedResearchActivityList(msg);
 	}
 
 	@Override
-	public List<ResearchActivity> getResearchActivityByAccount(String account) {
+	public List<ResearchActivity> getResearchActivityByAccount(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
-		return researchActivityMapper.getResearchActivityByAccount(account);
+		return researchActivityMapper.getResearchActivityByAccount(msg);
+	}
+
+	@Override
+	public Integer appendAttachment(ResearchActivity ra) {
+		// TODO Auto-generated method stub
+		return appendAttachment(ra.getActId(), ra.getAttachment());
+	}
+
+	@Override
+	public Integer removeAttachment(ResearchActivity ra) {
+		// TODO Auto-generated method stub
+		return removeAttachment(ra.getActId(), ra.getAttachment());
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
+	private synchronized int appendAttachment(Long actId, String attachment) {
+		ResearchActivity ra = researchActivityMapper.getResearchActivityById(actId);
+		ra.setAttachment(ModelUtil.appendPath(ra.getAttachment(), attachment));
+		int i=0;
+		if(researchActivityMapper.updateResearchActivity(ra)==1) {
+			i=1;
+		}		 
+		return i;	
+	}
+
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
+	private synchronized int removeAttachment(Long actId, String attachment) {
+		ResearchActivity ra = researchActivityMapper.getResearchActivityById(actId);
+		ra.setAttachment(ModelUtil.deletePath(ra.getAttachment(), attachment));
+		int i=0;
+		if(researchActivityMapper.updateResearchActivity(ra)==1) {
+			i=1;
+		}		
+		return i;	
 	}
 
 }

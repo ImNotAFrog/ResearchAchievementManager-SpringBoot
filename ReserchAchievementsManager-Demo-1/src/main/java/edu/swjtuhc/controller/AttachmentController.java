@@ -27,6 +27,7 @@ import edu.swjtuhc.model.News;
 import edu.swjtuhc.model.Patent;
 import edu.swjtuhc.model.Project;
 import edu.swjtuhc.model.ReformProject;
+import edu.swjtuhc.model.ResearchActivity;
 import edu.swjtuhc.model.Textbook;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
@@ -35,6 +36,7 @@ import edu.swjtuhc.service.NewsService;
 import edu.swjtuhc.service.PatentService;
 import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.service.ReformProjectService;
+import edu.swjtuhc.service.ResearchActivityService;
 import edu.swjtuhc.service.TextbookService;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.service.UserService;
@@ -77,6 +79,9 @@ public class AttachmentController {
 	
 	@Autowired
 	private NewsService newsService;
+	
+	@Autowired
+	private ResearchActivityService researchActivityService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -197,6 +202,23 @@ public class AttachmentController {
 				} else if (result.getString("state").equals("success")) {
 					l.setAttachment(result.getString("name"));
 					int i = lawsService.appendAttachment(l);
+					if (i != 1) {
+						result = new JSONObject();
+						result.put("state", "fail");
+						result.put("msg", "附件上传失败");
+					}
+				}
+				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(attachmentId);
+				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
+				if (ra == null) {
+					result = new JSONObject();
+					result.put("state", "fail");
+					result.put("msg", "调研活动不存在");
+				} else if (result.getString("state").equals("success")) {
+					ra.setAttachment(result.getString("name"));
+					int i = researchActivityService.appendAttachment(ra);
 					if (i != 1) {
 						result = new JSONObject();
 						result.put("state", "fail");
@@ -530,6 +552,38 @@ public class AttachmentController {
 					result.put("msg", "删除失败，文件或不存在");
 				}
 				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(aId);				
+				if (ra==null||ra.getApplicant() == null || !ra.getUploadDate().equals(account)) {
+					result.put("state", "fail");
+					result.put("msg", "ID或用户权限错误");
+					return result.toString();
+				}
+				filepath = attachmentPath + ra.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						ra.setAttachment(filename);
+						if (researchActivityService.removeAttachment(ra) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
 			default:
 				result.put("state", "fail");
 				result.put("msg", "文件类型参数错误");
@@ -737,6 +791,38 @@ public class AttachmentController {
 					try {
 						l.setAttachment(filename);
 						if (lawsService.removeAttachment(l) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(aId);
+				if (ra==null) {
+					result.put("state", "fail");
+					result.put("msg", "ID不存在");
+					return result.toString();
+				}
+				filepath = attachmentPath + ra.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						ra.setAttachment(filename);
+						if (researchActivityService.removeAttachment(ra) == 1) {
 							result.put("state", "success");
 							result.put("msg", "删除成功");
 						} else {

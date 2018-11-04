@@ -177,4 +177,18 @@ public class ViewController {
 	public String userEdit() {
 		return "/user/edit.html";
 	}
+	
+	@RequestMapping(value="/researchActivity/upload.do",method=RequestMethod.GET)
+	public String researchActivityUpload() {
+		return "/researchActivity/upload.html";
+	}
+	@RequestMapping(value="/researchActivity/edit.do",method=RequestMethod.GET)
+	public String researchActivityEdit() {
+		return "/researchActivity/edit.html";
+	}
+	@RequestMapping(value="/researchActivity/publish.do",method=RequestMethod.GET)
+	public String researchActivitypublish() {
+		return "/researchActivity/publish.html";
+	}
+	
 }
