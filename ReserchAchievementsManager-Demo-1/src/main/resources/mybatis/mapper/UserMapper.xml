@@ -5,7 +5,7 @@
 <mapper namespace="edu.swjtuhc.mapper.UserMapper">
 	<resultMap id="BaseResultMap"
 		type="edu.swjtuhc.model.SysUser">
-		<id column="u_id" property="id" jdbcType="BIGINT" />
+		<id column="u_id" property="uId" jdbcType="BIGINT" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
 		<result column="password" property="password"
 			jdbcType="VARCHAR" />
@@ -64,7 +64,7 @@
 		sys_user
 		(u_id,account,password,last_password_reset_date,roles)
 		values
-		(#{id},#{account},#{password},#{lastPasswordResetDate},#{roles,jdbcType=VARCHAR,typeHandler=edu.swjtuhc.handler.StringListHandler})
+		(#{uId},#{account},#{password},#{lastPasswordResetDate},#{roles,jdbcType=VARCHAR,typeHandler=edu.swjtuhc.handler.StringListHandler})
 	</insert>
 	<update id="changePassword" parameterType="java.lang.String">
 		UPDATE
@@ -74,6 +74,15 @@
 		WHERE
 		account = #{account}
 	</update>
+	<update id="updateUser" parameterType="edu.swjtuhc.model.SysUser">
+		UPDATE
+		sys_user
+		SET
+		account = #{account},password = #{password},roles=#{roles,jdbcType=VARCHAR,typeHandler=edu.swjtuhc.handler.StringListHandler},last_password_reset_date=#{lastPasswordResetDate}
+		WHERE
+		u_id=#{uId}
+	</update>
+	
 	<delete id="deleteUser" parameterType="java.lang.Long">
 		DELETE FROM
 		sys_user

@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(encoder.encode(rawPassword));
 		user.setLastPasswordResetDate(new Date());
 		user.setRoles(userInfo.getRoles());
-		user.setId(IdWorker.getInstance().nextId());
+		user.setuId(IdWorker.getInstance().nextId());
 		UserProfile profile = new UserProfile();
 		profile.setAccount(userInfo.getAccount());
 		profile.setName(userInfo.getUsername());
@@ -105,9 +105,13 @@ public class UserServiceImpl implements UserService{
 	        user.setPassword(encoder.encode(rawPassword));
 		}		
 		user.setLastPasswordResetDate(new Date());
-		user.setRoles(userInfo.getRoles());
+		if(userInfo.getRoles()!=null) {
+			user.setRoles(userInfo.getRoles());			
+		}
 		UserProfile profile = userProfileMapper.getUserProfileByAccount(userInfo.getAccount());
-		profile.setName(userInfo.getUsername());
+		if(userInfo.getUsername()!=null) {
+			profile.setName(userInfo.getUsername());			
+		}
 		Integer i =0;
 		try {
 			i =updateUser(user,profile);
@@ -137,7 +141,7 @@ public class UserServiceImpl implements UserService{
 		UserProfile profile = userProfileMapper.getUserProfileByAccount(user.getAccount());
 		userInfo.setAccount(user.getAccount());
 		userInfo.setRoles(user.getRoles());
-		userInfo.setuId(user.getId());
+		userInfo.setuId(user.getuId());
 		userInfo.setUsername(profile.getName());
 		return userInfo;
 	}
