@@ -167,4 +167,14 @@ public class ViewController {
 	public String achievementExport() {
 		return "/achievementExport.html";
 	}
+	
+	@RequestMapping(value="/user/management.do",method=RequestMethod.GET)
+	public String userManagement() {
+		return "/user/management.html";
+	}
+	
+	@RequestMapping(value="/user/edit.do",method=RequestMethod.GET)
+	public String userEdit() {
+		return "/user/edit.html";
+	}
 }
