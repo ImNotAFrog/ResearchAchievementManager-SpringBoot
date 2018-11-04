@@ -9,16 +9,17 @@
 	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
 	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
 	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
-	<link rel="stylesheet" type="text/css" href="/css/individual.css">
 	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
-
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/header.css">
+	<link rel="stylesheet" type="text/css" href="/css/individualDetail.css">
 </head>
 
 <body>
-	<div th:replace="header::html"></div>
 	<div class="container upload">
 		<div class="row">
-			<div class="col-md-9 col-md-offset-2">
+			<div class="col-md-12">
 				<div class="re-item">
 					<div class="examing">
 								<div style="width: 100%" class="flex11">
@@ -27,13 +28,9 @@
 									<input class="form-control keyword" type="text" placeholder="关键字..">
 								</div>
 							<table class="layui-hide" id="dataTable" lay-filter="tableEvent"></table>
-							<script type="text/html" id="toolBar">
-									<a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
-							</script>
 					</div>
 
-					<button type="button"  onclick="Header.home();"  class="btn  btn-primary " >返回</button>
-					<button type="button"  class="btn btn-warning  print">打印</button>
+					<button type="button"  class="btn btn-warning  print">导出</button>
 
 
 				</div>
@@ -41,10 +38,16 @@
 		</div>
 	</div>
 
-	<div th:replace="footer::html"></div>
+
 </body>
-<script src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.base64.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/tokenhelper.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
-<script src="/js/individual.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="/js/individualDetail.js"></script>
 
 </html>

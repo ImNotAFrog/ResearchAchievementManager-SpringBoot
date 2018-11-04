@@ -11,7 +11,7 @@
 		<result column="journal_name" property="journalName"
 			jdbcType="VARCHAR" />
 		<result column="journal_level" property="journalLevel"
-			jdbcType="VARCHAR" />
+			jdbcType="INTEGER" />
 		<result column="journal_id" property="journalId"
 			jdbcType="VARCHAR" />
 		<result column="attachment" property="attachment"
@@ -34,12 +34,12 @@
 	<sql id="Base_Column_List">
 		t_id,t_name,journal_name,journal_level,journal_id,attachment,uploader,publish_date,upload_date,score,max_score,department,sub_department
 	</sql>
-	<select id="getUserProfileByAccount" parameterType="java.lang.String"
+	<select id="getThesisById" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"></include>
-		from user_profile
-		where account = #{account}
+		from thesis
+		where t_id = #{tId}
 	</select>
 	<insert id="createThesis"
 		parameterType="edu.swjtuhc.model.Thesis">
@@ -49,13 +49,21 @@
 		values
 		(#{tId},#{tName},#{journalName},#{journalLevel},#{journalId},#{attachment},#{uploader},#{publishDate},#{uploadDate},#{score},#{maxScore},#{department},#{subDepartment})
 	</insert>
-	<update id="updateUserProfile" parameterType="edu.swjtuhc.model.UserProfile">
+	<update id="updateThesis" parameterType="edu.swjtuhc.model.Thesis">
 		UPDATE
-		user_profile
+		thesis
 		SET
-		account = #{account},name = #{name},position=#{position},title=#{title},position_level=#{positionLevel},department=#{department},sub_department=#{subDepartment}
+		t_name = #{tName},journal_name = #{journalName},journal_level=#{journalLevel},journal_id=#{journalId},attachment=#{attachment},uploader=#{uploader},publish_date=#{publishDate},upload_date=#{uploadDate},score=#{score},max_score=#{maxScore},department=#{department},sub_department=#{subDepartment}
 		WHERE
-		account = #{account}
+		t_id = #{tId}
 	</update>
+	
+	<delete id="deleteThesisById" parameterType="java.lang.Long">
+		DELETE FROM
+		thesis
+		WHERE
+		t_id=#{tId}
+		
+	</delete>
 
 </mapper> 

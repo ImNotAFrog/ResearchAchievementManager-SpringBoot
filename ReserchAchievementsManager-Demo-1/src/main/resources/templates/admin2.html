@@ -6,7 +6,7 @@
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 
 <link rel="stylesheet" type="text/css" href="/css/admin2.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap-table.css">
+<link rel="stylesheet" type="text/css" href="/css/left_nav.css">
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 </head>
 <body>
@@ -24,18 +24,13 @@
 	<div class="content">
 		<div class="container clearfix">
 			<div class="left">
-				<ul>
-					<li><a class="active" id="item1" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="item2"> <span>已通过成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="item3"> <span>待审核成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="item4"> <span>已上报成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="item5"> <span>未通过成果</span> <span class="icon">&gt;</span>
-						</a></li>
-				</ul>
+						<ul class="mcd-menu">
+								<li> <a href="#" id="m1"  class="active"> <i class="fa fa fa-user-circle-o"></i> <strong>个人信息</strong><small>UserInfo</small> </a></li>
+								<li> <a href="#" id="m2"> <i class="fa  fa-battery-full "></i> <strong>已通过成果</strong> <small>sweet home</small> </a> </li>
+								<li> <a href="#" id="m3"> <i  class="fa fa-battery-quarter" aria-hidden="true"></i> <strong>待审核成果</strong> <small>sweet home</small> </a> </li>
+								<li> <a href="#"id="m4"> <i class="fa fa-battery-three-quarters" aria-hidden="true"></i> <strong>已上报成果</strong> <small>Submitted Achievements</small> </a> </li>
+								<li> <a href="#"id="m5"> <i class="fa fa-battery-empty"></i> <strong>未通过成果</strong> <small>sweet home</small> </a> </li>
+							  </ul>
 			</div>
 			<div class="right-fix">
 				<div class="right">
@@ -209,8 +204,7 @@
 
 	<div th:replace="footer::html"></div>
 </body>
-<script type="text/javascript" src="/js/bootstrap-table.js"></script>
-<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/admin2.js"></script>
 

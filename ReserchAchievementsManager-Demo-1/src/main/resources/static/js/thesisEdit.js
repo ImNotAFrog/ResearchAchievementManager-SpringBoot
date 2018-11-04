@@ -349,7 +349,6 @@ layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
     $('#fileupload').submit(function (e) {
         $("#btnSubmit").attr({"disabled":"true"});
         var dataList=$("#fileupload").serializeObject(); //将表单序列化为JSON对象   
-        console.log(dataList);
         dataList.uploader=account;
         layer.load();
         if (tId == null) {

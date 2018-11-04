@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人成果评比排名</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
+	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+	<link rel="stylesheet" type="text/css" href="/css/individual.css">
+	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+
+</head>
+
+<body>
+	<div th:replace="header::html"></div>
+	<div class="container upload">
+		<div class="row">
+			<div class="col-md-9 col-md-offset-2">
+				<div class="re-item">
+					<div class="examing">
+								<div style="width: 100%" class="flex11">
+									<button type="button" state="4" class="btn  btn-default refresh">刷新</button>
+									<button type="button" state="4" class="btn searchBtn btn-default">搜索</button>
+									<input class="form-control keyword" type="text" placeholder="关键字..">
+								</div>
+							<table class="layui-hide" id="dataTable" lay-filter="tableEvent"></table>
+							<script type="text/html" id="toolBar">
+									<a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
+							</script>
+					</div>
+
+					<button type="button"  onclick="Header.home();"  class="btn  btn-primary " >返回</button>
+					<button type="button"  class="btn btn-warning  print">导出</button>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="footer::html"></div>
+</body>
+<script src="/js/main.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script src="/js/department.js"></script>
+
+</html>

@@ -12,7 +12,7 @@
 	position: relative;
 }
 .header .wrap{
-	width:80%;
+	width:85%;
 	margin:auto;
 }
 .header .img-contain{
@@ -28,7 +28,6 @@
 }
 .header .unlogin .login{
 	padding: 0 16px;
-//	border-right: 1px solid #fff;
 	color:#fff;	
 }
 .header .unlogin .register{
@@ -55,38 +54,11 @@
 	width: 100%;
 	height: 100%;
 }
-.header .user-center{
-	display: none;
-	top: 124px;
-	z-index: 5;
-	width: 200px;
-	height: 250px;
-	border-bottom-left-radius: 12px;
-	border-bottom-right-radius: 12px;
-	box-shadow: 0px 0px 20px #9f9f9f;
-	background: #ae4944;
-	position: fixed;
-}
-.header .user-center .user-header{
-	height: 100px;
-	line-height: 100px;
-	overflow: hidden;
-}
-.header .user-center .user-header img{
-	margin-top: 8px;
-	margin-left: 6px;
-	width: 84px;
-	height: 84px;
-}
-.header .user-center .user-header span{
-	float: right;
-	margin-right: 50px;
-}
-.header .user-center .user-body a{
-	display: block;
-	margin: 12px 0px;
-	padding-left: 60px; 
-}
+
+
+
+
+
 .header .user-center .user-body a:nth-child(1){
 	background: url("../img/login/user.png") no-repeat 20px 0px;
 }
@@ -400,7 +372,7 @@ nav .wrap .research-wrap .research img{
 	flex-direction:row ;
 	flex-wrap:wrap;
 	justify-content:space-between;
-	align-content: center;
+	align-items:center
   }
   
   /* 从上往下排 主轴两端对齐 交叉轴右对齐 */
@@ -411,16 +383,14 @@ nav .wrap .research-wrap .research img{
 	justify-content:space-between;
 	align-items: flex-end
   }
-  
 
-  .flex11{
+.flex11{
 	display: flex;
 	flex-direction:row-reverse;
 	flex-wrap:nowrap;
 	align-items: flex-end
   }
   
-
 
   #result-msg{
 	  padding:20px;
@@ -430,4 +400,21 @@ nav .wrap .research-wrap .research img{
 	  margin-top: 20px;
   }
 
-/* 鎼存洟鍎� */
+
+  .userinfo{
+	height:100%;
+}
+.userinfo a{
+	color: #eee;
+	margin-right: 15px;
+}
+.userinfo a:hover{
+	color: white !important;
+}
+.userinfo a:visited{
+	color: #eee !important;
+} 
+.userinfo i{
+	font-size: 25px;
+	margin-right: 6px;
+}

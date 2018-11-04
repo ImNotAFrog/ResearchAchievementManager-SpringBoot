@@ -1,0 +1,16 @@
+
+    .keyword{
+        width: 120px !important;
+    }
+    .flex11 *{
+        margin-left: 5px;
+    }
+
+    .userBtn{
+        margin-bottom: 10px;
+        padding-right: 10px;
+    }
+    .submit{
+        margin-right: 10px;
+    }
+

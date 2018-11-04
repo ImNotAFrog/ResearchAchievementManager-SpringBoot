@@ -5,40 +5,33 @@
 	<meta charset="UTF-8">
 	<title>科研成果管理系统</title>
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
-
+	<link rel="stylesheet" type="text/css" href="/css/left_nav.css">
 	<link rel="stylesheet" type="text/css" href="/css/admin1.css">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table.css">
-	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 </head>
 
 <body>
 	<div th:replace="header::html"></div>
+
+	
+		
 	<div class="content">
 		<div class="container clearfix">
-			<div class="left">
-				<ul>
-					<li><a  class="active" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state1"> <span>已通过成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state2"> <span>待审核成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state3"> <span>已驳回成果</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state4"> <span>成果评比</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state5"> <span>成果导出</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state6"> <span>新闻列表</span> <span class="icon">&gt;</span>
-						</a></li>
-					<li><a href="#" id="state7"> <span>调研活动</span> <span class="icon">&gt;</span>
-						</a></li>
+                <div class="left">
+                                <ul class="mcd-menu">
+                                  <li> <a href="#" id="m1"  class="active"> <i class="fa fa fa-user-circle-o"></i> <strong>个人信息</strong><small>UserInfo</small> </a></li>
+                                  <li> <a href="#" id="m2"> <i class="fa  fa-battery-full "></i> <strong>已通过成果</strong> <small>Approved Achievements</small> </a> </li>
+                                  <li> <a href="#" id="m3"> <i class="fa fa-battery-half"></i> <strong>待审核成果</strong> <small>Pending Achievements</small> </a> </li>
+                                  <li> <a href="#"id="m4"> <i class="fa fa-battery-empty"></i> <strong>已驳回成果</strong> <small>Denied Achievements</small> </a> </li>
+                                  <li> <a href="#"id="m5"> <i class="fa fa-balance-scale"></i> <strong>成果评比</strong> <small>Achievements Ranking</small> </a> </li>
+                                  <li> <a href="#"id="m6"> <i class="fa fa-location-arrow"></i> <strong>成果导出</strong> <small>Achievements Export</small> </a> </li>
+                                  <li> <a href="#"id="m7"> <i class="fa fa-newspaper-o "></i> <strong>新闻列表</strong> <small>News</small> </a> </li>
+                                  <li> <a href="#"id="m8"> <i class="fa fa-flag"></i> <strong>调研活动</strong> <small>Research Activities</small> </a> </li>
+                                  <li> <a href="#"id="m9"> <i class="fa fa-commenting-o"></i> <strong>其他学术活动</strong> <small>Other Activities</small> </a> </li>
+                                </ul>
+                    </div>
 
-					<li><a href="#" id="state8"> <span>其他学术活动</span> <span class="icon">&gt;</span>
-						</a></li>
-
-				</ul>
-			</div>
 			<div class="right-fix">
 				<div class="right">
 					<div id="detail" class="content-item">
@@ -170,15 +163,15 @@
 						</script>
 						</div>
 					</div>
-					<div id="research" class="content-item">
+					<div id="" class="content-item">
 						<div class="nav">
 								<div class="common-title">查询成果评比</div>
 								<div class="line"></div>
-							<div class="col-md-12 mar-top20">
+							<div class="col-md-12 mar-top20 myinput ">
 								<div class="form-item">
 									<label for="rangeTime" class="pull-left">起止日期:</label>
 									<div class="moco-control-input">
-										<input type="text" name="rangeTime" id="rangeTime" placeholder="请选择时间范围" autocomplete="off" class="moco-form-control" value="">
+										<input type="text" name="rangeTime" id="rangeTime" placeholder="请选择时间范围" autocomplete="off" class="form-control " value="">
 										<div class="rlf-tip-wrap errorHint color-red"></div>
 									</div>
 								</div>
@@ -186,8 +179,8 @@
 								<div class="form-item">
 										<label for="rangeTime" class="pull-left">请选择评比部门:</label>
 										<div class="moco-control-input">
-												<select name="_department" id="_department" class="form-control">
-													<option value="" selected></option>
+												<select name="_department" id="_department" class="form-control ">
+													<option value="" selected>全部</option>
 												</select>
 										</div>
 								</div>
@@ -200,20 +193,110 @@
 					</div>
 
 
-					<div id="research" class="content-item">
-						成果导出
+					<div id="" class="content-item">
+					
+                            <div class="nav">
+                                    <div class="common-title">科研成果表格导出</div>
+                                    <div class="line"></div>
+                                <div class="col-md-12 mar-top20 import">
+
+                                        <div class="form-item">
+                                                <label for="export_type" class="pull-left">科研成果类型:</label>
+                                                <div class="moco-control-input">
+                                                        <select class="form-control" id="export_type">
+                                                                <option value="">所有</option>
+                                                                <option value="project">课题项目类</option>
+                                                                <option value="thesis">论文类</option>
+                                                                <option value="textbook">论著、教材类</option>
+                                                                <option value="patent">专利</option>
+                                                                <option value="reform_project">教育改革项目类</option>
+                                                                <option value="laws">法律法规类</option>
+                                                            </select>
+                                                </div>
+										</div>
+										
+										<div class="form-item  export_level">
+											<label for="export_level" class="pull-left">等级:</label>
+											<div class="moco-control-input">
+													<select class="form-control" id="export_level">
+														
+															
+														</select>
+											</div>
+									</div>
+
+									<div class="form-item hidden export_subject">
+										<label for="export_subject" class="pull-left">主体:</label>
+										<div class="moco-control-input">
+												<select class="form-control" id="export_subject">
+														<option value="">所有</option>
+														<option value="1">1、公安消防部队高等专科学校</option>
+														<option value="2">2、外单位</option>
+													</select>
+										</div>
+								</div>
+
+
+                                        <div class="form-item">
+                                                <label for="export_department" class="pull-left">所属部门:</label>
+                                                <div class="moco-control-input">
+                                                        <select name="export_department" id="export_department" class="form-control ">
+                                                            <option value="" selected>全部</option>
+                                                        </select>
+                                                </div>
+                                        </div>
+
+                                        <div class="form-item">
+                                                <label for="export_subDepartments" class="pull-left">所属科室:</label>
+                                                <div class="moco-control-input">
+                                                        <select name="export_subDepartments" id="export_subDepartments" class="form-control ">
+                                                            <option value="" selected>全部</option>
+                                                        </select>
+                                                </div>
+                                        </div>
+
+                                    <div class="form-item">
+                                        <label for="export_rangeTime" class="pull-left">起止日期:</label>
+                                        <div class="moco-control-input">
+                                            <input type="text" name="export_rangeTime" id="export_rangeTime" placeholder="请选择时间范围" autocomplete="off" class="form-control myinput" value="">
+                                            <div class="rlf-tip-wrap errorHint color-red"></div>
+                                        </div>
+                                    </div>
+    
+                                   
+                                    <div class="form-item getExportList">
+                                        <button type="button"   class="btn  btn-primary" >查询</button>
+                                  </div>
+                                </div>
+                            </div>
 
 					</div>
 
-					<div id="research" class="content-item">
-						新闻列表
-
+					<div id="" class="content-item">
+						<div class="common-title">新闻列表</div>
+						<div class="line"></div>
+						<div class="examing">
+							<div class="newsInput flex7">
+								<div class="flex11" style="width: 100%;">
+										<div class="flex5">
+											<input class="form-control keyword-news" type="text" placeholder="关键字..">
+											<button type="button" class="btn searchBtn-nwes btn-default">搜索</button>
+											<button type="button" class="btn  btn-default refresh-news">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table-news" lay-filter="news"></table>
+						<script type="text/html" id="toolBar-news">
+							<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+							<!-- <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> -->					
+						</script>
+						</div>
 					</div>
-					<div id="research" class="content-item">
+					<div id="" class="content-item">
 						调研活动
 
 					</div>
-					<div id="research" class="content-item">
+					<div id="" class="content-item">
 						其他学术活动
 					</div>
 				</div>
@@ -224,6 +307,7 @@
 
 	<div th:replace="footer::html"></div>
 </body>
+<script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/layui/layui.js"></script>
 <script type="text/javascript" src="/js/admin1.js"></script>
 

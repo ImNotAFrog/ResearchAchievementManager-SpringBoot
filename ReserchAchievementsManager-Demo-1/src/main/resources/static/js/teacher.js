@@ -202,6 +202,10 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		if(layEvent === 'detail'){ //查看
 				openIframe(data.type,data.aId,data.state,'see')		
 		}else{
+			if(data.state==4){
+				layer.msg("通过的成果不能编辑");
+				return false;
+			}
 			openIframe(data.type,data.aId,data.state);		
 		}
 	});

@@ -5,11 +5,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
     var startDate=GetQueryString("startDate");
 	var endDate=GetQueryString("endDate");
     var department=GetQueryString("department");
-    var dataList=[];
     var departmentList=[];
-/*     console.log(startDate)
-    console.log(endDate)
-    console.log(department) */
 
 //渲染表格
     function renderTable() {
@@ -24,7 +20,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.state == 'success') {
-                    dataList = res.data[0].achievementList;
+                    dataList= formatData(res.data);
                     mytable.reload({
                         data: dataList
                     })
@@ -70,28 +66,11 @@ layui.use([ 'layer', 'table', 'element'], function(){
     elem: '#dataTable'
     ,page: true //开启分页
     ,cols: [[ //表头
-    ,{field: 'uploaderName', title: '姓名',fixed: 'left'} 
-    ,{field: 'name', title: '成果名称' ,sort: true}
-    ,{field: 'type', title: '类型',templet: function(d){
-        return checkType(d.type);
-      }}
+    ,{field: 'rank', title: '排名',fixed: 'left'} 
+    ,{field: 'name', title: '姓名' ,sort: true}
     ,{field: 'score', title: '得分'} 
-    ,{field: 'department', title: '所属部门',templet: function(d){
-        var obj=checkDep(departmentList,d.department,d.subDepartment);
-        return obj.dep
-      }}
-    ,{field: 'subDepartment', title: '所属科室',templet: function(d){
-        var obj=checkDep(departmentList,d.department,d.subDepartment);
-        return obj.subDeps
-      }}
-    ,{field: 'uploadDate', title: '提交时间',sort: true,templet: function(d){
-        var t=d.uploadDate.time+"";
-        return timestampToTime(t.substring(0,10))
-      }}
-    ,{field: 'validDate', title: '发布时间',sort: true,templet: function(d){
-        var t=d.validDate.time+"";
-        return timestampToTime(t.substring(0,10))
-      }}
+    ,{field: 'department', title: '所属部门'}
+    ,{field: 'subDepartment', title: '所属科室'}
     ,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar'}
     ]]
 });
@@ -106,6 +85,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
             return item
         }
     })
+    console.log(tempData)
     mytable.reload({
         data:tempData
     })
@@ -117,18 +97,52 @@ $('.refresh').click(function (e) {
 }); 
 
 
-$(".print").click(function (e) { 
-    
-    
-});
+///格式化数据
+function formatData(_data) { 
+    var temp=null;
+    var t1;
+    var t2; 
+    var data=_data
+    $.each(data, function (index, items) {
+        temp = checkDep(departmentList, items.department, items.subDepartment);
+        data[index].department = temp.dep;
+        data[index].subDepartment = temp.subDeps;
+    });
+    return data;
+}
+
+
+
+
+  
+
+
+// 导出成果
+    $(".print").click(function (e) {
+        if(dataList.length==0){
+          return false;
+        }
+        table.exportFile(mytable.config.id,dataList, "xlsx");
+        return false;
+    });
     //监听工具条
     table.on('tool(tableEvent)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
     var data = obj.data; //获得当前行数据
     var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
     var tr = obj.tr; //获得当前行 tr 的DOM对象
     if(layEvent === 'detail'){ //查看
-            console.log(data.state)
-            openIframe(data.type,data.aId,data.state,data.uploader,'see')
+        var height=$(window).height()-50;
+        var width=$(window).width()*0.9;
+        layer.open({
+        type: 2,
+        title:data.name+"的成果列表",
+        area: [width+'px', height+'px'],
+        content: "/ranking/individualDetail.do?startDate="+startDate+"&endDate="+endDate+"&department="+department,
+        scrollbar:true,
+        end: function () {
+           
+          }  
+      });
     }
     });
 

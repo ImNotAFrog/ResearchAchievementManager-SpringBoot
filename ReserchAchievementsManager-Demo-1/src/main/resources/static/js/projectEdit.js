@@ -46,7 +46,6 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
         });
 
     });
-                console.log(checkState(state))
                 $('#state').val(checkState(state));
                 if((state==1 ||state==-1) && action!="see"){
                     if(state!=-1){
@@ -75,7 +74,7 @@ layui.use(['layer', 'element','laydate', 'upload'], function () {
                             })
                         });
                     }
-                }else if((state==2 ||state==3) && action!=null){
+                }else if((state==2 ||state==3) && action!="see"){
                     $('.submitedWithdraw').removeClass('hidden');
                     $('form input').attr('readonly','readonly');
                     $('.disable-eidt').hide();

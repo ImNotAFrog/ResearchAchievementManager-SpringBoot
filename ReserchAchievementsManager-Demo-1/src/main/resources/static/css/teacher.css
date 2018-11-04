@@ -12,13 +12,11 @@
 }
 
 .content{
-    padding-top: 60px;
+    padding-top: 10px;
 }
     .left{
         float: left;
         width: 240px;
-        /*background-color: #f8fafc;*/
-       /*background: rgb(200,120,255);*/
     }
 
 .right-fix{
@@ -28,7 +26,7 @@
 }
 .right{
     margin-left: 260px;
-    /*background: #33f;*/
+    background: white;
     -webkit-box-shadow: 0px 1px 10px  #d0d6d9;
     -moz-box-shadow: 0px 1px 10px #d0d6d9;
     box-shadow: 0px 1px 10px #d0d6d9;
@@ -38,64 +36,20 @@
     padding-bottom: 12px;
 }
 
-/*涓诲唴瀹瑰尯缁撴潫*/
-.left li{
-    height: 60px;
-    line-height: 60px;
-    margin-top: 20px;
-    position: relative;
-}
-.left li:first-child{
-    margin-top: 0;
-}
-.left a{
-    font-size: 18px;
-    color: #000;
-    font-weight: bold;
-    display: block;
-    padding: 0 16px;
-    border-top-left-radius: 4px;
-    height: 60px;
-    transition: all .1s;
-     border-bottom: 1px solid #a89;
-}
-.left i{
-    display: inline-block;
-    width: 26px;
-    height: 16px;
-    /*background: url(../img/list.png) no-repeat;*/
-    position: relative;
-    top:3px;
-}
+
 span.icon{
    position: absolute;
    right: 30px;
 }
-/*.left a:hover{
-    color:  #a9f;
-}*/
-.left a:hover{
-    /*background: #66a;*/
-    color:rgb(65,120,190);
-    border-bottom: 1px solid #a8f;
-}
-.left .active{
-    /*background: #66a;*/
-    color:rgb(65,120,190);
-    border-bottom: 1px solid #008cc8;
-}
 
-/*涓诲唴瀹瑰尯鍙宠竟锛�涓汉淇℃伅*/
-/*.active{
-    display: block;
-}*/
+
+
 .common-title{
     line-height: 40px;
     font-size: 16px;
     font-weight: 400;
-    /*margin-top: 12px;*/
     color: rgb(78,19,85);
-    /*text-shadow: 1px 1px 1px rgb(78,19,185);*/
+
     margin-bottom: 30px;
 }
 .edit{
@@ -118,7 +72,6 @@ a.edit:hover{
 }
 .info-box{
     margin-bottom: 12px;
-    /*height:100%*/
 }
  .info-box label {
     width: 120px;
@@ -139,12 +92,7 @@ a.edit:hover{
     padding: 20px 0 20px 22px;
     border-bottom: 1px solid #d9dde1;
 }
-/*涓汉淇℃伅缁撴潫*/
 
-/*涓婁紶鎴愭灉寮�*/
-#loadup{
-    /*background: rgb(222,222,255);*/
-}
 
 .nav{
     margin-left: 12px;
@@ -155,16 +103,11 @@ a.edit:hover{
     border-radius: 3px;   
     margin-right: 138px;
     margin-bottom:  40px;
-    /*border:1px solid rgb(60,15,120);*/
-    
-    /*padding: 10px 4px;*/
-
 }
 .load-item img{
     float: left;
     width: 50px;
     height: 50px;
-    /*border:1px solid rgb(160,115,220);*/
 
     
 }

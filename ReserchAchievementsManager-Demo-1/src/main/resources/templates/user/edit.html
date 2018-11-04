@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人成果评比排名</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload.css">
+	<link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
+	<link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
+	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/header.css">
+	<link rel="stylesheet" type="text/css" href="/css/userEdit.css">
+</head>
+
+<body>
+	<div class="container upload">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="re-item">
+					<div class="examing">
+						<form id="addUser" method="post" target="nm_iframe"
+						onchange="confirmFlag=0;">
+						<div class="form-item">
+							<label for="account">账号</label>
+							<div class="moco-control-input">
+								<input type="text" name="account" id="account" readonly="readonly" autocomplete="off"
+									class="moco-form-control" placeholder="请输入账户名...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="username">用户名</label>
+							<div class="moco-control-input">
+								<input type="text" name="username" id="username" autocomplete="off"
+									class="moco-form-control" placeholder="请输入用户名...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="password">密码</label>
+							<div class="moco-control-input">
+								<input type="password" name="password" id="password" autocomplete="off"
+									class="moco-form-control" placeholder="请输入密码...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="repawd">确认密码</label>
+							<div class="moco-control-input">
+								<input type="password" name="repawd" id="repawd" autocomplete="off"
+									class="moco-form-control" placeholder="请输入确认密码...">
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						<div class="form-item">
+							<label for="roles">角色</label>
+							<div class="moco-control-input">
+								<select class="moco-form-control rlf-select" name="roles" id="roles"
+									hidefocus="true">
+									<option value="ROLE_TEACHER" selected>教师</option> 
+									<option value="ROLE_ADMIN_02">初级管理员</option>    
+									<option value="ROLE_ADMIN_01">高级管理员</option> 
+								</select>
+								<div class="rlf-tip-wrap errorHint color-red"></div>
+							</div>
+						</div>
+						
+						<div class="col-md-offset-2 userBtn">
+								<button class="btn btn-default btn-warning pull-right" type="reset">重置</button>
+							<button id="btnSubmit" type="submit" class="btn btn-primary submit pull-right" style="opacity: 0.75">提交</button>
+						
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.base64.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/tokenhelper.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<script src="/js/userEdit.js"></script>
+
+</html>

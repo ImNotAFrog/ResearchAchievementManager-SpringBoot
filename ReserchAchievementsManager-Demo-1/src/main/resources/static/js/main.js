@@ -206,17 +206,22 @@ function checkDep(departmentList,department,subDeps){
 		}
 	})
 	var data={
-		dep:arr1[0].name,
-		subDeps:null
+		dep:"",
+		subDeps:""
 	}
-	if(arr1[0].subDeps.length>0){
+	if(arr1[0]){
+		 data.dep=arr1[0].name;
+	}else{
+		return data;
+	}
+	if(typeof(arr1[0].subDeps) != "undefined"){
 		//console.log(arr1[0].subDeps)
 		var arr2=arr1[0].subDeps.filter(items=>{
 			if(items.index==subDeps){
 				return items;
 			}
 		})
-		if(arr2.length>0){
+		if(arr2){
 			data.subDeps=arr2[0].name;
 		}else{
 			data.subDeps="";
@@ -228,20 +233,47 @@ function checkDep(departmentList,department,subDeps){
 	return data;
 }
 
-function changeTableHeight() {  
-var obj=$("#layui-table");
-obj.css("height","800px");
+// 查询成果中文名称
+function checkType(value) {
+	if (value) {
+		value = value.toLowerCase();
+		switch (value) {
+			case "thesis":
+				return '论文类';
+				break;
+			case "project":
+				return '课题项目类';
+				break;
+			case "textbook":
+				return '论著、教材类';
+				break;
+			case "patent":
+				return '专利';
+				break;
+			case "reformproject":
+				return '教学改革项目类';
+				break;
+			case "laws":
+				return '法律、法规类';
+				break;
+			default:
+				return '不存在的类型';
+				break;
+		}
+	}
 }
-
 
 //显示成功后的选项
 function successOpt(msg){
 	$('#tips').text(msg)
 	layer.open({	
 		type: 1,
-		closeBtn: 0,
-		area: ['400px', '180px'],
-		content: $('#result-msg')
+		title: false, 
+		area: ['400px', '140px'],
+		content: $('#result-msg'),
+		cancel: function(){
+			closeIframe();
+		  }
 	  });
 }
 //关闭Iframe层

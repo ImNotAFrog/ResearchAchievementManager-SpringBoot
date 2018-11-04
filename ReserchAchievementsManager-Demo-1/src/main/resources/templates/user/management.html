@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>科研成果管理系统</title>
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="/css/management.css">
+
+</head>
+<body>
+	<div th:replace="header::html"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3 userinfo-edit">
+				<div class="common-title">所有用户</div>
+				<div class="line"></div>
+				<div class="examing">
+					<div class="userInput flex7">
+						<div class="flex11" style="width: 100%;">
+								<div class="flex5">
+									<button type="button" class="btn  btn-default addUser">新增用户</button>
+								</div>
+					</div>
+				</div>
+				<table class="layui-hide" id="table-user" lay-filter="user"></table>
+				<script type="text/html" id="toolBar-user">
+					<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+					<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+					<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delUser">删除</a>	
+				</script>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/management.js"></script>
+</html>

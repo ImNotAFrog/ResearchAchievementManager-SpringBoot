@@ -178,7 +178,8 @@ var goToUpload = function (page) {
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 					var t=d.uploadDate.time+"";
+				return timestampToTime(t.substring(0,10)) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar4'}
 				]]
 			});
@@ -212,7 +213,8 @@ var goToUpload = function (page) {
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 					var t=d.uploadDate.time+"";
+				return timestampToTime(t.substring(0,10)) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar2'}
 				]]
 			});
@@ -245,7 +247,8 @@ var goToUpload = function (page) {
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 					var t=d.uploadDate.time+"";
+				return timestampToTime(t.substring(0,10)) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar3'}
 				]]
 			});
@@ -278,7 +281,8 @@ var goToUpload = function (page) {
 					return checkType(d.type);
 				  }}
 				,{field: 'uploaderName', title: '提交者'} 
-				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+				,{field: 'uploadDate', title: '提交时间',templet: function(d){ 					var t=d.uploadDate.time+"";
+				return timestampToTime(t.substring(0,10)) 			  }}
 				,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-1'}
 				]]
 			});
@@ -352,6 +356,8 @@ var goToUpload = function (page) {
 			}
 		});
 
+
+		
 
 
 	})	

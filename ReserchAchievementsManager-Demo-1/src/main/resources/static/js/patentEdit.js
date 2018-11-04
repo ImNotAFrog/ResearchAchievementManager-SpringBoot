@@ -1,9 +1,8 @@
-layui.use(['layer', 'element', 'laytpl','laydate', 'upload'], function () {
+layui.use(['layer', 'element','laydate', 'upload'], function () {
     var layer = layui.layer;
     var element = layui.element;
     var laydate = layui.laydate;
     var upload = layui.upload;
-    var laytpl = layui.laytpl;
     var flist = [];
     //日期时间选择器
     laydate.render({

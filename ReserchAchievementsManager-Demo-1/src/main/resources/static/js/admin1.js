@@ -32,8 +32,9 @@ var getDepartmentList = function () {
 			var result = JSON.parse(data)
 			if (result.state == "success") {
 				departmentList = result.dep
-				rankingDep(departmentList)
-				console.log(departmentList)
+				rankingDep(departmentList);
+				depAndSub();//拿回部门信息后执行
+				$(".export_level").hide();
 				getUserProfileByAccount(account, token)
 			}
 
@@ -43,7 +44,7 @@ var getDepartmentList = function () {
 
 //向下拉框中追加部门
 function rankingDep(DepArr){
-	var obj=$('#_department');
+	var obj=$('#_department,#export_department');
 	if(DepArr){
 		var opt=null;
 		$.each(DepArr, function (index, item) { 
@@ -53,6 +54,89 @@ function rankingDep(DepArr){
 		
 	}
 }
+
+
+
+function getLevelSubject(type){
+	var level = $("#export_level");
+	$(".export_subject").addClass("hidden")
+	level.empty();
+	level.append("<option value=''>全部</option>");
+	var obj=[];
+	if(type=="project"){
+		var subject = $(".export_subject").removeClass("hidden")
+		obj=[
+			{key:1,value:"1、国家级"},
+			{key:2,value:"2、省部级"},
+			{key:3,value:"3、市局级"},
+			{key:3,value:"4、校级"},
+		]
+	}else if(type=="thesis"){
+		obj=[
+			{key:1,value:"《Science》、《Nature》及其子刊《Cell》"},
+			{key:2,value:"SCI收录"},
+			{key:3,value:"EI（JA）、SSCI、A&HCI收录"},
+			{key:4,value:"EI（CA）、CPCI"},
+			{key:5,value:"核心刊物正刊(含北大核心期刊、CSCD、CSSCI、RCCSE)"},
+			{key:6,value:"《武警学院学报》、《消防技术与产品信息》、全国性或行业性学会论文集（一等奖）、国际会议论文集"},
+			{key:7,value:"专业期刊（正刊）、全国性或行业性学会论文集（二等奖）、《消防科学与技术》增刊、《武警学院学报》增刊、《消防技术与产品信息》增刊"},
+			{key:8,value:"一般期刊、其它增刊、其它论文集、校刊"},
+		]
+	}else if(type=="textbook"){
+		obj=[
+			{key:1,value:"1、公安消防部队高等专科学校正式出版"},
+			{key:2,value:"2、公安消防部队高等专科学校内部印刷教辅"},
+			{key:3,value:"3、外单位正式出版"},
+		]
+	}else if(type=="patent"){
+	
+	}else if(type=="reform_project"){
+		
+	}else if(type=="laws"){
+		obj=[
+			{key:1,value:"1、法律、行政法规、国家标准"},
+			{key:2,value:"2、部门规章、行业标准规范"},
+			{key:3,value:"3、地方性法规、政府规章、地方性标准规范"},
+		]
+	}
+		if(obj.length>0){
+			$(".export_level").show(500);
+			$.each(obj, function (index, items) {
+				level.append('<option value="' + items.key + '">' + items.value + '</option>');
+			});
+		}else{
+			$(".export_level").hide(200);
+		}
+}
+
+//部门二级联动
+function depAndSub() {
+	$('#export_department').change(function () {
+		var val = $(this).val();
+		var obj = $("#export_subDepartments");
+		var arr = departmentList.filter(item => {
+			if (item.index.includes(val)) {
+				return item
+			}
+		})
+		obj.empty();
+		obj.append("<option value=''>全部</option>");
+		if (typeof (arr[0].subDeps) != "undefined") {
+			$.each(arr[0].subDeps, function (index, items) {
+				obj.append('<option value="' + items.index + '">' + items.name + '</option>');
+			});
+		}
+	})
+}
+
+
+$("#export_type").change(function (e) { 
+	var val=$(this).val();
+	getLevelSubject(val);
+
+});
+
+
 function getUserProfileByAccount(account, token) {
 	$.ajax({
 		url: '/user/getUserProfileByAccount',
@@ -122,10 +206,9 @@ $(function () {
 	var nav = document.getElementsByClassName("left")[0];
 	var navItem = nav.getElementsByTagName("li");
 
-	// 鍙宠竟鐨勫唴瀹瑰尯
+
 	var con = document.getElementsByClassName("content-item");
 
-	// 鐐瑰嚮宸﹁竟鐨勯�椤癸紝鍙宠竟鍐呭鍒囨崲
 
 	for (var i = 0; i < con.length; i++) {
 		con[i].style.display = "none";
@@ -160,12 +243,6 @@ var goToUpload = function (page) {
 
 
 
-function operateFormatter(value, row, index) {
-	return [
-		'<button type="button" class="RoleOfA btn btn-primary  btn-sm _see" style="margin-right:15px;">查看</button>',
-		'<button type="button" class="RoleOfB btn btn-success  btn-sm _edit" style="margin-right:15px;">审核</button>',
-	].join('');
-}
 
 //筛选符合状态的成果
 function stateSiftArray(arr,state){
@@ -192,8 +269,16 @@ layui.use([ 'layer','laydate', 'table', 'element'], function(){
 		range:true
 	  });
 
+	  laydate.render({
+		elem: '#export_rangeTime',
+		range:true
+	  });
 
 
+	  
+
+
+ //打开弹出层
 	function openIframe(type,aid,state,name,action=null){
 		var height=$(window).height()-50;
 		console.log("/"+type+"/exam.do?aId="+aid+"&state="+state+"&action="+action);
@@ -228,7 +313,8 @@ layui.use([ 'layer','laydate', 'table', 'element'], function(){
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
 			,{field: 'uploadDate', title: '提交时间',templet: function(d){
-				return timestampToTime(d.uploadDate.time)
+				var t=d.uploadDate.time+"";
+					return timestampToTime(t.substring(0,10)) 	
 			  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar4'}
 			]]
@@ -260,7 +346,9 @@ layui.use([ 'layer','laydate', 'table', 'element'], function(){
 				return checkType(d.type);
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
-			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				
+				var t=d.uploadDate.time+"";
+				return timestampToTime(t.substring(0,10)) 	  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar3'}
 			]]
 		});
@@ -295,7 +383,10 @@ layui.use([ 'layer','laydate', 'table', 'element'], function(){
 				return checkType(d.type);
 			  }}
 			,{field: 'uploaderName', title: '提交者'} 
-			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 				return timestampToTime(d.uploadDate.time) 			  }}
+			,{field: 'uploadDate', title: '提交时间',templet: function(d){ 	
+				var t=d.uploadDate.time+"";
+					return timestampToTime(t.substring(0,10)) 			
+				  }}
 			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-1'}
 			]]
 		});
@@ -370,19 +461,143 @@ layui.use([ 'layer','laydate', 'table', 'element'], function(){
 		var startDate=rangeTime.substring(0,10);
 		var endDate=rangeTime.substring(13,23);
 		var department=$('#_department').val();
-/* 		console.log(startDate);
-		console.log(endDate);
-		console.log(type);
-		console.log(department); */
 		if(type==1){
 			type="individual";
 		}else{
 			type="department";
 		}
-		console.log("/rank/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department)
-		location.href="/rank/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department;
+		console.log("/ranking/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department)
+		location.href="/ranking/"+type+".do?startDate="+startDate+"&endDate="+endDate+"&department="+department;
 	})
+
+
+
+	
+
+	//查看成果列表
+	$(".getExportList button").click(function (e) {
+
+		var rangeTime=$("#export_rangeTime").val();
+		if(rangeTime==""){
+			layer.msg("请选择时间范围");
+			return false;
+		}
+		var type=$("#export_type").val();
+		var startDate=rangeTime.substring(0,10);
+		var endDate=rangeTime.substring(13,23);
+		var department=$('#export_department').val();
+		var subDepartment=$('#export_subDepartments').val();
+		var level=$('#export_level').val();
+		var subject="";
+		var export_subject=$(".export_subject").attr("class");
+		if(export_subject.indexOf("hidden") == -1 ){
+			console.log(45)
+			subject=$("#export_subject").val();
+		}
+	
+		console.log(startDate)
+		console.log(endDate)
+		console.log(department)
+		console.log(subDepartment)
+		console.log(type)
+		console.log(subject)
+		console.log(level)
+
+		/* console.log("/achievementExport.do?startDate="+startDate+"&endDate="+endDate+"&department="+department+"&subDepartment="+subDepartment+"&type="+type+"&subject="+subject+"&level="+level);*/
+		var height=$(window).height()-50;
+        var width=$(window).width()*0.9;
+        layer.open({
+        type: 2,
+        title:"导出成果列表",
+        area: [width+'px', height+'px'],
+        content: "/achievementExport.do?startDate="+startDate+"&endDate="+endDate+"&department="+department+"&subDepartment="+subDepartment+"&type="+type+"&subject="+subject+"&level="+level,
+        scrollbar:true,
+        end: function () {
+           
+          }  
+	  });
+
+
+		return false;
+		
+	  
+	});
+
+
+	//新闻列表表格
+		var table_news=table.render({
+			elem: '#table-news'
+			,url: '/news/getAll' //数据接口
+			,page: true //开启分页
+			,method:"POST"
+			,headers: { Authorization: 'Bearer ' + token }
+			,contentType: 'application/json'
+			,cols: [[ //表头
+			{field: 'title', title: '标题' , fixed: 'left'}
+			,{field: 'state', title: '状态',templet: function(d){
+				if(d.state==1){
+					return "未发布";
+				}
+				return "已发布"
+			  }}
+			,{field: 'uploaderName', title: '发布者'}
+			,{field: 'uploadDate', title: '发布时间',templet: function(d){ 	
+				var t=d.uploadDate.time+"";
+					return timestampToTime(t.substring(0,10)) 			
+				  }}
+			,{fixed: 'right',title:'操作', align:'center', toolbar: '#toolBar-news'}
+			]]
+		});
+		table.on('tool(news)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		if(layEvent === 'edit'){ //编辑新闻
+				layer.msg("跳转编辑页面");
+		}
+		});
+
+
+		//搜索新闻
+	$('.searchBtn-nwes').click(function (e) { 
+		console.log("新闻搜索")
+		return false;
+		var keyword=$(".keyword-news").val();
+		console.log("查询的关键字:"+keyword);
+		var conditions={
+			where: {
+				type: type,
+				keyword:keyword
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+		table_news.reload(conditions);
+	});
+
+	//刷新新闻列表
+	$('.refresh-news').click(function (e) { 
+		console.log("刷新")
+		return 
+		$(".keyword-news").val("");
+		$(".table"+state+" .optType").val("");
+		$(".table"+state+" .keyword").val('');
+		var conditions={
+			where: {
+				keyword:""
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+	});
+
+	
 })	
+
+
+
 
 
 
