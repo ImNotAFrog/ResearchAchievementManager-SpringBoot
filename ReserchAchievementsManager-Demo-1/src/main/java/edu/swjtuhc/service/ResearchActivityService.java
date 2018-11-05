@@ -12,6 +12,7 @@ public interface ResearchActivityService {
 	Integer modifyResearchActivity(ResearchActivity ra);
 	Integer submitResearchActivity(Long actId);
 	Integer withdrawResearchActivity(Long actId);
+	Integer withdrawPublishedResearchActivity(Long actId);
 	Integer publishResearchActivity(Long actId);
 	Integer rejectResearchActivity(Long actId);
 	Integer deleteResearchActivity(Long actId);

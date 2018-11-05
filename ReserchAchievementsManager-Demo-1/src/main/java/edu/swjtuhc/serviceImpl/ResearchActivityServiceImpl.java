@@ -194,4 +194,16 @@ public class ResearchActivityServiceImpl implements ResearchActivityService {
 		return i;	
 	}
 
+	@Override
+	public Integer withdrawPublishedResearchActivity(Long actId) {
+		// TODO Auto-generated method stub
+		ResearchActivity ra = researchActivityMapper.getResearchActivityById(actId);
+		int i = 0;
+		if(ra.getState()==3) {
+			ra.setState(2);
+			i=researchActivityMapper.updateResearchActivity(ra);
+		}
+		return i;
+	}
+
 }

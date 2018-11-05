@@ -301,4 +301,20 @@ public class ResearchActivityController {
 		return result.toString();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
+	@RequestMapping(value = "/publishedWithdraw", method = RequestMethod.POST)
+	public String publishedWithdraw(HttpServletRequest request, @RequestBody Long actId) {
+		JSONObject result = new JSONObject();
+		Integer i = 0;
+		i = researchActivityService.withdrawPublishedResearchActivity(actId);
+		if (i == 1) {
+			result.put("state", "success");
+			result.put("msg", "活动已撤回");
+		} else {
+			result.put("state", "fail");
+			result.put("msg", "撤回失败，请检查成果状态");
+		}
+		return result.toString();
+	}
+	
 }
