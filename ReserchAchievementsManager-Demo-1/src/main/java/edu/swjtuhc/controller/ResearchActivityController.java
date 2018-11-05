@@ -155,9 +155,9 @@ public class ResearchActivityController {
 		}
 	}
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
-	public String getById(HttpServletRequest request, @RequestBody Long actId) {
+	public String getById(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
-		ResearchActivity ra = researchActivityService.getResearchActivityById(actId);
+		ResearchActivity ra = researchActivityService.getResearchActivityById(params.getActId());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
 		if(ra==null) {
@@ -176,8 +176,8 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/adminGetById",method=RequestMethod.POST)
-	public String adminGetById(HttpServletRequest request, @RequestBody Long actId) {
-		ResearchActivity ra = researchActivityService.getResearchActivityById(actId);
+	public String adminGetById(HttpServletRequest request, @RequestBody ResearchActivity params) {
+		ResearchActivity ra = researchActivityService.getResearchActivityById(params.getActId());
 		JSONObject result = new JSONObject();
 		if(ra!=null) {
 			result.put("state", "success");
@@ -239,10 +239,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/submit", method = RequestMethod.POST)
-	public String submit(HttpServletRequest request, @RequestBody Long actId) {
+	public String submit(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.submitResearchActivity(actId);
+		i = researchActivityService.submitResearchActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "提交成功");
@@ -255,10 +255,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
-	public String publish(HttpServletRequest request, @RequestBody Long actId) {
+	public String publish(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.publishResearchActivity(actId);
+		i = researchActivityService.publishResearchActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "已发布");
@@ -271,10 +271,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
-	public String reject(HttpServletRequest request, @RequestBody Long actId) {
+	public String reject(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i=researchActivityService.rejectResearchActivity(actId);
+		i=researchActivityService.rejectResearchActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "已驳回");
@@ -287,10 +287,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/submitedWithdraw", method = RequestMethod.POST)
-	public String submitedWithdraw(HttpServletRequest request, @RequestBody Long actId) {
+	public String submitedWithdraw(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.withdrawResearchActivity(actId);
+		i = researchActivityService.withdrawResearchActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "活动已撤回");
@@ -303,10 +303,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/publishedWithdraw", method = RequestMethod.POST)
-	public String publishedWithdraw(HttpServletRequest request, @RequestBody Long actId) {
+	public String publishedWithdraw(HttpServletRequest request, @RequestBody ResearchActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.withdrawPublishedResearchActivity(actId);
+		i = researchActivityService.withdrawPublishedResearchActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "活动已撤回");
