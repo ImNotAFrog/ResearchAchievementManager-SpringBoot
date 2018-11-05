@@ -166,7 +166,7 @@ public class ResearchActivityController {
 		}
 		else if(ra.getApplicant().equals(account)||request.isUserInRole("ROLE_ADMIN_01")) {
 			result.put("state", "success");
-			result.put("laws", ra);
+			result.put("researchActivity", ra);
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "用户权限错误");
