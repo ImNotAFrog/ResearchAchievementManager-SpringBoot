@@ -30,7 +30,7 @@
 			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
 		<association property="applicantName" column="applicant"
 			javaType="java.lang.String">
-			<result property="applicantName" column="u.name" />
+			<result property="applicantName" column="name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">

@@ -44,11 +44,11 @@ public class ResearchActivityController {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		if (token != null && account != null) {
-			Long raId = -1L;
-			raId = researchActivityService.createResearchActivity(account);
-			if (raId != 0) {
+			Long actId = -1L;
+			actId = researchActivityService.createResearchActivity(account);
+			if (actId != 0) {
 				result.put("state", "success");
-				result.put("rpId", raId);
+				result.put("actId", actId);
 			} else {
 				result.put("state", "fail");
 				result.put("msg", "状态出错");
