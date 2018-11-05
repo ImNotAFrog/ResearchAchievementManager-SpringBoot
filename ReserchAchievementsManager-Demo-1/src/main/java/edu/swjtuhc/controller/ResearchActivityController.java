@@ -181,7 +181,7 @@ public class ResearchActivityController {
 		JSONObject result = new JSONObject();
 		if(ra!=null) {
 			result.put("state", "success");
-			result.put("laws", ra);
+			result.put("researchActivity", ra);
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "法律法规成果不存在");
@@ -191,7 +191,7 @@ public class ResearchActivityController {
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/adminModify", method = RequestMethod.POST)
-	public String modifyLaws(HttpServletRequest request, @RequestBody ResearchActivity ra) {
+	public String adminModify(HttpServletRequest request, @RequestBody ResearchActivity ra) {
 		
 		
 		JSONObject result = new JSONObject();
