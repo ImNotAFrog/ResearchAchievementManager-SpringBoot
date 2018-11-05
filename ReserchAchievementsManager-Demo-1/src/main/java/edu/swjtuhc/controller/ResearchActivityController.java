@@ -1,23 +1,17 @@
 package edu.swjtuhc.controller;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import edu.swjtuhc.model.Achievement;
-import edu.swjtuhc.model.Laws;
+import org.springframework.web.bind.annotation.RestController;
 import edu.swjtuhc.model.PagingRequestMsg;
-import edu.swjtuhc.model.ReformProject;
 import edu.swjtuhc.model.ResearchActivity;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.ResearchActivityService;
@@ -26,7 +20,7 @@ import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@Controller
+@RestController
 @RequestMapping("researchActivity")
 public class ResearchActivityController {
 	@Value("${jwt.header}")

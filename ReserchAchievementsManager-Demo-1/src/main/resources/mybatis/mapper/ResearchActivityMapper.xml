@@ -42,7 +42,7 @@
 	<insert id="createReserchActivity"
 		parameterType="edu.swjtuhc.model.ResearchActivity">
 		INSERT INTO
-		reserch_activity
+		research_activity
 		(
 		<include refid="Base_Column_List"></include>
 		)
