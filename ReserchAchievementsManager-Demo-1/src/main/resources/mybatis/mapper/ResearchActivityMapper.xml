@@ -30,7 +30,7 @@
 			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
 		<association property="applicantName" column="applicant"
 			javaType="java.lang.String">
-			<result property="applicantName" column="name" />
+			<result property="applicantName" column="u.name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
@@ -68,9 +68,11 @@
 	<select id="getResearchActivityById"
 		parameterType="java.lang.Long" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List"></include>
-		from research_activity
-		where act_id = #{actId}
+		<include refid="Association_Userprofile"></include>
+		from research_activity a
+		JOIN user_profile u
+		ON a.applicant=u.account
+		where a.act_id = #{actId}
 	</select>
 
 	<select id="getResearchActivityList"
