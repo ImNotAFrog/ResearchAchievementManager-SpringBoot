@@ -2,23 +2,21 @@
 <!DOCTYPE  mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.swjtuhc.mapper.ResearchActivityMapper">
+<mapper namespace="edu.swjtuhc.mapper.OtherActivityMapper">
 	<resultMap id="BaseResultMap"
-		type="edu.swjtuhc.model.ResearchActivity">
+		type="edu.swjtuhc.model.OtherActivity">
 		<id column="act_id" property="actId" jdbcType="BIGINT" />
-		<result column="group_name" property="groupName"
+		<result column="name" property="name"
 			jdbcType="VARCHAR" />
-		<result column="context" property="context" jdbcType="VARCHAR" />
+		<result column="host" property="host"
+			jdbcType="VARCHAR" />
+		<result column="results" property="results" jdbcType="VARCHAR" />
 		<result column="members" property="members" jdbcType="VARCHAR" />
-		<result column="person_times" property="personTimes"
-			jdbcType="INTEGER" />
 		<result column="start_date" property="startDate"
 			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
 		<result column="end_date" property="endDate"
 			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
 		<result column="location" property="location"
-			jdbcType="VARCHAR" />
-		<result column="comments" property="comments"
 			jdbcType="VARCHAR" />
 		<result column="applicant" property="applicant"
 			jdbcType="VARCHAR" />
@@ -34,26 +32,26 @@
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
-		act_id,group_name,context,members,person_times,start_date,end_date,location,comments,applicant,attachment,state,upload_date
+		act_id,name,host,result,members,start_date,end_date,location,applicant,attachment,state,upload_date
 	</sql>
 	<sql id="Association_Userprofile">
-		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,a.state,a.upload_date,u.name
+		a.act_id,a.name,a.host,a.result,a.members,,a.start_date,a.end_date,a.location,a.applicant,a.attachment,a.state,a.upload_date,u.name
 	</sql>
-	<insert id="createResearchActivity"
-		parameterType="edu.swjtuhc.model.ResearchActivity">
+	<insert id="createOtherActivity"
+		parameterType="edu.swjtuhc.model.OtherActivity">
 		INSERT INTO
-		research_activity
+		other_activity
 		(
 		<include refid="Base_Column_List"></include>
 		)
 		values
-		(#{actId},#{groupName},#{context},#{members},#{personTimes},#{startDate},#{endDate},#{location},#{comments},#{applicant},#{attachment},#{state},#{uploadDate})
+		(#{actId},#{name},#{host},#{result},#{members},#{startDate},#{endDate},#{location},#{applicant},#{attachment},#{state},#{uploadDate})
 	</insert>
-	<select id="getResearchActivityByAccount"
+	<select id="getOtherActivityByAccount"
 		parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from research_activity a
+		from other_activity a
 		JOIN user_profile u
 		ON a.applicant=u.account
 		where
@@ -62,85 +60,85 @@
 			and a.state=#{state}
 		</if>
 		<if test='null!=keyword and ""!=keyword'>
-			and a.context like CONCAT('%',#{keyword},'%')
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 	</select>
-	<select id="getResearchActivityById"
+	<select id="getOtherActivityById"
 		parameterType="java.lang.Long" resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from research_activity a
+		from other_activity a
 		JOIN user_profile u
 		ON a.applicant=u.account
 		where a.act_id = #{actId}
 	</select>
 
-	<select id="getResearchActivityList"
+	<select id="getOtherActivityList"
 		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from research_activity a
+		from other_activity a
 		LEFT JOIN user_profile u
 		ON
 		a.applicant=u.account
 		WHERE 
 		a.state >= 2
 		<if test='null!=keyword and ""!=keyword'>
-			and a.context like CONCAT('%',#{keyword},'%')
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 	</select>
 	
-	<select id="getPublishedResearchActivityList"
+	<select id="getPublishedOtherActivityList"
 		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from research_activity a
+		from other_activity a
 		LEFT JOIN user_profile u
 		ON
 		a.applicant=u.account
 		WHERE 
 		state=3
 		<if test='null!=keyword and ""!=keyword'>
-			and a.context like CONCAT('%',#{keyword},'%')
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 	</select>
 
-	<update id="updateResearchActivity"
-		parameterType="edu.swjtuhc.model.ResearchActivity">
+	<update id="updateOtherActivity"
+		parameterType="edu.swjtuhc.model.OtherActivity">
 		UPDATE
-		research_activity
+		other_activity
 		SET
-		group_name=
-		#{groupName},context= #{context},members= #{members},person_times=
-		#{personTimes},start_date= #{startDate},end_date=
-		#{endDate},location=#{location},comments=#{comments},applicant=#{applicant},attachment=#{attachment}
+		name=
+		#{name},host= #{host},members= #{members},result=
+		#{result},start_date= #{startDate},end_date=
+		#{endDate},location=#{location},applicant=#{applicant},attachment=#{attachment}
 		,state=#{state},upload_date=#{uploadDate}
 		WHERE
 		act_id = #{actId}
 	</update>
 
-	<delete id="deleteResearchActivity"
+	<delete id="deleteOtherActivity"
 		parameterType="java.lang.Long">
 		DELETE FROM
-		research_activity
+		other_activity
 		WHERE
 		act_id = #{actId}
 	</delete>
 
-	<select id="getResearchActivityDuring"
+	<select id="getOtherActivityDuring"
 		parameterType="edu.swjtuhc.model.RankingRequestMsg"
 		resultMap="BaseResultMap">
 		SELECT
 		<include refid="Association_Userprofile"></include>
-		from research_activity a
+		from other_activity a
 		JOIN user_profile u
 		ON a.applicant=u.account
 		where
 		a.start_date between #{startDate} and #{endDate}
 		<if test='null!=keyword and ""!=keyword'>
-			and a.context like CONCAT('%',#{keyword},'%')
+			and a.name like CONCAT('%',#{keyword},'%')
 		</if>
 	</select>
 </mapper> 

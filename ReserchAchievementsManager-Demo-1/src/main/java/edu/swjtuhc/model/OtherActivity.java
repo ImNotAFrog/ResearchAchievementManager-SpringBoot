@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class OtherActivity {
 	private Long actId;
+	private String name;
 	private String members;
 	private String host;
 	private Date startDate;
@@ -17,6 +18,12 @@ public class OtherActivity {
 	private Date uploadDate;
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Date getUploadDate() {
 		return uploadDate;
 	}

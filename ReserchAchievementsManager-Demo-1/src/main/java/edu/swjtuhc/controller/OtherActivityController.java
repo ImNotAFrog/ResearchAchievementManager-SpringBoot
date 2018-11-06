@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.swjtuhc.model.PagingRequestMsg;
-import edu.swjtuhc.model.ResearchActivity;
+import edu.swjtuhc.model.OtherActivity;
 import edu.swjtuhc.model.UserProfile;
-import edu.swjtuhc.service.ResearchActivityService;
+import edu.swjtuhc.service.OtherActivityService;
 import edu.swjtuhc.service.UserService;
 import edu.swjtuhc.utils.JwtTokenUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @RestController
-@RequestMapping("researchActivity")
-public class ResearchActivityController {
+@RequestMapping("/otherActivity")
+public class OtherActivityController {
 	@Value("${jwt.header}")
 	private String tokenHeader;
 
@@ -33,7 +33,7 @@ public class ResearchActivityController {
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
 	@Autowired
-	private ResearchActivityService researchActivityService;
+	private OtherActivityService otherActivityService;
 	
 	@Autowired
 	private UserService userService;
@@ -45,7 +45,7 @@ public class ResearchActivityController {
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		if (token != null && account != null) {
 			Long actId = -1L;
-			actId = researchActivityService.createResearchActivity(account);
+			actId = otherActivityService.createOtherActivity(account);
 			if (actId != 0) {
 				result.put("state", "success");
 				result.put("actId", actId);
@@ -62,17 +62,17 @@ public class ResearchActivityController {
 	}
 	
 	@RequestMapping(value="/upload", method = RequestMethod.POST)
-	public String upload(HttpServletRequest request, @RequestBody ResearchActivity researchActivity) {
+	public String upload(HttpServletRequest request, @RequestBody OtherActivity otherActivity) {
 		JSONObject result = new JSONObject();
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
-		String account = researchActivity.getApplicant();
+		String account = otherActivity.getApplicant();
 		UserProfile user = userService.getUserProfileByAccount(account);
 		if (token != null && account != null&&user!=null) {
 			// System.err.println(jwtTokenUtil.getUsernameFromToken(token));
 			if (jwtTokenUtil.getUsernameFromToken(token).equals(account)) {
 
 				Integer i = null;
-				i = researchActivityService.updateResearchActivity(researchActivity);
+				i = otherActivityService.updateOtherActivity(otherActivity);
 				if(i==1) {
 					result.put("state", "success");
 					result.put("msg", "更新成功");
@@ -93,15 +93,15 @@ public class ResearchActivityController {
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String delete(HttpServletRequest request, @RequestBody ResearchActivity ra) {
+	public String delete(HttpServletRequest request, @RequestBody OtherActivity ra) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
-		ResearchActivity researchActivity = researchActivityService.getResearchActivityById(ra.getActId());
+		OtherActivity otherActivity = otherActivityService.getOtherActivityById(ra.getActId());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
-		if(researchActivity!=null) {
-			if(researchActivity.getApplicant().equals(account)||request.isUserInRole("ROLE_ADMIN_01")) {
+		if(otherActivity!=null) {
+			if(otherActivity.getApplicant().equals(account)||request.isUserInRole("ROLE_ADMIN_01")) {
 				Integer i=0;
-				i = researchActivityService.deleteResearchActivity(researchActivity.getActId());
+				i = otherActivityService.deleteOtherActivity(otherActivity.getActId());
 				if (i==1) {
 					result.put("state", "success");
 					result.put("msg", "删除成功");
@@ -130,13 +130,13 @@ public class ResearchActivityController {
 		}
 		JSONObject result = new JSONObject();
 		try {
-			List<ResearchActivity> list = researchActivityService.getResearchActivityByAccount(msg);
+			List<OtherActivity> list = otherActivityService.getOtherActivityByAccount(msg);
 			JSONArray jList = null;
 			if (list.size() > 0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
-				List<ResearchActivity> pageList = list.subList(msg.getStart(), toIndex);
+				List<OtherActivity> pageList = list.subList(msg.getStart(), toIndex);
 				jList = JSONArray.fromObject(pageList);
 			} else {
 				jList = JSONArray.fromObject(list);
@@ -155,9 +155,9 @@ public class ResearchActivityController {
 		}
 	}
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
-	public String getById(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String getById(HttpServletRequest request, @RequestBody OtherActivity params) {
 		String token = request.getHeader(tokenHeader).substring(tokenHead.length());
-		ResearchActivity ra = researchActivityService.getResearchActivityById(params.getActId());
+		OtherActivity ra = otherActivityService.getOtherActivityById(params.getActId());
 		String account = jwtTokenUtil.getUsernameFromToken(token);
 		JSONObject result = new JSONObject();
 		if(ra==null) {
@@ -166,7 +166,7 @@ public class ResearchActivityController {
 		}
 		else if(ra.getApplicant().equals(account)||request.isUserInRole("ROLE_ADMIN_01")) {
 			result.put("state", "success");
-			result.put("researchActivity", ra);
+			result.put("otherActivity", ra);
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "用户权限错误");
@@ -179,13 +179,13 @@ public class ResearchActivityController {
 		
 		JSONObject result = new JSONObject();
 		try {
-			List<ResearchActivity> list = researchActivityService.getPublishedResearchActivityList(msg);
+			List<OtherActivity> list = otherActivityService.getPublishedOtherActivityList(msg);
 			JSONArray jList = null;
 			if (list.size() > 0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
-				List<ResearchActivity> pageList = list.subList(msg.getStart(), toIndex);
+				List<OtherActivity> pageList = list.subList(msg.getStart(), toIndex);
 				jList = JSONArray.fromObject(pageList);
 			} else {
 				jList = JSONArray.fromObject(list);
@@ -206,12 +206,12 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value="/adminGetById",method=RequestMethod.POST)
-	public String adminGetById(HttpServletRequest request, @RequestBody ResearchActivity params) {
-		ResearchActivity ra = researchActivityService.getResearchActivityById(params.getActId());
+	public String adminGetById(HttpServletRequest request, @RequestBody OtherActivity params) {
+		OtherActivity ra = otherActivityService.getOtherActivityById(params.getActId());
 		JSONObject result = new JSONObject();
 		if(ra!=null) {
 			result.put("state", "success");
-			result.put("researchActivity", ra);
+			result.put("otherActivity", ra);
 		}else {
 			result.put("state", "fail");
 			result.put("msg", "ID不存在");
@@ -221,12 +221,12 @@ public class ResearchActivityController {
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/adminModify", method = RequestMethod.POST)
-	public String adminModify(HttpServletRequest request, @RequestBody ResearchActivity ra) {
+	public String adminModify(HttpServletRequest request, @RequestBody OtherActivity ra) {
 		
 		
 		JSONObject result = new JSONObject();
 		Integer i=0;
-		i = researchActivityService.modifyResearchActivity(ra);
+		i = otherActivityService.modifyOtherActivity(ra);
 		if(i==1) {
 			result.put("state", "success");
 			result.put("msg", "修改成功");
@@ -243,13 +243,13 @@ public class ResearchActivityController {
 	public String getAll(HttpServletRequest request, @RequestBody PagingRequestMsg msg) {
 		JSONObject result = new JSONObject();
 		try {
-			List<ResearchActivity> list = researchActivityService.getResearchActivityList(msg);
+			List<OtherActivity> list = otherActivityService.getOtherActivityList(msg);
 			JSONArray jList = null;
 			if (list.size() > 0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
-				List<ResearchActivity> pageList = list.subList(msg.getStart(), toIndex);
+				List<OtherActivity> pageList = list.subList(msg.getStart(), toIndex);
 				jList = JSONArray.fromObject(pageList);
 			} else {
 				jList = JSONArray.fromObject(list);
@@ -269,10 +269,10 @@ public class ResearchActivityController {
 	
 	//@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/submit", method = RequestMethod.POST)
-	public String submit(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String submit(HttpServletRequest request, @RequestBody OtherActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.submitResearchActivity(params.getActId());
+		i = otherActivityService.submitOtherActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "提交成功");
@@ -285,10 +285,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
-	public String publish(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String publish(HttpServletRequest request, @RequestBody OtherActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.publishResearchActivity(params.getActId());
+		i = otherActivityService.publishOtherActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "已发布");
@@ -301,10 +301,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
-	public String reject(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String reject(HttpServletRequest request, @RequestBody OtherActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i=researchActivityService.rejectResearchActivity(params.getActId());
+		i=otherActivityService.rejectOtherActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "已驳回");
@@ -317,10 +317,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/submitedWithdraw", method = RequestMethod.POST)
-	public String submitedWithdraw(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String submitedWithdraw(HttpServletRequest request, @RequestBody OtherActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.withdrawResearchActivity(params.getActId());
+		i = otherActivityService.withdrawOtherActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "活动已撤回");
@@ -333,10 +333,10 @@ public class ResearchActivityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN_01')")
 	@RequestMapping(value = "/publishedWithdraw", method = RequestMethod.POST)
-	public String publishedWithdraw(HttpServletRequest request, @RequestBody ResearchActivity params) {
+	public String publishedWithdraw(HttpServletRequest request, @RequestBody OtherActivity params) {
 		JSONObject result = new JSONObject();
 		Integer i = 0;
-		i = researchActivityService.withdrawPublishedResearchActivity(params.getActId());
+		i = otherActivityService.withdrawPublishedOtherActivity(params.getActId());
 		if (i == 1) {
 			result.put("state", "success");
 			result.put("msg", "活动已撤回");

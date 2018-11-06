@@ -39,7 +39,7 @@
 	<sql id="Association_Userprofile">
 		a.act_id,a.group_name,a.context,a.members,a.person_times,a.start_date,a.end_date,a.location,a.comments,a.applicant,a.attachment,a.state,a.upload_date,u.name
 	</sql>
-	<insert id="createReserchActivity"
+	<insert id="createResearchActivity"
 		parameterType="edu.swjtuhc.model.ResearchActivity">
 		INSERT INTO
 		research_activity
@@ -84,10 +84,8 @@
 		LEFT JOIN user_profile u
 		ON
 		a.applicant=u.account
-		WHERE 1=1		
-		<if test='null!=state and 0!=state'>
-			and a.state=#{state}
-		</if>
+		WHERE 
+		a.state >= 2
 		<if test='null!=keyword and ""!=keyword'>
 			and a.context like CONCAT('%',#{keyword},'%')
 		</if>

@@ -187,8 +187,29 @@ public class ViewController {
 		return "/researchActivity/edit.html";
 	}
 	@RequestMapping(value="/researchActivity/publish.do",method=RequestMethod.GET)
-	public String researchActivitypublish() {
+	public String researchActivityPublish() {
 		return "/researchActivity/publish.html";
 	}
+	@RequestMapping(value="/researchActivity/export.do",method=RequestMethod.GET)
+	public String researchActivityExport() {
+		return "/researchActivity/export.html";
+	}
+	@RequestMapping(value="/otherActivity/upload.do",method=RequestMethod.GET)
+	public String otherActivityUpload() {
+		return "/otherActivity/upload.html";
+	}
+	@RequestMapping(value="/otherActivity/edit.do",method=RequestMethod.GET)
+	public String otherActivityEdit() {
+		return "/otherActivity/edit.html";
+	}
+	@RequestMapping(value="/otherActivity/publish.do",method=RequestMethod.GET)
+	public String otherActivityPublish() {
+		return "/otherActivity/publish.html";
+	}
+	@RequestMapping(value="/otherActivity/export.do",method=RequestMethod.GET)
+	public String otherActivityExport() {
+		return "/otherActivity/export.html";
+	}
+	
 	
 }

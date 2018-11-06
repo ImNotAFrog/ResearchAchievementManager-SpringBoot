@@ -34,7 +34,7 @@ public class ResearchActivityServiceImpl implements ResearchActivityService {
 		ra.setUploadDate(new Date());
 		int i=0;
 		try {
-			i=researchActivityMapper.createReserchActivity(ra);
+			i=researchActivityMapper.createResearchActivity(ra);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -144,7 +144,6 @@ public class ResearchActivityServiceImpl implements ResearchActivityService {
 	@Override
 	public List<ResearchActivity> getResearchActivityList(PagingRequestMsg msg) {
 		// TODO Auto-generated method stub
-		
 		return researchActivityMapper.getResearchActivityList(msg);
 	}
 

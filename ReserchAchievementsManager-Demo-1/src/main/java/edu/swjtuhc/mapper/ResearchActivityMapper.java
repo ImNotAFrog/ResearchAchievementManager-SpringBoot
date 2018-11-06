@@ -9,7 +9,7 @@ import edu.swjtuhc.model.RankingRequestMsg;
 import edu.swjtuhc.model.ResearchActivity;
 @Mapper
 public interface ResearchActivityMapper {
-	Integer createReserchActivity(ResearchActivity ra);
+	Integer createResearchActivity(ResearchActivity ra);
 	List<ResearchActivity> getResearchActivityByAccount(PagingRequestMsg msg);
 	ResearchActivity getResearchActivityById(Long actId);
 	List<ResearchActivity> getResearchActivityList(PagingRequestMsg msg);
