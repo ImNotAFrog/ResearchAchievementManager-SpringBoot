@@ -35,7 +35,7 @@
 		act_id,name,host,result,members,start_date,end_date,location,applicant,attachment,state,upload_date
 	</sql>
 	<sql id="Association_Userprofile">
-		a.act_id,a.name,a.host,a.result,a.members,,a.start_date,a.end_date,a.location,a.applicant,a.attachment,a.state,a.upload_date,u.name
+		a.act_id,a.name,a.host,a.result,a.members,a.start_date,a.end_date,a.location,a.applicant,a.attachment,a.state,a.upload_date,u.name
 	</sql>
 	<insert id="createOtherActivity"
 		parameterType="edu.swjtuhc.model.OtherActivity">
