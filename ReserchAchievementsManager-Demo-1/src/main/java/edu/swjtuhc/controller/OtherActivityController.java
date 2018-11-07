@@ -132,7 +132,7 @@ public class OtherActivityController {
 		try {
 			List<OtherActivity> list = otherActivityService.getOtherActivityByAccount(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
@@ -175,13 +175,13 @@ public class OtherActivityController {
 	}
 	
 	@RequestMapping(value="/getPublished",method=RequestMethod.POST)
-	public String getPublished(HttpServletRequest request, @RequestBody PagingRequestMsg msg) {
+	public String getPublished(HttpServletRequest request, @RequestBody(required=false) PagingRequestMsg msg) {
 		
 		JSONObject result = new JSONObject();
 		try {
 			List<OtherActivity> list = otherActivityService.getPublishedOtherActivityList(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
@@ -245,7 +245,7 @@ public class OtherActivityController {
 		try {
 			List<OtherActivity> list = otherActivityService.getOtherActivityList(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
