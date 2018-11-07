@@ -175,7 +175,7 @@ public class ResearchActivityController {
 	}
 	
 	@RequestMapping(value="/getPublished",method=RequestMethod.POST)
-	public String getPublished(HttpServletRequest request, @RequestBody PagingRequestMsg msg) {
+	public String getPublished(HttpServletRequest request, @RequestBody(required=false) PagingRequestMsg msg) {
 		
 		JSONObject result = new JSONObject();
 		try {

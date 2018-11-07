@@ -7,7 +7,6 @@ public class OtherActivity {
 	private String name;
 	private String members;
 	private String host;
-	private String result;
 	private Date startDate;
 	private Date endDate;
 	private String location;
@@ -19,12 +18,7 @@ public class OtherActivity {
 	private Date uploadDate;
 	
 	
-	public String getResult() {
-		return result;
-	}
-	public void setResult(String result) {
-		this.result = result;
-	}
+
 	public String getName() {
 		return name;
 	}
