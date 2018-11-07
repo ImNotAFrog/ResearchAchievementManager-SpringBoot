@@ -132,7 +132,7 @@ public class ResearchActivityController {
 		try {
 			List<ResearchActivity> list = researchActivityService.getResearchActivityByAccount(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
@@ -181,7 +181,7 @@ public class ResearchActivityController {
 		try {
 			List<ResearchActivity> list = researchActivityService.getPublishedResearchActivityList(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
@@ -245,7 +245,7 @@ public class ResearchActivityController {
 		try {
 			List<ResearchActivity> list = researchActivityService.getResearchActivityList(msg);
 			JSONArray jList = null;
-			if (list.size() > 0) {
+			if (list.size() > 0&&msg!=null&&msg.getPage()>-1&&msg.getLimit()>0) {
 				msg.setStart((msg.getPage() - 1) * msg.getLimit());
 				Integer toIndex = ((msg.getStart() + msg.getLimit()) < list.size()) ? (msg.getStart() + msg.getLimit())
 						: list.size();
