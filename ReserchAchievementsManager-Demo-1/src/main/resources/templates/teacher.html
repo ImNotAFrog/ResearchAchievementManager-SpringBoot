@@ -17,6 +17,8 @@
 							<li> <a href="#" id="m1"  class="active"> <i class="fa fa fa-user-circle-o"></i> <strong>个人信息</strong><small>UserInfo</small> </a></li>
 							<li> <a href="#" id="m2"> <i class="fa  fa-file-text-o" aria-hidden="true"></i> <strong>我的科研成果</strong> <small>My Achievements</small> </a> </li>
 							<li> <a href="#" id="m3"> <i class="fa fa-upload" aria-hidden="true"></i> <strong>上传成果</strong> <small>Achievements Upload</small> </a> </li>
+							<li> <a href="#" id="m4"> <i class="fa fa-star" aria-hidden="true"></i> <strong>调研活动</strong> <small>Research Activities</small> </a> </li>
+							<li> <a href="#"id="m5"> <i class="fa fa-commenting-o"></i> <strong>其他学术活动</strong> <small>Other Activities</small> </a> </li>
 					</ul>
 			</div>
 			<div class="right-fix">
@@ -61,7 +63,6 @@
 					<div id="research" class="content-item">
 						<div class="common-title">成果列表</div>
 						<div class="line"></div>
-						<!--待审核-->
 						<div class="examing">
 									<div class="toolbar flex7 table_">
 											<label>按类别查看</label>
@@ -88,7 +89,6 @@
 										<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>	
 								</script>
 						</div>
-
 					</div>
 					<div id="loadup" class="content-item">
 						<div class="common-title">上传科研成果</div>
@@ -135,6 +135,51 @@
 						</div>
 
 					</div>
+
+					<div id="" class="content-item">
+						<div class="common-title">活动调研列表</div>
+						<div class="line"></div>
+						<div class="examing">
+									<div class="activitiesToolBar flex7 ">
+											<div class="flex5" style="width: 100%;">
+													<a  href="/researchActivity/upload.do"  class="btn activitiesAddBtn btn-info">新增</a>
+													<div class="flex5">
+														<input class="form-control ActivitiesKeyword" type="text" placeholder="关键字..">
+														<button type="button"  class="btn activitiesBtn btn-default">搜索</button>
+														<button type="button"  class="btn  btn-default ActivitiesRefresh">刷新</button>
+												   </div>
+										</div>
+									</div>
+									<table class="layui-hide" id="activitiesTable" lay-filter="activities"></table>
+									<script type="text/html" id="activitiesToolBar">
+										<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>	
+										<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>	
+								</script>
+						</div>
+					</div>
+
+					<div id="" class="content-item">
+						<div class="common-title">其他学术活动</div>
+						<div class="line"></div>
+						<div class="examing">
+									<div class="otherActivityToolBar flex7 ">
+											<div class="flex5" style="width: 100%;">
+													<a  href="/otherActivity/upload.do"  class="btn otherActivityAddBtn btn-info">新增</a>
+													<div class="flex5">
+														<input class="form-control otherActivityKeyword" type="text" placeholder="关键字..">
+														<button type="button"  class="btn otherActivityBtn btn-default">搜索</button>
+														<button type="button"  class="btn  btn-default otherActivityRefresh">刷新</button>
+												   </div>
+										</div>
+									</div>
+									<table class="layui-hide" id="otherActivityTable" lay-filter="otherActivity"></table>
+									<script type="text/html" id="otherActivityToolBar">
+										<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>	
+										<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>	
+								</script>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -144,5 +189,6 @@
 	<div th:replace="footer::html"></div>
 </body>
 <script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/js/teacher.js"></script>
 </html>

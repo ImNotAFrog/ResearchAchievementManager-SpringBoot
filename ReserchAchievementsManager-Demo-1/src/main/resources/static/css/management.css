@@ -9,3 +9,12 @@
 .userInput .flex5 *{
     margin-right: 5px;
 }
+
+.re-item{
+	box-shadow: rgb(208, 214, 217) 0px 1px 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 30px;
+    padding-right: 20px;
+    position: relative;
+}

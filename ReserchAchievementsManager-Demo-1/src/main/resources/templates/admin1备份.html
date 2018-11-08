@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>科研成果管理系统</title>
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" type="text/css" href="/css/admin1.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table.css">
+	<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+</head>
+
+<body>
+	<div th:replace="header::html"></div>
+
+	<div class="left">
+			<ul>
+				<li><a  class="active" id="userInfo" href="#"> <span>个人信息</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state1"> <span>已通过成果</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state2"> <span>待审核成果</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state3"> <span>已驳回成果</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state4"> <span>成果评比</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state5"> <span>成果导出</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state6"> <span>新闻列表</span> <span class="icon">&gt;</span>
+					</a></li>
+				<li><a href="#" id="state7"> <span>调研活动</span> <span class="icon">&gt;</span>
+					</a></li>
+
+				<li><a href="#" id="state8"> <span>其他学术活动</span> <span class="icon">&gt;</span>
+					</a></li>
+
+			</ul>
+		</div>
+		
+	<div class="content">
+		<div class="container clearfix">
+			
+			<div class="right-fix">
+				<div class="right">
+					<div id="detail" class="content-item">
+						<div class="common-title">
+							个人信息 <a href="/editPassword.do" class="pull-right edit">修改密码</a>
+							<a href="/editUser.do" class="pull-right edit">编辑</a>
+						</div>
+						<div class="detail">
+							<div class="line"></div>
+							<div class="info-box clearfix">
+								<label class="pull-left">账号</label>
+								<div id='account' class="pull-left"></div>
+							</div>
+							<div id='nameBlock' class="info-box clearfix">
+								<label class="pull-left">姓名</label>
+								<div id='name' class="pull-left"></div>
+							</div>
+							<div id='positionBlock' class="info-box clearfix">
+								<label class="pull-left">职务</label>
+								<div id='position' class="pull-left"></div>
+							</div>
+							<div id='titleBlock' class="info-box clearfix">
+								<label class="pull-left">职称</label>
+								<div id='title' class="pull-left"></div>
+							</div>
+							<div id='positionLevelBlock' class="info-box clearfix">
+								<label class="pull-left">职级</label>
+								<div id='positionLevel' class="pull-left"></div>
+							</div>
+							<div id='departmentBlock' class="info-box clearfix">
+								<label class="pull-left">所属部门</label>
+								<div id='department' class="pull-left"></div>
+							</div>
+							<div id='subDepartmentBlock' class="info-box clearfix">
+								<label class="pull-left">所属科室</label>
+								<div id='subDepartment' class="pull-left"></div>
+							</div>
+						</div>
+					</div>
+					<div id="" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--已通过-->
+						<div class="examing">
+							<div class="toolbar flex7 table4">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+										<select class="form-control optType">
+												<option value="">所有</option>
+												<option value="project">课题项目类</option>
+												<option value="thesis">论文类</option>
+												<option value="textbook">论著、教材类</option>
+												<option value="patent">专利</option>
+												<option value="reformProject">教育改革项目类</option>
+												<option value="laws">法律法规类</option>
+										</select>
+										<div class="flex5">
+												<input class="form-control keyword" type="text" placeholder="关键字..">
+												<button type="button" state="4" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="4" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table4" lay-filter="t4"></table>
+						<script type="text/html" id="toolBar4">
+								<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+						</script>
+						</div>
+
+					</div>
+					<div id="" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--待审核-->
+						<div class="examing">
+							<div class="toolbar flex7 table3">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+										<select class="form-control optType">
+												<option value="">所有</option>
+												<option value="project">课题项目类</option>
+												<option value="thesis">论文类</option>
+												<option value="textbook">论著、教材类</option>
+												<option value="patent">专利</option>
+												<option value="reformProject">教育改革项目类</option>
+												<option value="laws">法律法规类</option>
+										</select>
+										<div class="flex5">
+												<input class="form-control keyword" type="text" placeholder="关键字..">
+												<button type="button" state="3" class="btn searchBtn btn-default">搜索</button>
+												<button type="button" state="3" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table3" lay-filter="t3"></table>
+						<script type="text/html" id="toolBar3">
+								<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">审核</a>
+						</script>
+						</div>
+
+					</div>
+					<div id="" class="content-item">
+						<div class="common-title">成果列表</div>
+						<div class="line"></div>
+						<!--已驳回-->
+						<div class="examing">
+							<div class="toolbar flex7 table-1">
+								<label>按类别查看</label>
+								<div class="flex5" style="width: 100%;">
+									<select class="form-control optType">
+										<option value="">所有</option>
+										<option value="project">课题项目类</option>
+										<option value="thesis">论文类</option>
+										<option value="textbook">论著、教材类</option>
+										<option value="patent">专利</option>
+										<option value="reformProject">教育改革项目类</option>
+										<option value="laws">法律法规类</option>
+									</select>
+										<div class="flex5">
+											<input class="form-control keyword" type="text" placeholder="关键字..">
+											<button type="button" state="-1" class="btn searchBtn btn-default">搜索</button>
+											<button type="button" state="-1" class="btn  btn-default refresh">刷新</button>
+										</div>
+							</div>
+						</div>
+						<table class="layui-hide" id="table-1" lay-filter="t4"></table>
+						<script type="text/html" id="toolBar-1">
+							<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>					
+						</script>
+						</div>
+					</div>
+					<div id="research" class="content-item">
+						<div class="nav">
+								<div class="common-title">查询成果评比</div>
+								<div class="line"></div>
+							<div class="col-md-12 mar-top20">
+								<div class="form-item">
+									<label for="rangeTime" class="pull-left">起止日期:</label>
+									<div class="moco-control-input">
+										<input type="text" name="rangeTime" id="rangeTime" placeholder="请选择时间范围" autocomplete="off" class="moco-form-control" value="">
+										<div class="rlf-tip-wrap errorHint color-red"></div>
+									</div>
+								</div>
+
+								<div class="form-item">
+										<label for="rangeTime" class="pull-left">请选择评比部门:</label>
+										<div class="moco-control-input">
+												<select name="_department" id="_department" class="form-control">
+													<option value="" selected></option>
+												</select>
+										</div>
+								</div>
+								<div class="form-item lookRank">
+									<button type="button"  _type="1"  class="btn  btn-primary lookRankBtn" >查看个人成果评比排名列表</button>
+									<button type="button" _type="2" class="btn  btn-warning lookRankBtn"  >查看集体成果评比排名列表</button>
+							  </div>
+							</div>
+						</div>
+					</div>
+
+
+					<div id="research" class="content-item">
+						成果导出
+
+					</div>
+
+					<div id="research" class="content-item">
+						新闻列表
+
+					</div>
+					<div id="research" class="content-item">
+						调研活动
+
+					</div>
+					<div id="research" class="content-item">
+						其他学术活动
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="footer::html"></div>
+</body>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/admin1.js"></script>
+
+</html>

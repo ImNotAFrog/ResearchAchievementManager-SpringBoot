@@ -43,7 +43,13 @@ layui.use([ 'layer', 'element'], function(){
             layer.msg("用户名不能为空");
             return false;
         }
-        if(uId==""){
+        //编辑模式
+        if(uId>0){
+            if(userInfo.password!=userInfo.repawd){
+                layer.msg("密码与确认密码不一致");
+                return false;
+            }
+        }else{  //新增模式
             if(userInfo.password==""){
                 layer.msg("密码不能为空");
                 return false;
@@ -64,7 +70,11 @@ layui.use([ 'layer', 'element'], function(){
                 success: function (res) {
                     res = JSON.parse(res);
                     if (res.state == 'success') {
-                        layer.alert('新增用户成功',{icon:1},function(){
+                        var msg="新增用户成功";
+                        if(uId>0){
+                            msg="更新用户成功";
+                        }
+                        layer.alert(msg,{icon:1},function(){
                             layer.closeAll();
                             closeIframe();
                        })

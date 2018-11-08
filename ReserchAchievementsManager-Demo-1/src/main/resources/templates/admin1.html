@@ -293,12 +293,49 @@
 						</div>
 					</div>
 					<div id="" class="content-item">
-						调研活动
+						<div class="common-title">活动调研列表</div>
+						<div class="line"></div>
+						<div class="examing">
+									<div class="activitiesToolBar ">
+											<div class="flex5" style="width: 100%;">
+												<button type="button"  class="btn researchActivityExport btn-primary btn-default">导出已通过活动</button>
+													<div class="flex5">
+														<input class="form-control ActivitiesKeyword" type="text" placeholder="关键字..">
+														<button type="button"  class="btn activitiesBtn btn-default">搜索</button>
+														<button type="button"  class="btn  btn-default ActivitiesRefresh">刷新</button>
+												   </div>
+										</div>
+									</div>
+									<table class="layui-hide" id="activitiesTable" lay-filter="activities"></table>
+									<script type="text/html" id="activitiesToolBar">
+										<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>	
+										<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>	
+								</script>
+						</div>
 
 					</div>
 					<div id="" class="content-item">
-						其他学术活动
-					</div>
+							<div class="common-title">其他学术活动列表</div>
+							<div class="line"></div>
+							<div class="examing">
+										<div class="otherActivityToolBar ">
+												<div class="flex5" style="width: 100%;">
+													<button type="button"  class="btn otherActivityExport btn-primary btn-default">导出已通过活动</button>
+														<div class="flex5">
+															<input class="form-control otherActivityKeyword" type="text" placeholder="关键字..">
+															<button type="button"  class="btn otherActivityBtn btn-default">搜索</button>
+															<button type="button"  class="btn  btn-default otherActivityRefresh">刷新</button>
+													   </div>
+											</div>
+										</div>
+										<table class="layui-hide" id="otherActivityTable" lay-filter="otherActivity"></table>
+										<script type="text/html" id="otherActivityToolBar">
+											<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>	
+											<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>	
+									</script>
+							</div>
+	
+						</div>
 				</div>
 			</div>
 		</div>

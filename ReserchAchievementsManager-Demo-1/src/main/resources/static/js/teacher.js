@@ -185,7 +185,7 @@ layui.use([ 'layer', 'table', 'element'], function(){
 		,cols: [[ //表头
 		{field: 'name',width:200, title: '成果名称' ,sort: true, fixed: 'left'}
 		,{field: 'aId',width:170, title: '成果编号' ,sort: true, fixed: 'left'}
-		,{field: 'type', title: '类型',width:150,templet: function(d){
+		,{field: 'type', title: '类型',templet: function(d){
 			return checkType(d.type);
 			}}
 		,{field: 'state', title: '审核状态',templet: function(d){
@@ -241,6 +241,174 @@ layui.use([ 'layer', 'table', 'element'], function(){
 			}
 		  }
 		  table_.reload(conditions);
+		
+	});
+
+
+	var activitiesTable=table.render({
+		elem: '#activitiesTable'
+		,url: '/researchActivity/getListByAccount' //数据接口
+		,method:"POST" 
+		,page: true //开启分页
+		,headers: { Authorization: 'Bearer ' + token }
+		,contentType: 'application/json'
+		,cols: [[ //表头
+		{field: 'groupName', title: '调研组', fixed: 'left'}
+		,{field: 'state', title: '状态',templet:function(d){
+			var state=parseInt(d.state);
+			if(state==-1){
+				return "驳回";
+			}else if(state==1){
+				return "未提交";
+			}else if(state==2){
+				return "待审核";
+			}else if(state==3){
+				return "已发布"
+			}
+		
+		}}
+		,{field: 'startDate', title: '起始时间',templet:function (d) { 
+			if(d.startDate==null){
+				return "空"
+			}
+			var startDate=d.startDate.time+"";
+			return timestampToTime(startDate.substring(0,10));
+			
+		 }}
+		,{field: 'endDate', title: '结束时间',templet:function (d) { 
+			if(d.endDate==null){
+				return "空"
+			}
+			var endDate=d.endDate.time+"";
+			return timestampToTime(endDate.substring(0,10));
+
+		}}
+		,{field: 'location', title: '地点'}
+		,{fixed: 'right',title:'操作', align:'center',width:150, toolbar: '#activitiesToolBar'}
+		]]
+	});
+
+	table.on('tool(activities)', function(obj){ 
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		var action="";
+		if(layEvent === 'detail'){ //查看
+			action="see";
+		}
+			if(data.state==3 && action!="see"){
+				layer.msg("发布的活动不能编辑");
+				return false;
+			}
+			var height=$(window).height()-50;
+			layer.open({
+				type: 2,
+				area: ['800px', height+'px'],
+				content: "/researchActivity/edit.do?actId="+data.actId+"&state="+data.state+"&action="+action,
+				scrollbar:true,
+				end: function () {
+					$(".layui-laypage-btn").click();  //重新点击分页页面
+				  }  
+			  });		
+		
+	});
+
+
+
+	var otherActivityTable=table.render({
+		elem: '#otherActivityTable'
+		,url: '/otherActivity/getListByAccount' //数据接口
+		,method:"POST" 
+		,page: true //开启分页
+		,headers: { Authorization: 'Bearer ' + token }
+		,contentType: 'application/json'
+		,cols: [[ //表头
+		{field: 'name', title: '活动名', fixed: 'left'}
+		,{field: 'state', title: '状态',templet:function(d){
+			var state=parseInt(d.state);
+			if(state==-1){
+				return "驳回";
+			}else if(state==1){
+				return "未提交";
+			}else if(state==2){
+				return "待审核";
+			}else if(state==3){
+				return "已发布"
+			}
+		
+		}}
+		,{field: 'startDate', title: '起始时间',templet:function (d) { 
+			if(d.startDate==null){
+				return "空"
+			}
+			var startDate=d.startDate.time+"";
+			return timestampToTime(startDate.substring(0,10));
+			
+		 }}
+		,{field: 'endDate', title: '结束时间',templet:function (d) { 
+			if(d.endDate==null){
+				return "空"
+			}
+			var endDate=d.endDate.time+"";
+			return timestampToTime(endDate.substring(0,10));
+
+		}}
+		,{field: 'location', title: '地点'}
+		,{fixed: 'right',title:'操作', align:'center',width:150, toolbar: '#otherActivityToolBar'}
+		]]
+	});
+
+	table.on('tool(otherActivity)', function(obj){ 
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		var action="";
+		if(layEvent === 'detail'){ //查看
+			action="see";
+		}
+			if(data.state==3 && action!="see"){
+				layer.msg("发布的活动不能编辑");
+				return false;
+			}
+			var height=$(window).height()-50;
+			layer.open({
+				type: 2,
+				area: ['800px', height+'px'],
+				content: "/otherActivity/edit.do?actId="+data.actId+"&state="+data.state+"&action="+action,
+				scrollbar:true,
+				end: function () {
+					$(".layui-laypage-btn").click();  //重新点击分页页面
+				  }  
+			  });		
+		
+	});
+
+
+	$('.otherActivityBtn').click(function (e) { 
+		var keyword=$(".otherActivityKeyword").val();
+		var conditions={
+			where: {
+				keyword:keyword
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+		  otherActivityTable.reload(conditions);
+	});
+	$(".otherActivityRefresh").click(function (e) { 
+		$(".ActivitiesKeyword").val('');
+		var conditions={
+			where: {
+				type: "",
+				keyword:""
+			}
+			,page: {
+			  curr: 1 
+			}
+		  }
+		otherActivityTable.reload(conditions);
+		e.preventDefault();
 		
 	});
 

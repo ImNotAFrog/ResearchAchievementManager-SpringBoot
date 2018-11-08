@@ -255,6 +255,12 @@
         margin-right: 5px;
     }
     
+    .activitiesToolBar,.otherActivityToolBar{
+        margin-top:10px;
+    }
+    .activitiesToolBar .flex5 *,.otherActivityToolBar .flex5 *{
+        margin-right: 5px;
+    }
     
 
 

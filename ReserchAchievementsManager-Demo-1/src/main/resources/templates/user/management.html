@@ -6,13 +6,15 @@
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="/css/management.css">
-
+<style>
+</style>
 </head>
 <body>
 	<div th:replace="header::html"></div>
-	<div class="container">
+	<div class="container upload">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3 userinfo-edit">
+			  <div class="re-item">
 				<div class="common-title">所有用户</div>
 				<div class="line"></div>
 				<div class="examing">
@@ -26,10 +28,12 @@
 				<table class="layui-hide" id="table-user" lay-filter="user"></table>
 				<script type="text/html" id="toolBar-user">
 					<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-					<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+					<!-- <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a> -->
 					<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delUser">删除</a>	
 				</script>
 				</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

@@ -255,6 +255,10 @@ a.edit:hover{
         margin-left: 5px;
         margin-right: 5px;
     }
-    /*椤圭洰琛ㄥ崟缁撴潫*/
-/*涓婁紶鎴愭灉缁撴潫*/
+    .activitiesToolBar,.otherActivityToolBar{
+        margin-top:10px;
+    }
+    .activitiesToolBar .flex5 *,.otherActivityToolBar .flex5 *{
+        margin-right: 5px;
+    }
 

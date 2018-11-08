@@ -384,6 +384,7 @@ nav .wrap .research-wrap .research img{
 	align-items: flex-end
   }
 
+  /*右边对齐*/
 .flex11{
 	display: flex;
 	flex-direction:row-reverse;

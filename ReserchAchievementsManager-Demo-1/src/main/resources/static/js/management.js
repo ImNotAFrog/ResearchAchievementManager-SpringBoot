@@ -19,6 +19,7 @@ layui.use(['layer', 'element','table', 'upload'], function () {
 	}
 
 //获取用用户列表
+function getUserList(){
 		ajax_request({
 			type: 'GET',
 			url: '/user/getUserList',
@@ -34,6 +35,8 @@ layui.use(['layer', 'element','table', 'upload'], function () {
 			   }
 			}
 	   })
+	}
+getUserList();
 	   //用户列表
 	var table_user=table.render({
 		elem: '#table-user'
@@ -69,6 +72,7 @@ layui.use(['layer', 'element','table', 'upload'], function () {
                         res=JSON.parse(res);
                     if (res.state == "success") {
                         layer.alert("删除成功", { icon: 1 }, function () {
+							getUserList();
 							layer.closeAll();
                         });
                     } else {
@@ -91,7 +95,7 @@ layui.use(['layer', 'element','table', 'upload'], function () {
 			content: "/user/edit.do?uId="+uId,
 			scrollbar:true,
 			end: function () {
-				$(".layui-laypage-btn").click();  //重新点击分页页面
+				getUserList();
 			  }  
 		  });
 	}
