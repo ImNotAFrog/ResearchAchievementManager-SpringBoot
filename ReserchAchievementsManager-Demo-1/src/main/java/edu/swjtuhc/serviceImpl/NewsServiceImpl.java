@@ -11,6 +11,7 @@ import edu.swjtuhc.model.News;
 import edu.swjtuhc.model.PagingRequestMsg;
 import edu.swjtuhc.service.NewsService;
 import edu.swjtuhc.utils.IdWorker;
+import edu.swjtuhc.utils.ModelUtil;
 @Service
 public class NewsServiceImpl implements NewsService {
 
@@ -24,7 +25,7 @@ public class NewsServiceImpl implements NewsService {
 		n.setUploadDate(new Date());
 		n.setUploader(account);
 		n.setState(1);
-		if(newsMapper.createNews(n)==1) {
+		if(newsMapper.createNews(n)==1){
 			return n.getnId();
 		}
 		return -1L;
@@ -33,6 +34,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public Integer updateNews(News news) {
 		// TODO Auto-generated method stub
+		News old = newsMapper.getNewsById(news.getnId());
+		news  = (News) ModelUtil.updateModelByModel(old, news);
 		news.setUploadDate(new Date());
 		return newsMapper.updateNews(news);
 	}
