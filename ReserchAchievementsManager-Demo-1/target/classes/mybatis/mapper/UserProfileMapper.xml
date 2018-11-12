@@ -29,6 +29,7 @@
 		from user_profile
 		where account = #{account}
 	</select>
+	
 	<insert id="insertUserProfile"
 		parameterType="edu.swjtuhc.model.UserProfile">
 		INSERT INTO 
@@ -45,5 +46,11 @@
 		WHERE
 		account = #{account}
 	</update>
+	<delete id="deleteUserProfile" parameterType="java.lang.String">
+		DELETE FROM
+		user_profile
+		WHERE
+		account = #{account}
+	</delete>
 
 </mapper> 

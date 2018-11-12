@@ -81,6 +81,8 @@ public class PatentServiceImpl implements PatentService {
 		achievement.setSubDepartment(pa.getSubDepartment());
 		achievement.setUploadDate(pa.getUploadDate());
 		achievement.setName(pa.getPaName());
+		achievement.setState(1);
+		achievement.setValidDate(pa.getPublishDate());
 		int i = updatePatent(pa, achievement);
 		
 		return i;
@@ -96,20 +98,21 @@ public class PatentServiceImpl implements PatentService {
 	@Override
 	public Integer modifyPatent(Patent patent) throws IOException {
 		// TODO Auto-generated method stub
-		Patent p = getPatentById(patent.getPaId());
-		if(p==null) {
+		Patent pa = getPatentById(patent.getPaId());
+		if(pa==null) {
 			return 0;
 		}
-		p = (Patent) ModelUtil.updateModelByModel(p, patent);
-		p.setUploadDate(new Date());
+		pa = (Patent) ModelUtil.updateModelByModel(pa, patent);
+		pa.setUploadDate(new Date());
 		
-		Achievement achievement = achievementMapper.getAchievementById(p.getPaId());
-		achievement.setName(p.getPaName());
-		achievement.setDepartment(p.getDepartment());
-		achievement.setSubDepartment(p.getSubDepartment());
-		achievement.setUploadDate(p.getUploadDate());
-		achievement.setUploader(p.getUploader());
-		int i = updatePatent(p, achievement);
+		Achievement achievement = achievementMapper.getAchievementById(pa.getPaId());
+		achievement.setName(pa.getPaName());
+		achievement.setDepartment(pa.getDepartment());
+		achievement.setSubDepartment(pa.getSubDepartment());
+		achievement.setUploadDate(pa.getUploadDate());
+		achievement.setUploader(pa.getUploader());
+		achievement.setValidDate(pa.getPublishDate());
+		int i = updatePatent(pa, achievement);
 		return i;
 	}
 	

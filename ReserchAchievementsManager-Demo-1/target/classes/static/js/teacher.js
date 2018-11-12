@@ -143,7 +143,19 @@ var goToUpload = function (page) {
 
 window.operateEvents = {
 	'click .RoleOfA': function (e, value, row, index) {
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state+"&action=see";
+		 var height=$(window).height();
+		var edit=layer.open({
+			//title:'查看'+data.user+'的信息',
+			type: 2,
+			area: ['500px', height+'px'],
+			content: "/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state+"&action=see",
+			scrollbar:true,
+			end: function () {
+				$(".layui-laypage-btn").click();  //重新点击分页页面
+			  }  
+		  });
+
+		//location.href=;
 	},
 	'click .RoleOfB': function (e, value, row, index) {
 		if(row.state==4){
@@ -152,7 +164,7 @@ window.operateEvents = {
 			})
 			return false;
 		}
-		location.href="/thesis/edit.do?tId="+row.aId+"&state="+row.state;
+		location.href="/"+row.type+"/edit.do?aId="+row.aId+"&state="+row.state;
 	}
 }
 
@@ -184,12 +196,10 @@ $(function () {
 			}
 		},
 		error: function (pa) {
-			layer.msg(132132)
+			layer.msg("获取成果列表失败")
 		}
 	});
 })
-
-
 
 
 
@@ -225,4 +235,14 @@ $('#wating').bootstrapTable({
 		}
 	],
 	data: []
+});
+
+$(document).ready(function () {
+	if (getItem('active')) {
+		$('#' + getItem('active')).click();
+	}
+	$('.left a').click(function (e) {
+		var obj = $(this);
+		setItem('active', obj.attr('id'))
+	});
 });

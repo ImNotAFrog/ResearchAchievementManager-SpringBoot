@@ -17,16 +17,20 @@
 			jdbcType="VARCHAR" />
 		<result column="sub_department" property="subDepartment"
 			jdbcType="VARCHAR" />
+		<result column="valid_date" property="validDate"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="score" property="score" jdbcType="FLOAT" />
+		<result column="max_score" property="maxScore" jdbcType="FLOAT" />
 		<association property="uploaderName" column="uploader"
-		javaType="java.lang.String">
-		<result property="uploaderName" column="u.name" />
+			javaType="java.lang.String">
+			<result property="uploaderName" column="u.name" />
 		</association>
 	</resultMap>
 	<sql id="Base_Column_List">
-		a_id,name,type,uploader,state,upload_date,department,sub_department
+		a_id,name,type,uploader,state,upload_date,department,sub_department,valid_date,score,max_score
 	</sql>
 	<sql id="Association_Userprofile">
-		a.a_id,a.name,a.type,a.uploader,a.state,a.upload_date,a.department,a.sub_department,u.name
+		a.a_id,a.name,a.type,a.uploader,a.state,a.upload_date,a.department,a.sub_department,a.valid_date,a.score,a.max_score,u.name
 	</sql>
 	<insert id="createAchievement"
 		parameterType="edu.swjtuhc.model.Achievement">
@@ -36,76 +40,121 @@
 		<include refid="Base_Column_List"></include>
 		)
 		values
-		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment})
+		(#{aId},#{name},#{type},#{uploader},#{state},#{uploadDate},#{department},#{subDepartment},#{validDate},#{score},#{maxScore})
 	</insert>
-	<select id="getAchievementListByAccount" parameterType="hashmap"
+	<select id="getAchievementListByAccount"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.uploader = #{account}
-		limit #{start},#{pageSize}
+		where
+		a.uploader = #{account}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.name like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
-	<select id="getAchievementByName" parameterType="hashmap"
+	<select id="getAchievementByName"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.name = #{name}
-		limit #{start},#{pageSize}
+		where
+		a.name = #{name}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.name like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
-	<select id="getAchievementListBySubDepartment" parameterType="hashmap"
+	<select id="getAchievementListBySubDepartment"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.sub_department = #{subDepartment}
-		limit #{start},#{pageSize}
+		where
+		a.sub_department =
+		#{subDepartment}
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.name like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
-	
-	<select id="getAchievementList" parameterType="hashmap"
+
+	<select id="getAchievementList"
+		parameterType="edu.swjtuhc.model.PagingRequestMsg"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		LEFT JOIN user_profile u
 		ON a.uploader=u.account
-		limit #{start},#{pageSize}
+		where 1=1
+		<if test='null!=type and ""!=type'>
+			and a.type=#{type}
+		</if>
+		<if test='null!=state and 0!=state'>
+			and a.state=#{state}
+		</if>
+		<if test='null!=keyword and ""!=keyword'>
+			and a.name like CONCAT('%',#{keyword},'%')
+		</if>
 	</select>
-	
+
 	<select id="getAchievementById" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Association_Userprofile"></include>
-		from achievement a 
+		from achievement a
 		JOIN user_profile u
 		ON a.uploader=u.account
-		where a.a_id = #{aId}
+		where
+		a.a_id = #{aId}
 	</select>
-	
-	<select id="getNextAchievementId" parameterType="java.lang.Integer" 
+
+	<select id="getNextAchievementId"
+		parameterType="java.lang.Integer"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
-		a_id,type
+		a_id as aId,type
 		from achievement
-		where 
-		state={#state} 
+		where
+		state=#{state}
 		limit 1
 	</select>
-	
-	<select id="getNextAchievementIdOfType" parameterType="edu.swjtuhc.model.Achievement" 
+
+	<select id="getNextAchievementIdOfType"
+		parameterType="edu.swjtuhc.model.Achievement"
 		resultType="edu.swjtuhc.model.Achievement">
 		select
-		a_id,type
+		a_id as aId,type
 		from achievement
-		where 
-		state={#state} and type={#type}
+		where
+		state=#{state}
+		and type=#{type}
 		limit 1
 	</select>
 
@@ -114,7 +163,10 @@
 		UPDATE
 		achievement
 		SET
-		name = #{name},type= #{type},uploader= #{uploader},state= #{state},upload_date= #{uploadDate},department= #{department},sub_department= #{subDepartment}
+		name = #{name},type=
+		#{type},uploader= #{uploader},state= #{state},upload_date=
+		#{uploadDate},department= #{department},sub_department=
+		#{subDepartment},valid_date=#{validDate},score=#{score},max_score=#{maxScore}
 		WHERE
 		a_id = #{aId}
 	</update>
@@ -126,4 +178,53 @@
 		a_id=#{aId}
 	</delete>
 
+	<select id="getAchievementDuring"
+		parameterType="edu.swjtuhc.model.RankingRequestMsg"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Association_Userprofile"></include>
+		from achievement a
+		JOIN user_profile u
+		ON a.uploader=u.account
+		where
+		a.valid_date between #{startDate} and #{endDate}
+		and state = 4
+		<if test='null!=department and ""!=department'>
+			and a.department=#{department}
+		</if>
+	</select>
+	<select id="getExportAchievement"
+		parameterType="edu.swjtuhc.model.ExportRequestMsg"
+		resultType="java.util.Map">
+		SELECT
+		<if test='null!=type and ""!=type'>
+			t.*
+			from ${type} t
+			join achievement a
+			on t.${idName}=a.a_id
+		</if>
+		<if test='null==type || ""==type'>			
+			a.*, 
+			(ifnull(t.journal_level,0)+ifnull(p.level,0)+ifnull(tb.level,0)+ifnull(pa.type,0)+ifnull(l.level,0)) as level 
+			FROM achievement a 
+			left join thesis t on a.a_id=t.t_id 
+			left join project p on a.a_id=p.p_id
+			left join textbook tb on a.a_id=tb.tb_id
+			left join patent pa on a.a_id=pa.pa_id
+			left join laws l on a.a_id=l.l_id
+		</if>
+		where 1
+		<if test='null!=department and ""!=department'>
+			and a.department=#{department}
+		</if>
+		<if test='null!=subDepartment and ""!=subDepartment'>
+			and a.sub_department=#{subDepartment}
+		</if>
+		<if test='null!=startDate'>
+			and a.valid_date &gt;= #{startDate}
+		</if>
+		<if test='null!=endDate'>
+			and a.valid_date &lt; #{endDate}
+		</if>
+	</select>
 </mapper> 

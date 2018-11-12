@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SysUser{
 	
-	private Long id;
+	private Long uId;
 	private String account;
 	private String password;
 	private List<String> roles;
@@ -13,12 +13,15 @@ public class SysUser{
 	public SysUser() {
 		
 	}
-	public Long getId() {
-		return id;
+
+	public Long getuId() {
+		return uId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public void setuId(Long uId) {
+		this.uId = uId;
 	}
+
 	public String getAccount() {
 		return account;
 	}

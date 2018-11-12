@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,16 +23,22 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import edu.swjtuhc.model.Laws;
+import edu.swjtuhc.model.News;
+import edu.swjtuhc.model.OtherActivity;
 import edu.swjtuhc.model.Patent;
 import edu.swjtuhc.model.Project;
 import edu.swjtuhc.model.ReformProject;
+import edu.swjtuhc.model.ResearchActivity;
 import edu.swjtuhc.model.Textbook;
 import edu.swjtuhc.model.Thesis;
 import edu.swjtuhc.model.UserProfile;
 import edu.swjtuhc.service.LawsService;
+import edu.swjtuhc.service.NewsService;
+import edu.swjtuhc.service.OtherActivityService;
 import edu.swjtuhc.service.PatentService;
 import edu.swjtuhc.service.ProjectService;
 import edu.swjtuhc.service.ReformProjectService;
+import edu.swjtuhc.service.ResearchActivityService;
 import edu.swjtuhc.service.TextbookService;
 import edu.swjtuhc.service.ThesisService;
 import edu.swjtuhc.service.UserService;
@@ -70,6 +78,15 @@ public class AttachmentController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private NewsService newsService;
+	
+	@Autowired
+	private ResearchActivityService researchActivityService;
+	
+	@Autowired
+	private OtherActivityService otherActivityService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
@@ -197,6 +214,40 @@ public class AttachmentController {
 					}
 				}
 				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(attachmentId);
+				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
+				if (ra == null) {
+					result = new JSONObject();
+					result.put("state", "fail");
+					result.put("msg", "调研活动不存在");
+				} else if (result.getString("state").equals("success")) {
+					ra.setAttachment(result.getString("name"));
+					int i = researchActivityService.appendAttachment(ra);
+					if (i != 1) {
+						result = new JSONObject();
+						result.put("state", "fail");
+						result.put("msg", "附件上传失败");
+					}
+				}
+				break;
+			case "otherActivity":
+				OtherActivity oa = otherActivityService.getOtherActivityById(attachmentId);
+				result = FileUploadUtil.saveLocalFile(uploadFile, result, attachmentPath, account);
+				if (oa == null) {
+					result = new JSONObject();
+					result.put("state", "fail");
+					result.put("msg", "活动不存在");
+				} else if (result.getString("state").equals("success")) {
+					oa.setAttachment(result.getString("name"));
+					int i = otherActivityService.appendAttachment(oa);
+					if (i != 1) {
+						result = new JSONObject();
+						result.put("state", "fail");
+						result.put("msg", "附件上传失败");
+					}
+				}
+				break;
 			default:
 				result.put("state", "fail");
 				result.put("msg", "文件类型参数错误");
@@ -249,6 +300,67 @@ public class AttachmentController {
 				}
 			}
 		}
+	}
+	@RequestMapping(value = "/get/img", method = RequestMethod.GET)
+	public void getImg(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("filename") String filename,@RequestParam("nId") String id)
+			throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Description", "File Transfer");
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+		File file = new File(attachmentPath + "news/"+id+"/" + filename);
+		response.setHeader("Cache-Control", "public");
+		response.setContentLengthLong(file.length());
+		byte[] buff = new byte[1024];
+		BufferedInputStream bis = null;
+		OutputStream os = null;
+		try {
+			os = response.getOutputStream();
+			bis = new BufferedInputStream(new FileInputStream(file));
+			int i = bis.read(buff);
+			while (i != -1) {
+				os.write(buff, 0, buff.length);
+				os.flush();
+				i = bis.read(buff);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@RequestMapping(value="imgUpload",method=RequestMethod.POST)
+	public String imgUpload(HttpServletRequest request){
+		MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
+		MultipartFile uploadImg = params.getFile("img");
+		Long id = Long.parseLong(params.getParameter("nId"));
+		News news= newsService.getNewsById(id);
+		JSONObject result = new JSONObject();
+		if(id==null || news==null || uploadImg==null) {
+			result.put("errno", 1);
+			result.put("msg", "Id或图片不存在");
+			return result.toString();
+		}
+		String imgPath = FileUploadUtil.saveLocalImg(uploadImg, attachmentPath, id);
+		if(imgPath==null) {
+			result.put("errno", 1);
+			result.put("msg", "图片不存在");
+			return result.toString();
+		}
+		List<String> urls = new ArrayList<>();
+		urls.add(imgPath);
+		result.put("errno", 0);
+		result.put("data", urls);		
+		return result.toString();
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -443,6 +555,70 @@ public class AttachmentController {
 					try {
 						l.setAttachment(filename);
 						if (lawsService.removeAttachment(l) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(aId);				
+				if (ra==null||ra.getApplicant() == null || !ra.getUploadDate().equals(account)) {
+					result.put("state", "fail");
+					result.put("msg", "ID或用户权限错误");
+					return result.toString();
+				}
+				filepath = attachmentPath + ra.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						ra.setAttachment(filename);
+						if (researchActivityService.removeAttachment(ra) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
+			case "otherActivity":
+				OtherActivity oa = otherActivityService.getOtherActivityById(aId);				
+				if (oa==null||oa.getApplicant() == null || !oa.getUploadDate().equals(account)) {
+					result.put("state", "fail");
+					result.put("msg", "ID或用户权限错误");
+					return result.toString();
+				}
+				filepath = attachmentPath + oa.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						oa.setAttachment(filename);
+						if (otherActivityService.removeAttachment(oa) == 1) {
 							result.put("state", "success");
 							result.put("msg", "删除成功");
 						} else {
@@ -669,6 +845,70 @@ public class AttachmentController {
 					try {
 						l.setAttachment(filename);
 						if (lawsService.removeAttachment(l) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
+			case "researchActivity":
+				ResearchActivity ra = researchActivityService.getResearchActivityById(aId);
+				if (ra==null) {
+					result.put("state", "fail");
+					result.put("msg", "ID不存在");
+					return result.toString();
+				}
+				filepath = attachmentPath + ra.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						ra.setAttachment(filename);
+						if (researchActivityService.removeAttachment(ra) == 1) {
+							result.put("state", "success");
+							result.put("msg", "删除成功");
+						} else {
+							result.put("state", "success");
+							result.put("msg", "数据库更新失败或文件不存在");
+						}
+						;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						result.put("state", "success");
+						result.put("msg", "数据库更新失败");
+						e.printStackTrace();
+						return request.toString();
+					}
+				} else {
+					result.put("state", "failed");
+					result.put("msg", "删除失败，文件或不存在");
+				}
+				break;
+			case "otherActivity":
+				OtherActivity oa = otherActivityService.getOtherActivityById(aId);
+				if (oa==null) {
+					result.put("state", "fail");
+					result.put("msg", "ID不存在");
+					return result.toString();
+				}
+				filepath = attachmentPath + oa.getApplicant() + "/" + filename;
+				file = new File(filepath);
+				if (file.delete()) {
+					try {
+						oa.setAttachment(filename);
+						if (otherActivityService.removeAttachment(oa) == 1) {
 							result.put("state", "success");
 							result.put("msg", "删除成功");
 						} else {

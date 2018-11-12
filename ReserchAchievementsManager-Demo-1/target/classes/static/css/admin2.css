@@ -95,8 +95,7 @@ span.icon{
     font-weight: 400;
     /*margin-top: 12px;*/
     color: rgb(78,19,85);
-    /*text-shadow: 1px 1px 1px rgb(78,19,185);*/
-    margin-bottom: 30px;
+    /*text-shadow: 1px 1px 1px rgb(78,19,185);*/    
 }
 .edit{
     padding-left: 18px;
@@ -115,6 +114,7 @@ a.edit:hover{
     height: 1px;
     background-color: #d0d6d9;
     margin-top: 12px;
+    margin-bottom: 10px;
 }
 .info-box{
     margin-bottom: 12px;
@@ -299,15 +299,20 @@ a.edit:hover{
         border-radius: 2px;
         box-sizing: border-box;
    }
-    #wating ._edit,#wating3 ._edit,#wating4 ._edit{
-        display: none !important;
+
+
+    .optType{
+        width: 200px !important;
     }
-    #wating1 ._see{
-        display: none !important;
+
+    .keyword{
+        width: 120px !important;    
     }
 
-
-
+    .searchBtn{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 
     /*椤圭洰琛ㄥ崟缁撴潫*/
 /*涓婁紶鎴愭灉缁撴潫*/

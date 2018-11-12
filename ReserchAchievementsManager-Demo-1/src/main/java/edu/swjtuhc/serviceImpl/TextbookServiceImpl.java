@@ -81,6 +81,8 @@ public class TextbookServiceImpl implements TextbookService {
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setName(t.getTbName());
+		achievement.setState(1);
+		achievement.setValidDate(t.getPublishDate());
 		int i = updateTextbook(t, achievement);
 		
 		return i;
@@ -109,6 +111,7 @@ public class TextbookServiceImpl implements TextbookService {
 		achievement.setSubDepartment(t.getSubDepartment());
 		achievement.setUploadDate(t.getUploadDate());
 		achievement.setUploader(t.getUploader());
+		achievement.setValidDate(t.getPublishDate());
 		int i = updateTextbook(t, achievement);
 		return i;
 	}

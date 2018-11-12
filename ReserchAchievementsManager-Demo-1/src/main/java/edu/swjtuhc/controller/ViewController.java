@@ -139,4 +139,87 @@ public class ViewController {
 	public String lawExam() {
 		return "/laws/exam";
 	}
+	
+	@RequestMapping(value="/news/detail.do",method=RequestMethod.GET)
+	public String newsDetail() {
+		return "/news/detail";
+	}
+	
+	@RequestMapping(value="/news/edit.do",method=RequestMethod.GET)
+	public String newsEdit() {
+		return "/news/edit";
+	}
+	
+	@RequestMapping(value="/news/list.do",method=RequestMethod.GET)
+	public String newsList() {
+		return "/news/list";
+	}
+	
+	@RequestMapping(value="/ranking/individual.do",method=RequestMethod.GET)
+	public String individual() {
+		return "/ranking/individual.html";
+	}
+	@RequestMapping(value="/ranking/department.do",method=RequestMethod.GET)
+	public String department() {
+		return "/ranking/department.html";
+	}
+	
+	@RequestMapping(value="/ranking/individualDetail.do",method=RequestMethod.GET)
+	public String individualDetail() {
+		return "/ranking/individualDetail.html";
+	}
+	@RequestMapping(value="/ranking/departmentDetail.do",method=RequestMethod.GET)
+	public String departmentDetail() {
+		return "/ranking/departmentDetail.html";
+	}
+	
+	@RequestMapping(value="/achievementExport.do",method=RequestMethod.GET)
+	public String achievementExport() {
+		return "/achievementExport.html";
+	}
+	
+	@RequestMapping(value="/user/management.do",method=RequestMethod.GET)
+	public String userManagement() {
+		return "/user/management.html";
+	}
+	
+	@RequestMapping(value="/user/edit.do",method=RequestMethod.GET)
+	public String userEdit() {
+		return "/user/edit.html";
+	}
+	
+	@RequestMapping(value="/researchActivity/upload.do",method=RequestMethod.GET)
+	public String researchActivityUpload() {
+		return "/researchActivity/upload.html";
+	}
+	@RequestMapping(value="/researchActivity/edit.do",method=RequestMethod.GET)
+	public String researchActivityEdit() {
+		return "/researchActivity/edit.html";
+	}
+	@RequestMapping(value="/researchActivity/publish.do",method=RequestMethod.GET)
+	public String researchActivityPublish() {
+		return "/researchActivity/publish.html";
+	}
+	@RequestMapping(value="/researchActivity/export.do",method=RequestMethod.GET)
+	public String researchActivityExport() {
+		return "/researchActivity/export.html";
+	}
+	@RequestMapping(value="/otherActivity/upload.do",method=RequestMethod.GET)
+	public String otherActivityUpload() {
+		return "/otherActivity/upload.html";
+	}
+	@RequestMapping(value="/otherActivity/edit.do",method=RequestMethod.GET)
+	public String otherActivityEdit() {
+		return "/otherActivity/edit.html";
+	}
+	@RequestMapping(value="/otherActivity/publish.do",method=RequestMethod.GET)
+	public String otherActivityPublish() {
+		return "/otherActivity/publish.html";
+	}
+	@RequestMapping(value="/otherActivity/export.do",method=RequestMethod.GET)
+	public String otherActivityExport() {
+		return "/otherActivity/export.html";
+	}
+	
+	
 }

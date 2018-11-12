@@ -306,6 +306,9 @@ a.edit:hover{
         display: none !important;
     }
 
+.search{
+    width: 30px;    
+}
 
 
 

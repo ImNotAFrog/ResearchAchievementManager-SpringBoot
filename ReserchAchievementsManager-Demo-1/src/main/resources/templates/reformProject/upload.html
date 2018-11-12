@@ -9,7 +9,6 @@
 <link rel="stylesheet" type="text/css" href="/css/fileupload/jquery.fileupload-ui.css">
 <link rel="stylesheet" type="text/css" href="/css/uploadForm.css">
 <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
-
 </head>
 <body>
 	<div th:replace="header::html"></div>
@@ -25,37 +24,37 @@
 					<form id="fileupload" method="post" target="nm_iframe"
 						onchange="confirmFlag=0;">
 					<div class="form-item">
-							<label for="projectName">项目名称:</label>
+							<label for="rpName">教改项目名称:</label>
 							<div class="moco-control-input">
-												<input type="text" name="projectName" id="projectName" autocomplete="off" class="moco-form-control"  placeholder="请输入项目名称..">
+												<input type="text" name="rpName" id="rpName" autocomplete="off" class="moco-form-control"  placeholder="请输入项目名称..">
 												<div class="rlf-tip-wrap errorHint color-red"></div>
 											</div>
 						</div>
 						
 						<div class="form-item">
-							<label for="" class="moco-control-label">作者参与情况：</label>
+							<label for="involvement" class="moco-control-label">作者参与情况：</label>
 								<div class="moco-control-input">
-								<select class="moco-form-control rlf-select" name="authorSituation" hidefocus="true" id="authorSituation" data-validate="require-select"  onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
-									<option value="1">1.组长</option>
+								<select class="moco-form-control rlf-select" name="involvement" hidefocus="true" id="involvement" data-validate="require-select" >
+									<option value="1" selected>1.组长</option>
 									<option value="2">2.研究人员</option>                             
 								</select>
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>
 						<div class="form-item">
-							<label for="state">项目状态</label>
+							<label for="status">教改状态</label>
 							<div class="moco-control-input">
-								<select class="moco-form-control rlf-select" name="state" hidefocus="true" id="state" data-validate="require-select" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
-										<option value="通过验收">通过验收</option>
-									<option value="立项在研">立项在研</option>                                                                           
+								<select class="moco-form-control rlf-select" name="status" hidefocus="true" id="status" data-validate="require-select">
+										<option value="1" selected>通过验收</option>
+									<option value="2">立项在研</option>                                                                           
 								</select>	                          
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>
 						</div>
 						<div class="form-item" style="margin-top: 12px;">
-							<label for="publishDate" class="moco-control-label">验收日期:</label>
+							<label for="projectDate" class="moco-control-label">立项/结题时间:</label>
 							<div class="moco-control-input">
-								<input type="text" name="stateDate" id="stateDate"
+								<input type="text" name="projectDate" id="projectDate"
 									autocomplete="off" class="moco-form-control">
 								<div class="rlf-tip-wrap errorHint color-red"></div>
 							</div>

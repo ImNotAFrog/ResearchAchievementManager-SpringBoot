@@ -12,9 +12,29 @@ public class Achievement {
 	private Date uploadDate;
 	private String department;
 	private String subDepartment;
+	private Date validDate;
+	private Float score;
+	private Float maxScore;
 	public Achievement() {
 		super();
 	}
+	
+	public Float getScore() {
+		return score;
+	}
+
+	public void setScore(Float score) {
+		this.score = score;
+	}
+
+	public Float getMaxScore() {
+		return maxScore;
+	}
+
+	public void setMaxScore(Float maxScore) {
+		this.maxScore = maxScore;
+	}
+
 	public Long getaId() {
 		return aId;
 	}
@@ -68,6 +88,12 @@ public class Achievement {
 	}
 	public void setUploaderName(String uploaderName) {
 		this.uploaderName = uploaderName;
+	}
+	public Date getValidDate() {
+		return validDate;
+	}
+	public void setValidDate(Date validDate) {
+		this.validDate = validDate;
 	}
 	
 }

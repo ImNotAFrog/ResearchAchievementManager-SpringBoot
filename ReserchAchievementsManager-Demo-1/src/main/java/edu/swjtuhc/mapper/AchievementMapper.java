@@ -2,21 +2,27 @@ package edu.swjtuhc.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.swjtuhc.model.Achievement;
+import edu.swjtuhc.model.ExportRequestMsg;
+import edu.swjtuhc.model.PagingRequestMsg;
+import edu.swjtuhc.model.RankingRequestMsg;
 
 @Mapper
 public interface AchievementMapper {
 	Long createAchievement(Achievement achievement);
 	Integer updateAchievement(Achievement achievement);
-	List<Achievement> getAchievementListByAccount(HashMap<String, Object> map);
-	List<Achievement> getAchievementList(HashMap<String, Object> map);
-	List<Achievement> getAchievementListBySubDepartment(HashMap<String, Object> map);
-	List<Achievement> getAchievementByName(HashMap<String, Object> map);
+	List<Achievement> getAchievementListByAccount(PagingRequestMsg msg);
+	List<Achievement> getAchievementList(PagingRequestMsg msg);
+	List<Achievement> getAchievementListBySubDepartment(PagingRequestMsg msg);
+	List<Achievement> getAchievementByName(PagingRequestMsg msg);
 	Achievement getAchievementById(Long aId);
 	Integer deleteAchievement(Long aId);
 	Achievement getNextAchievementId(Integer state);
 	Achievement getNextAchievementIdOfType(Achievement achievement);
+	List<Achievement> getAchievementDuring(RankingRequestMsg msg);
+	List<Map<String,Object>> getExportAchievement(ExportRequestMsg msg);
 }

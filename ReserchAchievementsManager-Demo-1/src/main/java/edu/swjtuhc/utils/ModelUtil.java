@@ -3,6 +3,7 @@ package edu.swjtuhc.utils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -278,8 +279,7 @@ public class ModelUtil {
 	}
 
 	public static void main(String[] args) {
-		Thesis t = new Thesis();
-		t.setJournalLevel(1);
-		System.out.println(ModelUtil.caculateScore(t));
+		Date d = new Date();
+		System.out.println();
 	}
 }

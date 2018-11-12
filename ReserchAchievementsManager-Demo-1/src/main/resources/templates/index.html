@@ -4,12 +4,43 @@
 <meta charset="UTF-8">
 <title>科研成果管理系统</title>
 <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/> 
+<link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="/css/index.css">
 </head>
 <body>
-<div th:replace="header::html" ></div>
-
-41322
-
-<div th:replace="footer::html" ></div>
+	<div th:replace="header::html" ></div>
+	
+	<div class="container" style="margin-bottom:20px">
+		<div class="row">
+			<div class="col-md-7">
+				<h2 class="tit">
+					<span class="title">新闻</span>
+				</h2>
+				<ul class="news_list">
+					<li class="news">
+						<a class="news_box clearfix" href="/2018/1108/c1001a35866/page.htm">
+                          <div class="news_title">荷兰皇家壳牌公司CTO一行访问我校</div>
+                          <div class="news_meta news_times"><span class="t">2018-11-08</span></div>
+                        </a>
+					</li>
+					<li class="news">
+						<a class="news_box clearfix" href="/2018/1108/c1001a35866/page.htm">
+                          <div class="news_title">复旦大学金晓峰教授做客上科大，畅谈让科学成为未来中国的文化基因</div>
+                          <div class="news_meta news_times"><span class="t">2018-11-08</span></div>
+                        </a>
+					</li>
+					<li class="news">
+						<a class="news_box clearfix" href="/2018/1108/c1001a35866/page.htm">
+                          <div class="news_title">国际著名晶体学家、德国电子同步加速器(DESY)自由电子激光科学中心主任Henry Chapman教授访问我校并作ShanghaiTech Lecture报告</div>
+                          <div class="news_meta news_times"><span class="t">2018-11-08</span></div>
+                        </a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-5">BBB</div>
+		</div>	
+	</div>
+	
+	<div th:replace="footer::html" ></div>
 </body>
 </html>

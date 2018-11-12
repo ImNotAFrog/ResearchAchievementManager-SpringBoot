@@ -47,19 +47,6 @@ public class AuthServiceImpl implements AuthService {
         this.idWorker=new IdWorker(0, 0);
     }
 
-    @Override
-    public Integer register(SysUser userToAdd) {
-        final String username = userToAdd.getAccount();
-        if(userMapper.getUserByAccount(username)!=null) {
-            return -1;
-        }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        final String rawPassword = userToAdd.getPassword();
-        userToAdd.setPassword(encoder.encode(rawPassword));
-        userToAdd.setLastPasswordResetDate(new Date());
-        userToAdd.setRoles(userToAdd.getRoles());
-        return userMapper.insertUser(userToAdd);
-    }
 
     @Override
     public String login(String username, String password) {

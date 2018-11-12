@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: ReserchAchievementsManager
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: KeLiHuang
+Built-By: Fabulous
 Implementation-Vendor-Id: edu.swjtuhc
-Build-Jdk: 1.8.0_172
+Build-Jdk: 1.8.0_65
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/ReserchAchievementManagement
 Created-By: Maven Integration for Eclipse
